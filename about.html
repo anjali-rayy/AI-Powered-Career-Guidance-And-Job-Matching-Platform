@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | PathwayAI</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="css/about.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    PathwayAI
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="#">Features</a></li>
+    <li><a href="#">Colleges</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html"><button class="btn-ghost">Sign in</button></a>
+    <a href="register.html"><button class="btn-gold">Get started</button></a>
+  </div>
+</nav>
+
+<main class="page-content">
+
+  <!-- ABOUT HERO -->
+  <div class="about-hero">
+    <div class="max-w">
+      <div class="eyebrow reveal"><div class="eyebrow-dot"></div> About the platform</div>
+      <h1 class="reveal" style="--delay:0.08s">Bridging the Gap Between<br><em>Ambition &amp; Opportunity</em></h1>
+      <p class="reveal" style="--delay:0.14s">We built PathwayAI because students and job seekers deserve more than generic advice. They need a platform that understands their unique strengths and connects them to the right path — with clarity and confidence.</p>
+    </div>
+  </div>
+
+  <!-- MISSION CARDS -->
+  <div class="mission-grid">
+    <div class="card card-shine m-card reveal" style="--delay:0s">
+      <div class="m-icon">🎯</div>
+      <h3>Our Mission</h3>
+      <p>To reduce confusion in career decision-making by providing intelligent, personalized guidance to every student and job seeker — regardless of background.</p>
+    </div>
+    <div class="card card-shine m-card reveal" style="--delay:0.07s">
+      <div class="m-icon">👥</div>
+      <h3>Who We Serve</h3>
+      <p>College students, fresh graduates, active job seekers, and anyone navigating a career transition. If you have goals, we have the tools to help you reach them.</p>
+    </div>
+    <div class="card card-shine m-card reveal" style="--delay:0.14s">
+      <div class="m-icon">⚡</div>
+      <h3>How It Works</h3>
+      <p>Our skill-matching algorithm computes compatibility between your profile and careers/jobs, giving you a transparent match percentage every time.</p>
+    </div>
+    <div class="card card-shine m-card reveal" style="--delay:0.21s">
+      <div class="m-icon">🔒</div>
+      <h3>Secure &amp; Private</h3>
+      <p>Your data belongs to you. We use encrypted storage, secure JWT authentication, and never share your personal information with advertisers.</p>
+    </div>
+  </div>
+
+  <div class="divider-line"></div>
+
+  <!-- PROBLEM / SOLUTION -->
+  <section class="section">
+    <div class="max-w">
+      <div class="problem-grid">
+        <div class="reveal">
+          <div class="section-kicker">The Problem We Solve</div>
+          <h2 class="problem-text h2">Career Confusion Is <em>Real</em>.<br>We Fix It.</h2>
+          <div class="problem-text">
+            <p>Many students graduate without a clear direction. They don't know which skills to build, which jobs to apply for, or how close they actually are to landing their first role.</p>
+            <p>PathwayAI analyzes your skills and interests, then recommends career paths with a transparent reasoning layer — so you always understand <em>why</em> a career fits you.</p>
+            <p>The skill gap feature pinpoints exactly what's missing so you can focus your learning time with precision.</p>
+          </div>
+          <div class="bullets">
+            <div class="bullet"><span class="bullet-dot"></span> No more guessing which career suits you</div>
+            <div class="bullet"><span class="bullet-dot"></span> Know your match % before applying</div>
+            <div class="bullet"><span class="bullet-dot"></span> Targeted skill gap reports</div>
+            <div class="bullet"><span class="bullet-dot"></span> College suggestions near you</div>
+          </div>
+          <a href="register.html" style="display:inline-block;margin-top:28px"><button class="btn-primary">Create your profile →</button></a>
+        </div>
+
+        <div class="code-panel reveal" style="--delay:0.1s">
+          <div class="code-header">
+            <span class="code-dot r"></span>
+            <span class="code-dot y"></span>
+            <span class="code-dot g"></span>
+            <span class="code-file">match-engine.js</span>
+          </div>
+          <div class="code-body">
+            <span class="cl cc">// Career Advisor Match Engine</span>
+            <span class="cl">&nbsp;</span>
+            <span class="cl"><span class="ck">function</span> <span class="cf">getMatchScore</span>(user, job) {</span>
+            <span class="cl i1"><span class="ck">const</span> matched = user.skills</span>
+            <span class="cl i2">.filter(s =&gt; job.required.includes(s));</span>
+            <span class="cl">&nbsp;</span>
+            <span class="cl i1"><span class="ck">return</span> {</span>
+            <span class="cl i2"><span class="cp">score</span>: (matched.length / job.required.length) * 100,</span>
+            <span class="cl i2"><span class="cp">matched</span>: matched,</span>
+            <span class="cl i2"><span class="cp">missing</span>: job.required.filter(s =&gt; !user.skills.includes(s)),</span>
+            <span class="cl i1">};</span>
+            <span class="cl">}</span>
+            <span class="cl">&nbsp;</span>
+            <span class="cl cc">// Example output:</span>
+            <span class="cl cc">// { score: 75, matched: ["HTML","CSS","JS"],</span>
+            <span class="cl cc">//   missing: ["React"] }</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="about-stats-wrap">
+    <div class="max-w">
+      <div class="about-stats-strip reveal">
+        <div class="a-stat"><span class="a-stat-num">12K+</span><span class="a-stat-lbl">Students guided</span></div>
+        <div class="a-stat"><span class="a-stat-num">600+</span><span class="a-stat-lbl">Career paths mapped</span></div>
+        <div class="a-stat"><span class="a-stat-num">1,200+</span><span class="a-stat-lbl">Colleges indexed</span></div>
+        <div class="a-stat"><span class="a-stat-num">95%</span><span class="a-stat-lbl">User satisfaction</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH STACK -->
+  <section class="section" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="max-w">
+      <div class="section-kicker reveal">Technology</div>
+      <div class="section-h2 reveal" style="--delay:0.06s">Built with <em>modern tools</em></div>
+      <div class="tech-rows reveal" style="--delay:0.12s">
+        <div class="tech-row-group">
+          <span class="tech-group-label">Frontend</span>
+          <div class="tech-chips">
+            <span class="chip chip-gold">⚛️ React.js</span>
+            <span class="chip chip-gold">🎨 Tailwind CSS</span>
+            <span class="chip chip-gold">🔄 Axios</span>
+          </div>
+        </div>
+        <div class="tech-row-group">
+          <span class="tech-group-label">Backend</span>
+          <div class="tech-chips">
+            <span class="chip chip-green">🟢 Node.js</span>
+            <span class="chip chip-green">🚂 Express.js</span>
+            <span class="chip chip-green">🔑 JWT Auth</span>
+          </div>
+        </div>
+        <div class="tech-row-group">
+          <span class="tech-group-label">Data &amp; AI</span>
+          <div class="tech-chips">
+            <span class="chip chip-muted">🍃 MongoDB Atlas</span>
+            <span class="chip chip-muted">🤖 Skill-Match Engine</span>
+            <span class="chip chip-muted">📊 Rule-based AI</span>
+          </div>
+        </div>
+        <div class="tech-row-group">
+          <span class="tech-group-label">Deployment</span>
+          <div class="tech-chips">
+            <span class="chip chip-muted">▲ Vercel</span>
+            <span class="chip chip-muted">🚀 Render</span>
+            <span class="chip chip-muted">☁️ MongoDB Atlas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASES -->
+  <section class="section">
+    <div class="max-w">
+      <div class="section-kicker reveal">Development Journey</div>
+      <div class="section-h2 reveal" style="--delay:0.06s">How we <em>built this</em></div>
+      <div class="phases-grid">
+        <div class="card card-shine phase-card reveal" style="--delay:0s"><div class="phase-num-badge">1</div><div><h4>Requirement Analysis</h4><p>Identified pain points, defined user personas, and mapped the core feature set.</p></div></div>
+        <div class="card card-shine phase-card reveal" style="--delay:0.06s"><div class="phase-num-badge">2</div><div><h4>UI/UX Design</h4><p>Designed wireframes and high-fidelity Figma prototypes focused on clarity and elegance.</p></div></div>
+        <div class="card card-shine phase-card reveal" style="--delay:0.12s"><div class="phase-num-badge">3</div><div><h4>Frontend Development</h4><p>Built responsive React components with Tailwind CSS — dashboard, profile, and career UI.</p></div></div>
+        <div class="card card-shine phase-card reveal" style="--delay:0.18s"><div class="phase-num-badge">4</div><div><h4>Backend API</h4><p>Developed RESTful APIs with Express.js, JWT authentication, and MongoDB data modeling.</p></div></div>
+        <div class="card card-shine phase-card reveal" style="--delay:0.24s"><div class="phase-num-badge">5</div><div><h4>Integration &amp; Testing</h4><p>Connected frontend to APIs, conducted functional testing, and collected user feedback.</p></div></div>
+        <div class="card card-shine phase-card reveal" style="--delay:0.30s"><div class="phase-num-badge">6</div><div><h4>Deployment</h4><p>Deployed on Vercel + Render with MongoDB Atlas — fully live and operational.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-sm" style="text-align:center;padding-bottom:80px">
+    <div class="max-w reveal">
+      <div class="section-h2">Ready to <em>start your journey?</em></div>
+      <p class="section-p" style="margin:0 auto 32px;max-width:400px">Build your profile in minutes and get your first career recommendations instantly.</p>
+      <a href="register.html"><button class="btn-primary" style="margin:0 auto;padding:14px 32px;font-size:15px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Get started free
+      </button></a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-logo">
+      <div class="footer-logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#7A6520" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div>
+      PathwayAI
+    </div>
+    <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="index.html">Home</a><a href="#">GitHub</a></div>
+    <div class="footer-copy">© 2025 PathwayAI. All rights reserved.</div>
+  </footer>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="js/nav.js"></script>
+</body>
+</html>

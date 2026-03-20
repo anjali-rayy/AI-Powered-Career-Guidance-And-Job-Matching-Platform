@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Settings | PathwayAI</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <style>
+    /* ══ SETTINGS LAYOUT ══ */
+    .settings-layout { display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
+    @media (max-width: 860px) { .settings-layout { grid-template-columns: 1fr; } }
+
+    .settings-tabs { display: flex; flex-direction: column; gap: 4px; position: sticky; top: 24px; }
+    .settings-tab {
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 14px; border-radius: 9px;
+      color: var(--muted); font-size: 13.5px; font-weight: 400;
+      cursor: pointer; border: none; background: transparent;
+      font-family: 'Inter', sans-serif; text-align: left;
+      transition: color 0.2s, background 0.2s; width: 100%;
+    }
+    .settings-tab svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .settings-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .settings-tab.active { color: var(--gold); background: rgba(212,175,55,0.07); border: 1px solid rgba(212,175,55,0.15); font-weight: 500; }
+    .settings-tab.active svg { stroke: var(--gold); }
+    .settings-tab-divider { height: 1px; background: rgba(255,255,255,0.05); margin: 6px 0; }
+    .settings-tab-label { font-size: 10.5px; font-weight: 600; color: var(--subtle); text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 14px; }
+
+    .settings-panel { display: none; flex-direction: column; gap: 20px; min-width: 0; }
+    .settings-panel .d-card { min-width: 0; overflow: visible; }
+    .s-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-width: 0; }
+    .s-form-grid .s-input, .s-form-grid .s-select { min-width: 0; width: 100%; }
+    .settings-panel.active { display: flex; }
+
+    /* ══ FORM ══ */
+    .s-section-title { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    @media (max-width: 600px) { .s-form-grid { grid-template-columns: 1fr; } }
+    .s-form-group { display: flex; flex-direction: column; gap: 7px; }
+    .s-form-group.full { grid-column: 1 / -1; }
+    .s-label { font-size: 12.5px; font-weight: 500; color: var(--muted); }
+    .s-hint  { font-size: 11px; color: var(--subtle); margin-top: 4px; }
+
+    .s-input { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; padding: 10px 14px; color: var(--text); font-size: 13.5px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; width: 100%; }
+    .s-input:focus { border-color: rgba(212,175,55,0.4); }
+    .s-input::placeholder { color: var(--subtle); }
+    .s-input.error { border-color: rgba(207,102,121,0.5); }
+
+    .s-select { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; padding: 10px 14px; color: var(--text); font-size: 13.5px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; width: 100%; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23525252' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+    .s-select:focus { border-color: rgba(212,175,55,0.4); }
+    .s-select option { background: #111; }
+
+    /* ══ TOGGLE ══ */
+    .s-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); gap: 20px; }
+    .s-toggle-row:last-child { border-bottom: none; }
+    .s-toggle-info { flex: 1; }
+    .s-toggle-name { font-size: 13.5px; color: var(--text); font-weight: 500; margin-bottom: 3px; }
+    .s-toggle-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    .toggle-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track { position: absolute; inset: 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; cursor: pointer; transition: background 0.25s, border-color 0.25s; }
+    .toggle-track::after { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); top: 3px; left: 3px; transition: transform 0.25s, background 0.25s; }
+    .toggle-switch input:checked + .toggle-track { background: rgba(212,175,55,0.25); border-color: rgba(212,175,55,0.4); }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(18px); background: var(--gold); }
+    .toggle-switch input:disabled + .toggle-track { opacity: 0.5; cursor: not-allowed; }
+
+    /* ══ SAVE BAR ══ */
+    .s-save-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px 0 0; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; gap: 12px; }
+    .s-save-hint { font-size: 12px; color: var(--subtle); }
+
+    /* ══ PASSWORD ══ */
+    .s-pwd-wrap { position: relative; }
+    .s-pwd-wrap .s-input { padding-right: 42px; }
+    .s-pwd-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--subtle); cursor: pointer; display: grid; place-items: center; transition: color 0.2s; }
+    .s-pwd-toggle:hover { color: var(--muted); }
+    .s-pwd-toggle svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+
+    /* ══ CONNECTED ACCOUNTS ══ */
+    .s-account-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; }
+    .s-account-row:last-child { border-bottom: none; }
+    .s-account-icon { width: 36px; height: 36px; border-radius: 9px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); display: grid; place-items: center; flex-shrink: 0; }
+    .s-account-icon svg { width: 16px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+    .s-account-info { flex: 1; }
+    .s-account-name { font-size: 13.5px; font-weight: 500; color: var(--text); }
+    .s-account-status { font-size: 12px; color: var(--muted); margin-top: 2px; transition: color 0.2s; }
+    .s-account-status.connected { color: #4CAF70; }
+    .s-connect-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 7px; cursor: pointer; font-family: 'Inter', sans-serif; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+    .s-connect-btn:hover { border-color: rgba(212,175,55,0.3); color: var(--gold); }
+    .s-connect-btn.connected { background: rgba(107,44,44,0.1); border-color: rgba(107,44,44,0.2); color: #CF6679; }
+    .s-connect-btn.connected:hover { background: rgba(107,44,44,0.2); }
+
+    /* URL input for portfolio */
+    .s-url-input-wrap { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+    .s-url-input-wrap .s-input { flex: 1; }
+
+    /* ══ PLAN CARD ══ */
+    .s-plan-card { background: linear-gradient(135deg, rgba(212,175,55,0.06) 0%, rgba(212,175,55,0.02) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 14px; padding: 24px; position: relative; overflow: hidden; }
+    .s-plan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent); }
+    .s-plan-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(212,175,55,0.3); background: rgba(212,175,55,0.08); font-size: 11px; font-weight: 600; color: #C9A227; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+    .s-plan-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .s-plan-title em { color: var(--gold); font-style: italic; }
+    .s-plan-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 18px; }
+    .s-plan-features { display: flex; flex-direction: column; gap: 9px; margin-bottom: 20px; }
+    .s-plan-feat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); }
+    .s-plan-feat::before { content: '✓'; color: var(--gold); font-weight: 700; font-size: 12px; }
+
+    /* ══ DANGER ZONE ══ */
+    .danger-zone { background: rgba(107,44,44,0.06); border: 1px solid rgba(107,44,44,0.2); border-radius: 12px; padding: 18px 20px; }
+    .danger-zone-title { font-size: 13px; font-weight: 600; color: #CF6679; margin-bottom: 6px; }
+    .danger-zone-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
+    .danger-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-danger { background: rgba(107,44,44,0.15); border: 1px solid rgba(107,44,44,0.3); color: #CF6679; font-size: 12.5px; font-weight: 500; padding: 8px 16px; border-radius: 7px; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; }
+    .btn-danger:hover { background: rgba(107,44,44,0.28); }
+
+    /* ══ SESSIONS ══ */
+    .s-session-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.04); transition: opacity 0.3s; }
+    .s-session-row:last-child { border-bottom: none; }
+    .s-session-row.revoked { opacity: 0.35; pointer-events: none; }
+    .s-session-icon { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); display: grid; place-items: center; flex-shrink: 0; }
+    .s-session-icon svg { width: 15px; height: 15px; stroke: var(--muted); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+    .s-session-device { font-size: 13px; font-weight: 500; color: var(--text); }
+    .s-session-meta { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .s-session-this { font-size: 11px; background: rgba(76,175,112,0.1); border: 1px solid rgba(76,175,112,0.2); color: #4CAF70; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+
+    /* ══ THEME ══ */
+    .s-theme-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 4px; }
+    .s-theme-opt { border-radius: 10px; border: 2px solid rgba(255,255,255,0.08); padding: 12px; cursor: pointer; transition: border-color 0.25s, background 0.25s; text-align: center; }
+    .s-theme-opt.selected { border-color: var(--gold); background: rgba(212,175,55,0.06); }
+    .s-theme-swatch { width: 100%; height: 36px; border-radius: 6px; margin-bottom: 8px; }
+    .s-theme-name { font-size: 12px; color: var(--muted); transition: color 0.25s; }
+    .s-theme-opt.selected .s-theme-name { color: var(--gold); }
+
+    /* ══ NOTIFICATIONS ══ */
+    .s-notif-section { margin-bottom: 20px; }
+    .s-notif-section-title { font-size: 11px; font-weight: 600; color: var(--subtle); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+
+    /* ══ PRIVACY RADIO ══ */
+    .s-radio-group { display: flex; flex-direction: column; gap: 10px; }
+    .s-radio-opt { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.07); cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .s-radio-opt:hover { border-color: rgba(212,175,55,0.2); background: rgba(212,175,55,0.03); }
+    .s-radio-opt.selected { border-color: rgba(212,175,55,0.35); background: rgba(212,175,55,0.06); }
+    .s-radio-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0; margin-top: 1px; display: grid; place-items: center; transition: border-color 0.2s, background 0.2s; }
+    .s-radio-opt.selected .s-radio-dot { border-color: var(--gold); background: rgba(212,175,55,0.15); }
+    .s-radio-opt.selected .s-radio-dot::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+    .s-radio-label { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .s-radio-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ══ COMPACT SIDEBAR ══ */
+    body.compact-sidebar .sidebar { width: 64px; }
+    body.compact-sidebar .sidebar .sidebar-logo span,
+    body.compact-sidebar .sidebar .sidebar-logo { justify-content: center; }
+    body.compact-sidebar .sidebar-logo > *:not(.logo-mark) { display: none; }
+    body.compact-sidebar .user-name,
+    body.compact-sidebar .user-role,
+    body.compact-sidebar .user-badge,
+    body.compact-sidebar .nav-section-label,
+    body.compact-sidebar .nav-badge,
+    body.compact-sidebar .settings-tab-label,
+    body.compact-sidebar .sidebar-user > div { display: none; }
+    body.compact-sidebar .nav-item { justify-content: center; padding: 10px; }
+    body.compact-sidebar .nav-item svg { width: 18px; height: 18px; }
+    body.compact-sidebar .sidebar-user { justify-content: center; padding: 12px 8px; }
+    body.compact-sidebar .dash-main { margin-left: 0; }
+
+    /* ══ MIDNIGHT THEME ══ */
+    body.theme-midnight { --bg: #060B18; --bg2: #080E1F; --card: #0D1526; --card2: #111B30; }
+    body.theme-midnight .sidebar { background: #080E1F; }
+    body.theme-midnight .dash-topbar { background: rgba(6,11,24,0.93); }
+
+    /* ══ REDUCE ANIMATIONS ══ */
+    body.no-animations *, body.no-animations *::before, body.no-animations *::after { transition: none !important; animation: none !important; }
+
+    /* ══ 2FA MODAL ══ */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 5000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box { background: #111; border: 1px solid rgba(212,175,55,0.2); border-radius: 16px; padding: 28px; width: 380px; max-width: 90vw; position: relative; }
+    .modal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent); border-radius: 16px 16px 0 0; }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .modal-desc  { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 20px; line-height: 1; }
+    .modal-close:hover { color: var(--text); }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+    .qr-placeholder { width: 120px; height: 120px; background: white; border-radius: 8px; margin: 0 auto 16px; display: grid; place-items: center; font-size: 11px; color: #333; text-align: center; padding: 8px; }
+
+    /* ══ EXPORT MODAL ══ */
+    .export-progress { margin-top: 16px; }
+    .export-bar-bg { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+    .export-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+
+    /* ══ CONFIRM MODAL ══ */
+    .confirm-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 6000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .confirm-modal.open { display: flex; }
+    .confirm-box { background: #111; border: 1px solid rgba(107,44,44,0.3); border-radius: 14px; padding: 24px; width: 360px; max-width: 90vw; }
+    .confirm-title { font-size: 16px; font-weight: 600; color: #CF6679; margin-bottom: 8px; }
+    .confirm-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .confirm-input { margin-bottom: 16px; }
+    .confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+    /* ══ NOTIFICATION BADGE (live) ══ */
+    .notif-count { font-size: 10px; background: var(--gold); color: #0A0A0A; border-radius: 4px; padding: 1px 5px; font-weight: 700; margin-left: auto; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ 2FA MODAL ═══ -->
+<div class="modal-overlay" id="modal-2fa">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-2fa')">×</button>
+    <div class="modal-title">Set Up Authenticator</div>
+    <div class="modal-desc">Scan this QR code with Google Authenticator or Authy, then enter the 6-digit code to verify.</div>
+    <div class="qr-placeholder">
+      <div>
+        <div style="font-size:32px">▦</div>
+        <div style="margin-top:4px;color:#666">Scan with<br>Authenticator app</div>
+      </div>
+    </div>
+    <div class="s-form-group">
+      <label class="s-label">Enter 6-digit code</label>
+      <input class="s-input" id="totp-code" type="text" maxlength="6" placeholder="000000" style="text-align:center;letter-spacing:0.3em;font-size:18px" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" style="padding:9px 18px;font-size:13px" onclick="closeModal('modal-2fa')">Cancel</button>
+      <button class="btn-primary" style="padding:9px 18px;font-size:13px" onclick="verify2FA()">Verify & Enable</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SMS MODAL ═══ -->
+<div class="modal-overlay" id="modal-sms">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-sms')">×</button>
+    <div class="modal-title">SMS Verification Setup</div>
+    <div class="modal-desc">We'll send a one-time code to your registered phone number to verify SMS 2FA.</div>
+    <div class="s-form-group">
+      <label class="s-label">Phone Number</label>
+      <input class="s-input" id="sms-phone" type="tel" placeholder="+91 XXXXX XXXXX" />
+    </div>
+    <div id="sms-code-wrap" style="display:none;margin-top:12px" class="s-form-group">
+      <label class="s-label">Enter SMS Code</label>
+      <input class="s-input" id="sms-code" type="text" maxlength="6" placeholder="000000" style="text-align:center;letter-spacing:0.3em;font-size:18px" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" style="padding:9px 18px;font-size:13px" onclick="closeModal('modal-sms')">Cancel</button>
+      <button class="btn-primary" style="padding:9px 18px;font-size:13px" id="sms-btn" onclick="sendSMSCode()">Send Code</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EXPORT MODAL ═══ -->
+<div class="modal-overlay" id="modal-export">
+  <div class="modal-box" style="text-align:center">
+    <div class="modal-title" style="margin-bottom:8px">Exporting Your Data</div>
+    <div class="modal-desc">Preparing a full export of your profile, skills, career history, and activity logs.</div>
+    <div class="export-progress">
+      <div style="font-size:12px;color:var(--muted)" id="export-status">Collecting profile data...</div>
+      <div class="export-bar-bg"><div class="export-bar-fill" id="export-bar"></div></div>
+    </div>
+    <div id="export-done" style="display:none;margin-top:16px">
+      <div style="font-size:28px;margin-bottom:8px">✅</div>
+      <div style="font-size:13px;color:#4CAF70;font-weight:500">Export ready!</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">A download link has been sent to your email.</div>
+      <button class="btn-primary" style="margin-top:16px;padding:9px 20px;font-size:13px" onclick="closeModal('modal-export')">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONFIRM DELETE MODAL ═══ -->
+<div class="confirm-modal" id="modal-delete">
+  <div class="confirm-box">
+    <div class="confirm-title">⚠ Delete Account</div>
+    <div class="confirm-desc">This will permanently delete your account, profile, career history, and all data. This cannot be undone.</div>
+    <div class="confirm-input">
+      <label class="s-label" style="margin-bottom:6px;display:block">Type <strong style="color:#CF6679">DELETE</strong> to confirm</label>
+      <input class="s-input" id="delete-confirm-input" type="text" placeholder="DELETE" />
+    </div>
+    <div class="confirm-actions">
+      <button class="btn-outline" style="padding:9px 16px;font-size:13px" onclick="closeConfirmDelete()">Cancel</button>
+      <button class="btn-danger" style="padding:9px 16px" onclick="confirmDelete()">Delete Forever</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONFIRM DEACTIVATE MODAL ═══ -->
+<div class="confirm-modal" id="modal-deactivate">
+  <div class="confirm-box">
+    <div class="confirm-title">Deactivate Account</div>
+    <div class="confirm-desc">Your account will be paused. You can reactivate anytime by logging back in. Your data will be preserved for 90 days.</div>
+    <div class="confirm-actions">
+      <button class="btn-outline" style="padding:9px 16px;font-size:13px" onclick="document.getElementById('modal-deactivate').classList.remove('open')">Cancel</button>
+      <button class="btn-danger" style="padding:9px 16px" onclick="deactivateAccount()">Deactivate</button>
+    </div>
+  </div>
+</div>
+
+<div class="dash-root" id="dash-root">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="main-sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span>PathwayAI</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av" id="sidebar-av">SA</div>
+      <div>
+        <div class="user-name" id="sidebar-name">User</div>
+        <div class="user-role" id="sidebar-role">PathwayAI Member</div>
+      </div>
+      <div class="user-badge">Free</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="profile.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Profile
+      </a>
+      <a href="#" class="nav-item" onclick="showToast('Career Matches coming soon!')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        Career Matches <span class="nav-badge">4</span>
+      </a>
+      <div class="nav-section-label">Opportunities</div>
+      <a href="#" class="nav-item" onclick="showToast('Job Matches coming soon!')">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Job Matches <span class="nav-badge">12</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showToast('Colleges coming soon!')">
+        <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        Colleges
+      </a>
+      <a href="#" class="nav-item" onclick="showToast('Resume builder coming soon!')">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        My Resume
+      </a>
+      <div class="nav-section-label">Growth</div>
+      <a href="#" class="nav-item" onclick="showToast('Skill Analysis coming soon!')">
+        <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        Skill Analysis
+      </a>
+      <a href="#" class="nav-item" onclick="showToast('Learning Path coming soon!')">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Learning Path
+      </a>
+      <a href="#" class="nav-item" onclick="showToast('Achievements coming soon!')">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Achievements
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="settings.html" class="nav-item active">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Settings
+      </a>
+      <a href="index.html" class="nav-item" onclick="doSignOut(event)">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </a>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN ════ -->
+  <div class="dash-main">
+    <header class="dash-topbar">
+      <div class="topbar-left"><h1>My <em>Settings</em></h1></div>
+      <div class="topbar-right">
+        <div class="topbar-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search careers, jobs, skills..." />
+        </div>
+        <button class="icon-btn" onclick="showToast('No new notifications')">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <div style="position:relative">
+          <div class="topbar-av" id="topbar-av" onclick="toggleAvatarMenu()" style="cursor:pointer">SA</div>
+          <div id="avatar-menu" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#111111;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:8px;min-width:220px;box-shadow:0 20px 60px rgba(0,0,0,0.7);z-index:999;">
+            <div style="padding:10px 12px 14px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:6px">
+              <div style="font-size:14px;font-weight:600;color:#F5F5F5" id="menu-name">User</div>
+              <div style="font-size:12px;color:#A1A1AA;margin-top:2px" id="menu-email">—</div>
+            </div>
+            <a href="profile.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:#F5F5F5;text-decoration:none;font-size:13px;" onmouseover="this.style.background='rgba(212,175,55,0.06)'" onmouseout="this.style.background='none'">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile
+            </a>
+            <a href="settings.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:#D4AF37;text-decoration:none;font-size:13px;background:rgba(212,175,55,0.06);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Settings
+            </a>
+            <a href="#" onclick="showToast('Pro upgrade coming soon!')" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:#F5F5F5;text-decoration:none;font-size:13px;" onmouseover="this.style.background='rgba(212,175,55,0.06)'" onmouseout="this.style.background='none'">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A1A1AA" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Upgrade to Pro
+            </a>
+            <div style="height:1px;background:rgba(255,255,255,0.06);margin:6px 0"></div>
+            <a href="#" onclick="doSignOut(event)" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:#CF6679;text-decoration:none;font-size:13px;" onmouseover="this.style.background='rgba(107,44,44,0.15)'" onmouseout="this.style.background='none'">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#CF6679" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Log out
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="dash-body">
+      <div class="settings-layout">
+
+        <!-- ── TAB NAV ── -->
+        <div class="settings-tabs">
+          <div class="settings-tab-label">Account</div>
+          <button class="settings-tab active" onclick="switchTab('account',this)">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Account Info
+          </button>
+          <button class="settings-tab" onclick="switchTab('security',this)">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Password & Security
+          </button>
+          <button class="settings-tab" onclick="switchTab('connected',this)">
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Connected Accounts
+          </button>
+          <div class="settings-tab-divider"></div>
+          <div class="settings-tab-label">Preferences</div>
+          <button class="settings-tab" onclick="switchTab('notifications',this)">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Notifications
+          </button>
+          <button class="settings-tab" onclick="switchTab('privacy',this)">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Privacy
+          </button>
+          <button class="settings-tab" onclick="switchTab('appearance',this)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>Appearance
+          </button>
+          <div class="settings-tab-divider"></div>
+          <div class="settings-tab-label">Billing</div>
+          <button class="settings-tab" onclick="switchTab('plan',this)">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Plan & Billing
+          </button>
+          <button class="settings-tab" onclick="switchTab('sessions',this)">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Active Sessions
+          </button>
+        </div>
+
+        <!-- ── PANELS ── -->
+        <div>
+
+          <!-- ═ ACCOUNT INFO ═ -->
+          <div class="settings-panel active" id="panel-account">
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Account Information</div><div class="d-card-sub">Update your basic account details</div></div>
+              </div>
+              <div class="d-card-body">
+                <!-- Profile Avatar Row -->
+                <div style="display:flex;align-items:center;gap:18px;padding:4px 0 22px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:20px">
+                  <div id="settings-av" style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(212,175,55,0.08));border:2px solid rgba(212,175,55,0.3);display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--gold);flex-shrink:0">SA</div>
+                  <div style="flex:1">
+                    <div id="settings-av-name" style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px">User</div>
+                    <div id="settings-av-email" style="font-size:12.5px;color:var(--muted);margin-bottom:10px">—</div>
+                    <button onclick="showToast('Photo upload coming soon!')" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--muted);font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif;transition:all 0.2s" onmouseover="this.style.borderColor='rgba(212,175,55,0.3)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='var(--muted)'">
+                      📷 Change Photo
+                    </button>
+                  </div>
+                </div>
+                <div class="s-section-title">Basic Details</div>
+                <div class="s-form-grid">
+                  <div class="s-form-group">
+                    <label class="s-label">First Name</label>
+                    <input class="s-input" id="acc-fname" type="text" placeholder="Your first name" />
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">Last Name</label>
+                    <input class="s-input" id="acc-lname" type="text" placeholder="Your last name" />
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">Email Address</label>
+                    <input class="s-input" id="acc-email" type="email" placeholder="you@example.com" />
+                    <span class="s-hint">Used for login and important notifications</span>
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">Phone Number</label>
+                    <input class="s-input" id="acc-phone" type="tel" placeholder="+91 XXXXX XXXXX" />
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">Language</label>
+                    <select class="s-select" id="acc-lang">
+                      <option>English</option><option>Hindi</option><option>Bengali</option>
+                      <option>Telugu</option><option>Marathi</option><option>Tamil</option>
+                    </select>
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">Time Zone</label>
+                    <select class="s-select" id="acc-tz">
+                      <option>Asia/Kolkata (IST +5:30)</option>
+                      <option>Asia/Dubai (GST +4:00)</option>
+                      <option>Europe/London (GMT +0:00)</option>
+                      <option>America/New_York (EST -5:00)</option>
+                    </select>
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">Country</label>
+                    <select class="s-select" id="acc-country">
+                      <option>India</option><option>United States</option>
+                      <option>United Kingdom</option><option>Canada</option><option>Australia</option>
+                    </select>
+                  </div>
+                  <div class="s-form-group full">
+                    <label class="s-label">Currency</label>
+                    <select class="s-select" id="acc-currency">
+                      <option>INR — Indian Rupee (₹)</option>
+                      <option>USD — US Dollar ($)</option><option>GBP — Pound (£)</option><option>EUR — Euro (€)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="s-save-bar">
+                  <span class="s-save-hint" id="acc-saved-hint">Changes are saved to your browser</span>
+                  <button class="btn-primary" style="padding:9px 20px;font-size:13px" onclick="saveAccount()">Save Changes →</button>
+                </div>
+              </div>
+            </div>
+            <div class="danger-zone">
+              <div class="danger-zone-title">⚠ Danger Zone</div>
+              <div class="danger-zone-sub">These actions are permanent and cannot be undone. Please be absolutely sure before proceeding.</div>
+              <div class="danger-actions">
+                <button class="btn-danger" onclick="startExport()">Export My Data</button>
+                <button class="btn-danger" onclick="document.getElementById('modal-deactivate').classList.add('open')">Deactivate Account</button>
+                <button class="btn-danger" onclick="document.getElementById('modal-delete').classList.add('open')">Delete Account</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═ PASSWORD & SECURITY ═ -->
+          <div class="settings-panel" id="panel-security">
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Change Password</div><div class="d-card-sub">Keep your account secure with a strong password</div></div>
+              </div>
+              <div class="d-card-body">
+                <div class="s-section-title">Password</div>
+                <div style="display:flex;flex-direction:column;gap:16px">
+                  <div class="s-form-group">
+                    <label class="s-label">Current Password</label>
+                    <div class="s-pwd-wrap">
+                      <input class="s-input" id="pwd-current" type="password" placeholder="Enter current password" />
+                      <button class="s-pwd-toggle" onclick="togglePwdField('pwd-current',this)">
+                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">New Password</label>
+                    <div class="s-pwd-wrap">
+                      <input class="s-input" id="pwd-new" type="password" placeholder="At least 8 characters" oninput="checkPwdStrength(this.value)" />
+                      <button class="s-pwd-toggle" onclick="togglePwdField('pwd-new',this)">
+                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
+                    <div style="margin-top:8px">
+                      <div style="display:flex;gap:4px;margin-bottom:5px">
+                        <div id="str1" style="height:3px;flex:1;border-radius:2px;background:rgba(255,255,255,0.08);transition:background 0.3s"></div>
+                        <div id="str2" style="height:3px;flex:1;border-radius:2px;background:rgba(255,255,255,0.08);transition:background 0.3s"></div>
+                        <div id="str3" style="height:3px;flex:1;border-radius:2px;background:rgba(255,255,255,0.08);transition:background 0.3s"></div>
+                        <div id="str4" style="height:3px;flex:1;border-radius:2px;background:rgba(255,255,255,0.08);transition:background 0.3s"></div>
+                      </div>
+                      <span id="str-label" style="font-size:11.5px;color:var(--subtle)">Enter a password to check strength</span>
+                    </div>
+                  </div>
+                  <div class="s-form-group">
+                    <label class="s-label">Confirm New Password</label>
+                    <div class="s-pwd-wrap">
+                      <input class="s-input" id="pwd-confirm" type="password" placeholder="Repeat new password" oninput="checkConfirm()" />
+                      <button class="s-pwd-toggle" onclick="togglePwdField('pwd-confirm',this)">
+                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
+                    <span id="confirm-match" style="font-size:11.5px;margin-top:4px;display:none"></span>
+                  </div>
+                </div>
+                <div class="s-save-bar">
+                  <span class="s-save-hint">Use 8+ characters with numbers &amp; symbols</span>
+                  <button class="btn-primary" style="padding:9px 20px;font-size:13px" onclick="changePassword()">Update Password →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Two-Factor Authentication</div><div class="d-card-sub">Add an extra layer of security to your account</div></div>
+              </div>
+              <div class="d-card-body">
+                <div class="s-toggle-row">
+                  <div class="s-toggle-info">
+                    <div class="s-toggle-name">Authenticator App (TOTP)</div>
+                    <div class="s-toggle-desc">Use Google Authenticator or Authy to generate one-time codes</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-totp" onchange="handle2FAToggle('totp', this)"/>
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+                <div class="s-toggle-row">
+                  <div class="s-toggle-info">
+                    <div class="s-toggle-name">SMS Verification</div>
+                    <div class="s-toggle-desc">Receive a one-time code on your registered phone number</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-sms" onchange="handle2FAToggle('sms', this)"/>
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+                <div class="s-toggle-row">
+                  <div class="s-toggle-info">
+                    <div class="s-toggle-name">Login Alerts via Email</div>
+                    <div class="s-toggle-desc">Get notified when a new device logs into your account</div>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-login-alert" onchange="saveToggle('login-alert', this.checked); showToast(this.checked ? '✓ Login alerts enabled!' : 'Login alerts disabled')"/>
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═ CONNECTED ACCOUNTS ═ -->
+          <div class="settings-panel" id="panel-connected">
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Connected Accounts</div><div class="d-card-sub">Link external accounts to enrich your profile</div></div>
+              </div>
+              <div class="d-card-body">
+
+                <!-- LinkedIn -->
+                <div class="s-account-row" id="row-linkedin">
+                  <div class="s-account-icon"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+                  <div class="s-account-info">
+                    <div class="s-account-name">LinkedIn</div>
+                    <div class="s-account-status" id="status-linkedin">Not connected</div>
+                  </div>
+                  <button class="s-connect-btn" id="btn-linkedin" onclick="toggleConnect('linkedin', 'linkedin.com/in/user')">Connect</button>
+                </div>
+
+                <!-- GitHub -->
+                <div class="s-account-row" id="row-github">
+                  <div class="s-account-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+                  <div class="s-account-info">
+                    <div class="s-account-name">GitHub</div>
+                    <div class="s-account-status" id="status-github">Not connected</div>
+                  </div>
+                  <button class="s-connect-btn" id="btn-github" onclick="toggleConnect('github', 'github.com/user')">Connect</button>
+                </div>
+
+                <!-- Portfolio -->
+                <div class="s-account-row" id="row-portfolio">
+                  <div class="s-account-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                  <div class="s-account-info">
+                    <div class="s-account-name">Portfolio Website</div>
+                    <div class="s-account-status" id="status-portfolio">Not connected</div>
+                  </div>
+                  <button class="s-connect-btn" id="btn-portfolio" onclick="togglePortfolio()">Connect</button>
+                </div>
+                <div id="portfolio-url-wrap" style="display:none;padding:0 0 14px 50px">
+                  <div class="s-url-input-wrap">
+                    <input class="s-input" id="portfolio-url" type="url" placeholder="https://yourportfolio.com" style="font-size:13px" />
+                    <button class="btn-primary" style="padding:9px 16px;font-size:13px;white-space:nowrap" onclick="savePortfolio()">Save URL</button>
+                  </div>
+                </div>
+
+                <!-- Google -->
+                <div class="s-account-row" id="row-google">
+                  <div class="s-account-icon"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.5C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></div>
+                  <div class="s-account-info">
+                    <div class="s-account-name">Google Account</div>
+                    <div class="s-account-status" id="status-google">Not connected</div>
+                  </div>
+                  <button class="s-connect-btn" id="btn-google" onclick="toggleConnect('google', 'google.com/account')">Connect</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ═ NOTIFICATIONS ═ -->
+          <div class="settings-panel" id="panel-notifications">
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Notification Preferences</div><div class="d-card-sub">Choose what updates you want to receive</div></div>
+              </div>
+              <div class="d-card-body">
+                <div class="s-notif-section">
+                  <div class="s-notif-section-title">Career &amp; Jobs</div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">New Job Matches</div><div class="s-toggle-desc">Get notified when new jobs match your skills and preferences</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="n-job-matches" onchange="saveNotif('job-matches',this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Career Path Updates</div><div class="s-toggle-desc">Alerts when new career paths match your profile</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="n-career-updates" onchange="saveNotif('career-updates',this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Application Reminders</div><div class="s-toggle-desc">Remind you to apply for saved jobs before they expire</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="n-app-reminders" onchange="saveNotif('app-reminders',this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                </div>
+                <div class="s-notif-section">
+                  <div class="s-notif-section-title">Learning &amp; Growth</div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Skill Gap Alerts</div><div class="s-toggle-desc">Notify when we detect new skills you should learn for your goals</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="n-skill-alerts" onchange="saveNotif('skill-alerts',this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Course Recommendations</div><div class="s-toggle-desc">Weekly curated learning suggestions based on your career path</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="n-courses" onchange="saveNotif('courses',this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                </div>
+                <div class="s-notif-section">
+                  <div class="s-notif-section-title">Account &amp; System</div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Profile Completion Tips</div><div class="s-toggle-desc">Suggestions to make your profile more complete and attractive</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="n-profile-tips" onchange="saveNotif('profile-tips',this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">PathwayAI Newsletter</div><div class="s-toggle-desc">Monthly tips, industry insights and platform updates</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="n-newsletter" onchange="saveNotif('newsletter',this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Security Alerts</div><div class="s-toggle-desc">Important alerts about your account security (always on)</div></div>
+                    <label class="toggle-switch"><input type="checkbox" checked disabled/><span class="toggle-track"></span></label>
+                  </div>
+                </div>
+                <div class="s-save-bar">
+                  <span class="s-save-hint">Preferences saved automatically per toggle</span>
+                  <button class="btn-primary" style="padding:9px 20px;font-size:13px" onclick="saveAllNotifs()">Save All Preferences →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═ PRIVACY ═ -->
+          <div class="settings-panel" id="panel-privacy">
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Profile Visibility</div><div class="d-card-sub">Control who can see your PathwayAI profile</div></div>
+              </div>
+              <div class="d-card-body">
+                <div class="s-radio-group">
+                  <div class="s-radio-opt" id="vis-public" onclick="selectVisibility('public')">
+                    <div class="s-radio-dot"></div>
+                    <div><div class="s-radio-label">Public</div><div class="s-radio-desc">Anyone can view your profile. Best for job seekers wanting maximum visibility.</div></div>
+                  </div>
+                  <div class="s-radio-opt" id="vis-recruiters" onclick="selectVisibility('recruiters')">
+                    <div class="s-radio-dot"></div>
+                    <div><div class="s-radio-label">Recruiters Only</div><div class="s-radio-desc">Only verified employers and recruiters on PathwayAI can view your profile.</div></div>
+                  </div>
+                  <div class="s-radio-opt" id="vis-private" onclick="selectVisibility('private')">
+                    <div class="s-radio-dot"></div>
+                    <div><div class="s-radio-label">Private</div><div class="s-radio-desc">Your profile is hidden. Only you can see it. Career matches still work.</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Data &amp; Personalization</div><div class="d-card-sub">Manage how PathwayAI uses your data</div></div>
+              </div>
+              <div class="d-card-body">
+                <div class="s-toggle-row">
+                  <div class="s-toggle-info"><div class="s-toggle-name">Personalized Career Recommendations</div><div class="s-toggle-desc">Allow PathwayAI to use your profile data to improve career matches</div></div>
+                  <label class="toggle-switch"><input type="checkbox" id="p-personalized" onchange="savePrivacy('personalized',this.checked)"/><span class="toggle-track"></span></label>
+                </div>
+                <div class="s-toggle-row">
+                  <div class="s-toggle-info"><div class="s-toggle-name">Show Profile to Employers</div><div class="s-toggle-desc">Let verified employers discover your profile in search results</div></div>
+                  <label class="toggle-switch"><input type="checkbox" id="p-show-employers" onchange="savePrivacy('show-employers',this.checked)"/><span class="toggle-track"></span></label>
+                </div>
+                <div class="s-toggle-row">
+                  <div class="s-toggle-info"><div class="s-toggle-name">Analytics &amp; Usage Data</div><div class="s-toggle-desc">Share anonymous usage data to help us improve PathwayAI</div></div>
+                  <label class="toggle-switch"><input type="checkbox" id="p-analytics" onchange="savePrivacy('analytics',this.checked)"/><span class="toggle-track"></span></label>
+                </div>
+                <div class="s-toggle-row">
+                  <div class="s-toggle-info"><div class="s-toggle-name">Appear in "Open to Work" Search</div><div class="s-toggle-desc">Signal to recruiters that you're actively looking for opportunities</div></div>
+                  <label class="toggle-switch"><input type="checkbox" id="p-open-to-work" onchange="savePrivacy('open-to-work',this.checked)"/><span class="toggle-track"></span></label>
+                </div>
+                <div class="s-save-bar">
+                  <span class="s-save-hint">Your data is never sold to third parties</span>
+                  <button class="btn-primary" style="padding:9px 20px;font-size:13px" onclick="showToast('✓ Privacy settings saved!')">Save Settings →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═ APPEARANCE ═ -->
+          <div class="settings-panel" id="panel-appearance">
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Appearance</div><div class="d-card-sub">Customize how PathwayAI looks for you</div></div>
+              </div>
+              <div class="d-card-body">
+                <div class="s-section-title">Theme</div>
+                <div class="s-theme-grid">
+                  <div class="s-theme-opt" id="theme-dark" onclick="applyTheme('dark', this)">
+                    <div class="s-theme-swatch" style="background:linear-gradient(135deg,#0A0A0A,#1a1a1a);border:1px solid rgba(212,175,55,0.2)"></div>
+                    <div class="s-theme-name">Dark Gold</div>
+                  </div>
+                  <div class="s-theme-opt" id="theme-midnight" onclick="applyTheme('midnight', this)">
+                    <div class="s-theme-swatch" style="background:linear-gradient(135deg,#060B18,#0F1B2D);border:1px solid rgba(255,255,255,0.06)"></div>
+                    <div class="s-theme-name">Midnight</div>
+                  </div>
+                </div>
+
+                <div style="margin-top:24px">
+                  <div class="s-section-title">Interface</div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Compact Sidebar</div><div class="s-toggle-desc">Collapse sidebar to icons only for more screen space</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="toggle-compact" onchange="applyCompact(this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Reduce Animations</div><div class="s-toggle-desc">Turn off motion effects for a more focused experience</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="toggle-animations" onchange="applyAnimations(this.checked)"/><span class="toggle-track"></span></label>
+                  </div>
+                  <div class="s-toggle-row">
+                    <div class="s-toggle-info"><div class="s-toggle-name">Show Career Score on Dashboard</div><div class="s-toggle-desc">Display your readiness score prominently on the dashboard</div></div>
+                    <label class="toggle-switch"><input type="checkbox" id="toggle-career-score" onchange="saveToggle('career-score', this.checked); showToast(this.checked ? '✓ Career score will show on dashboard' : 'Career score hidden from dashboard')"/><span class="toggle-track"></span></label>
+                  </div>
+                </div>
+                <div class="s-save-bar">
+                  <span class="s-save-hint">All appearance changes apply instantly</span>
+                  <button class="btn-primary" style="padding:9px 20px;font-size:13px" onclick="saveAppearance()">Save Preferences →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═ PLAN & BILLING ═ -->
+          <div class="settings-panel" id="panel-plan">
+            <div class="s-plan-card">
+              <div class="s-plan-badge">★ Current Plan — Free</div>
+              <div class="s-plan-title">Upgrade to <em>Pro</em></div>
+              <div class="s-plan-desc">Unlock unlimited career matches, AI resume builder, priority job listings, and advanced skill gap analysis.</div>
+              <div class="s-plan-features">
+                <div class="s-plan-feat">Unlimited career &amp; job matches</div>
+                <div class="s-plan-feat">AI-powered resume builder</div>
+                <div class="s-plan-feat">Priority access to top job listings</div>
+                <div class="s-plan-feat">Advanced skill gap analysis</div>
+                <div class="s-plan-feat">College application tracker</div>
+                <div class="s-plan-feat">Direct recruiter messaging</div>
+              </div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap">
+                <button class="btn-primary" onclick="handleUpgrade('monthly')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  Monthly — ₹299/mo
+                </button>
+                <button class="btn-outline" style="padding:13px 20px;font-size:13px" onclick="handleUpgrade('yearly')">Yearly — ₹2,499/yr <span style="font-size:11px;color:var(--gold);margin-left:4px">Save 30%</span></button>
+              </div>
+            </div>
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Billing History</div><div class="d-card-sub">Your past invoices and payments</div></div>
+              </div>
+              <div class="d-card-body">
+                <div style="text-align:center;padding:30px 0">
+                  <div style="font-size:28px;margin-bottom:10px">🧾</div>
+                  <div style="font-size:14px;color:var(--muted)">No billing history yet</div>
+                  <div style="font-size:12px;color:var(--subtle);margin-top:4px">Invoices will appear here after your first payment</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═ ACTIVE SESSIONS ═ -->
+          <div class="settings-panel" id="panel-sessions">
+            <div class="d-card">
+              <div class="d-card-head">
+                <div><div class="d-card-title">Active Sessions</div><div class="d-card-sub">Devices currently logged into your account</div></div>
+              </div>
+              <div class="d-card-body" id="sessions-list">
+                <div class="s-session-row" id="session-current">
+                  <div class="s-session-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+                  <div style="flex:1">
+                    <div class="s-session-device" id="session-device-name">Windows PC · Chrome</div>
+                    <div class="s-session-meta" id="session-device-meta">Active now</div>
+                  </div>
+                  <span class="s-session-this">This device</span>
+                </div>
+                <div class="s-session-row" id="session-android">
+                  <div class="s-session-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                  <div style="flex:1">
+                    <div class="s-session-device">Android · Chrome Mobile</div>
+                    <div class="s-session-meta">Patna, Bihar, IN · 2 hours ago</div>
+                  </div>
+                  <button class="s-connect-btn connected" onclick="revokeSession('session-android')">Revoke</button>
+                </div>
+                <div class="s-session-row" id="session-iphone">
+                  <div class="s-session-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                  <div style="flex:1">
+                    <div class="s-session-device">iPhone · Safari Mobile</div>
+                    <div class="s-session-meta">Delhi, IN · Yesterday, 11:40 PM</div>
+                  </div>
+                  <button class="s-connect-btn connected" onclick="revokeSession('session-iphone')">Revoke</button>
+                </div>
+                <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;flex-wrap:wrap">
+                  <button class="btn-danger" onclick="revokeAllSessions()">Sign Out All Other Sessions</button>
+                  <button class="btn-outline" style="padding:8px 16px;font-size:12.5px" onclick="refreshSessions()">↻ Refresh</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end panels -->
+      </div><!-- end settings-layout -->
+    </div><!-- end dash-body -->
+  </div><!-- end dash-main -->
+</div><!-- end dash-root -->
+
+<div id="toast" class="toast"></div>
+<script src="js/settings-apply.js"></script>
+<script src="js/nav.js"></script>
+<script>
+/* ════════════════════════════════════════
+   PATHWAYAI SETTINGS — FULLY FUNCTIONAL
+════════════════════════════════════════ */
+
+// ── STORAGE HELPERS ──
+const S = {
+  get: (k, def) => { try { const v = localStorage.getItem('settings_' + k); return v === null ? def : JSON.parse(v); } catch(e){ return def; } },
+  set: (k, v)   => localStorage.setItem('settings_' + k, JSON.stringify(v)),
+};
+
+// ── INIT USER ──
+(function initUser() {
+  const userName  = localStorage.getItem('userName')  || '';
+  const userEmail = localStorage.getItem('userEmail') || '';
+  const userRole  = localStorage.getItem('userRole')  || 'PathwayAI Member';
+  const parts     = userName.trim().split(' ');
+  const initials  = parts.length >= 2
+    ? (parts[0][0] + parts[1][0]).toUpperCase()
+    : (userName.slice(0, 2).toUpperCase() || 'SA');
+
+  document.getElementById('sidebar-av').textContent   = initials;
+  document.getElementById('sidebar-name').textContent = userName || 'User';
+  document.getElementById('sidebar-role').textContent = userRole;
+  document.getElementById('topbar-av').textContent    = initials;
+
+  // Update settings page avatar
+  const settingsAv = document.getElementById('settings-av');
+  const settingsAvName = document.getElementById('settings-av-name');
+  const settingsAvEmail = document.getElementById('settings-av-email');
+  if (settingsAv) settingsAv.textContent = initials || 'SA';
+  if (settingsAvName) settingsAvName.textContent = userName || 'User';
+  if (settingsAvEmail) settingsAvEmail.textContent = userEmail || '—';
+
+  // Pre-fill account form
+  const p = JSON.parse(localStorage.getItem('profileData') || '{}');
+  const n = userName.split(' ');
+  document.getElementById('acc-fname').value = p.fname || n[0] || '';
+  document.getElementById('acc-lname').value = p.lname || n.slice(1).join(' ') || '';
+  document.getElementById('acc-email').value = p.email || userEmail || '';
+  document.getElementById('acc-phone').value = p.phone || '';
+
+  // Detect session device
+  const ua = navigator.userAgent;
+  const device = /iPhone/i.test(ua) ? 'iPhone · Safari' : /Android/i.test(ua) ? 'Android · Chrome' : /Mac/i.test(ua) ? 'Mac · Safari' : 'Windows PC · Chrome';
+  document.getElementById('session-device-name').textContent = device + ' (current)';
+  document.getElementById('session-device-meta').textContent = 'Active now · This session';
+})();
+
+// ── LOAD ALL SAVED SETTINGS ──
+(function loadAllSettings() {
+  // Appearance
+  const theme = S.get('theme', 'dark');
+  applyTheme(theme, document.getElementById('theme-' + theme), true);
+
+  const compact = S.get('compact', false);
+  document.getElementById('toggle-compact').checked = compact;
+  if (compact) document.body.classList.add('compact-sidebar');
+
+  const noAnim = S.get('no-animations', false);
+  document.getElementById('toggle-animations').checked = noAnim;
+  if (noAnim) document.body.classList.add('no-animations');
+
+  document.getElementById('toggle-career-score').checked = S.get('career-score', true);
+
+  // Security toggles
+  document.getElementById('toggle-totp').checked        = S.get('2fa-totp', false);
+  document.getElementById('toggle-sms').checked         = S.get('2fa-sms', false);
+  document.getElementById('toggle-login-alert').checked = S.get('login-alert', true);
+
+  // Notifications
+  const notifDefaults = { 'job-matches': true, 'career-updates': true, 'app-reminders': false, 'skill-alerts': true, 'courses': false, 'profile-tips': true, 'newsletter': false };
+  Object.entries(notifDefaults).forEach(([k, def]) => {
+    const el = document.getElementById('n-' + k);
+    if (el) el.checked = S.get('notif-' + k, def);
+  });
+
+  // Privacy toggles
+  const privacyDefaults = { 'personalized': true, 'show-employers': true, 'analytics': false, 'open-to-work': true };
+  Object.entries(privacyDefaults).forEach(([k, def]) => {
+    const el = document.getElementById('p-' + k);
+    if (el) el.checked = S.get('privacy-' + k, def);
+  });
+
+  // Visibility radio
+  const vis = S.get('visibility', 'public');
+  selectVisibility(vis, true);
+
+  // Connected accounts
+  ['linkedin','github','portfolio','google'].forEach(name => {
+    const connected = S.get('connected-' + name, name === 'github');
+    const handle    = S.get('connected-' + name + '-handle', name === 'github' ? 'github.com/user' : '');
+    if (connected) setConnected(name, handle, true);
+  });
+
+  // Account selects
+  const accSettings = S.get('account-settings', {});
+  if (accSettings.lang)     setSelectByText('acc-lang', accSettings.lang);
+  if (accSettings.tz)       setSelectByText('acc-tz', accSettings.tz);
+  if (accSettings.country)  setSelectByText('acc-country', accSettings.country);
+  if (accSettings.currency) setSelectByText('acc-currency', accSettings.currency);
+})();
+
+// ── TAB SWITCH ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+// ── AVATAR MENU ──
+function toggleAvatarMenu() {
+  const menu = document.getElementById('avatar-menu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  document.getElementById('menu-name').textContent  = localStorage.getItem('userName')  || 'User';
+  document.getElementById('menu-email').textContent = localStorage.getItem('userEmail') || '—';
+}
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('avatar-menu');
+  const av   = document.getElementById('topbar-av');
+  if (menu && !menu.contains(e.target) && !av.contains(e.target)) menu.style.display = 'none';
+});
+
+// ── SIGN OUT ──
+function doSignOut(e) {
+  e.preventDefault();
+  if (confirm('Sign out of PathwayAI?')) { localStorage.clear(); window.location.href = 'index.html'; }
+}
+
+// ── ACCOUNT SAVE ──
+function saveAccount() {
+  const fname    = document.getElementById('acc-fname').value.trim();
+  const lname    = document.getElementById('acc-lname').value.trim();
+  const email    = document.getElementById('acc-email').value.trim();
+  const phone    = document.getElementById('acc-phone').value.trim();
+  const lang     = document.getElementById('acc-lang').value;
+  const tz       = document.getElementById('acc-tz').value;
+  const country  = document.getElementById('acc-country').value;
+  const currency = document.getElementById('acc-currency').value;
+
+  // Validate email
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('acc-email').classList.add('error');
+    showToast('Please enter a valid email address.'); return;
+  }
+  document.getElementById('acc-email').classList.remove('error');
+
+  // Save to profile
+  const p = JSON.parse(localStorage.getItem('profileData') || '{}');
+  Object.assign(p, { fname, lname, email, phone });
+  localStorage.setItem('profileData', JSON.stringify(p));
+  S.set('account-settings', { lang, tz, country, currency });
+
+  const full = lname ? fname + ' ' + lname : fname;
+  if (full.trim()) {
+    localStorage.setItem('userName', full);
+    const parts = full.trim().split(' ');
+    const ini   = parts.length >= 2 ? (parts[0][0] + parts[1][0]).toUpperCase() : full.slice(0,2).toUpperCase();
+    document.getElementById('sidebar-av').textContent   = ini;
+    document.getElementById('topbar-av').textContent    = ini;
+    document.getElementById('sidebar-name').textContent = full;
+  }
+  if (email) localStorage.setItem('userEmail', email);
+
+  const hint = document.getElementById('acc-saved-hint');
+  hint.textContent = '✓ Saved at ' + new Date().toLocaleTimeString();
+  hint.style.color = '#4CAF70';
+  setTimeout(() => { hint.textContent = 'Changes are saved to your browser'; hint.style.color = ''; }, 3000);
+  // Update settings page avatar too
+  const settingsAv = document.getElementById('settings-av');
+  const settingsAvName = document.getElementById('settings-av-name');
+  const settingsAvEmail = document.getElementById('settings-av-email');
+  if (settingsAv && full.trim()) settingsAv.textContent = full.trim().split(' ').length >= 2 ? (full[0] + full.split(' ')[1][0]).toUpperCase() : full.slice(0,2).toUpperCase();
+  if (settingsAvName && full.trim()) settingsAvName.textContent = full;
+  if (settingsAvEmail && email) settingsAvEmail.textContent = email;
+
+  showToast('✓ Account info saved!');
+}
+
+// ── PASSWORD ──
+function togglePwdField(id, btn) {
+  const inp = document.getElementById(id);
+  const hidden = inp.type === 'password';
+  inp.type = hidden ? 'text' : 'password';
+  btn.innerHTML = hidden
+    ? `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17.94 17.94A10 10 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9 9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+    : `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+}
+
+function checkPwdStrength(val) {
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const colors = ['#CF6679','#E69C4A','#C9A227','#4CAF70'];
+  const labels = ['Weak — add uppercase, numbers, symbols','Fair — getting better!','Good — almost there','Strong ✓'];
+  ['str1','str2','str3','str4'].forEach((id, i) => {
+    document.getElementById(id).style.background = i < score ? colors[score-1] : 'rgba(255,255,255,0.08)';
+  });
+  const lbl = document.getElementById('str-label');
+  lbl.textContent = val.length === 0 ? 'Enter a password to check strength' : (labels[score-1] || 'Weak');
+  lbl.style.color = val.length === 0 ? 'var(--subtle)' : colors[score-1];
+}
+
+function checkConfirm() {
+  const nw = document.getElementById('pwd-new').value;
+  const cf = document.getElementById('pwd-confirm').value;
+  const el = document.getElementById('confirm-match');
+  if (!cf) { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  if (nw === cf) { el.textContent = '✓ Passwords match'; el.style.color = '#4CAF70'; }
+  else           { el.textContent = '✗ Passwords do not match'; el.style.color = '#CF6679'; }
+}
+
+function changePassword() {
+  const cur = document.getElementById('pwd-current').value;
+  const nw  = document.getElementById('pwd-new').value;
+  const cf  = document.getElementById('pwd-confirm').value;
+  if (!cur)        { showToast('Please enter your current password.'); return; }
+  if (!nw)         { showToast('Please enter a new password.'); return; }
+  if (nw.length < 8) { showToast('Password must be at least 8 characters.'); return; }
+  if (nw !== cf)   { showToast('New passwords do not match!'); return; }
+  // Simulate save
+  showToast('✓ Password updated successfully!');
+  ['pwd-current','pwd-new','pwd-confirm'].forEach(id => document.getElementById(id).value = '');
+  checkPwdStrength('');
+  document.getElementById('confirm-match').style.display = 'none';
+}
+
+// ── 2FA ──
+function handle2FAToggle(type, checkbox) {
+  if (checkbox.checked) {
+    if (type === 'totp') openModal('modal-2fa');
+    if (type === 'sms')  openModal('modal-sms');
+    checkbox.checked = false; // will be set to true after verification
+  } else {
+    S.set('2fa-' + type, false);
+    showToast('✓ ' + (type === 'totp' ? 'Authenticator' : 'SMS') + ' 2FA disabled.');
+  }
+}
+
+function verify2FA() {
+  const code = document.getElementById('totp-code').value.trim();
+  if (code.length !== 6 || !/^\d{6}$/.test(code)) { showToast('Enter a valid 6-digit code.'); return; }
+  S.set('2fa-totp', true);
+  document.getElementById('toggle-totp').checked = true;
+  closeModal('modal-2fa');
+  showToast('✓ Authenticator 2FA enabled!');
+  document.getElementById('totp-code').value = '';
+}
+
+let smsSent = false;
+function sendSMSCode() {
+  const phone = document.getElementById('sms-phone').value.trim();
+  if (!smsSent) {
+    if (!phone) { showToast('Please enter your phone number.'); return; }
+    document.getElementById('sms-code-wrap').style.display = 'block';
+    document.getElementById('sms-btn').textContent = 'Verify Code';
+    smsSent = true;
+    showToast('Code sent to ' + phone);
+  } else {
+    const code = document.getElementById('sms-code').value.trim();
+    if (code.length !== 6) { showToast('Enter a valid 6-digit code.'); return; }
+    S.set('2fa-sms', true);
+    document.getElementById('toggle-sms').checked = true;
+    closeModal('modal-sms');
+    showToast('✓ SMS 2FA enabled!');
+    smsSent = false;
+    document.getElementById('sms-code-wrap').style.display = 'none';
+    document.getElementById('sms-btn').textContent = 'Send Code';
+  }
+}
+
+// ── CONNECTED ACCOUNTS ──
+function setConnected(name, handle, silent) {
+  const statusEl = document.getElementById('status-' + name);
+  const btnEl    = document.getElementById('btn-' + name);
+  if (!statusEl || !btnEl) return;
+  statusEl.textContent = '● Connected · ' + handle;
+  statusEl.className   = 's-account-status connected';
+  btnEl.textContent    = 'Disconnect';
+  btnEl.className      = 's-connect-btn connected';
+  if (!silent) { S.set('connected-' + name, true); S.set('connected-' + name + '-handle', handle); }
+}
+
+function setDisconnected(name) {
+  const statusEl = document.getElementById('status-' + name);
+  const btnEl    = document.getElementById('btn-' + name);
+  statusEl.textContent = 'Not connected';
+  statusEl.className   = 's-account-status';
+  btnEl.textContent    = 'Connect';
+  btnEl.className      = 's-connect-btn';
+  S.set('connected-' + name, false);
+}
+
+function toggleConnect(name, handle) {
+  const connected = S.get('connected-' + name, false);
+  if (connected) {
+    if (confirm('Disconnect ' + name.charAt(0).toUpperCase() + name.slice(1) + '?')) {
+      setDisconnected(name);
+      showToast('✓ ' + name.charAt(0).toUpperCase() + name.slice(1) + ' disconnected.');
+    }
+  } else {
+    setConnected(name, handle);
+    showToast('✓ ' + name.charAt(0).toUpperCase() + name.slice(1) + ' connected!');
+  }
+}
+
+function togglePortfolio() {
+  const connected = S.get('connected-portfolio', false);
+  if (connected) {
+    if (confirm('Disconnect Portfolio Website?')) {
+      setDisconnected('portfolio');
+      document.getElementById('portfolio-url-wrap').style.display = 'none';
+      showToast('✓ Portfolio disconnected.');
+    }
+  } else {
+    document.getElementById('portfolio-url-wrap').style.display = 'block';
+    document.getElementById('portfolio-url').focus();
+  }
+}
+
+function savePortfolio() {
+  const url = document.getElementById('portfolio-url').value.trim();
+  if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+    showToast('Please enter a valid URL (starting with https://)'); return;
+  }
+  const display = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  setConnected('portfolio', display);
+  document.getElementById('portfolio-url-wrap').style.display = 'none';
+  showToast('✓ Portfolio connected!');
+}
+
+// ── NOTIFICATIONS ──
+function saveNotif(key, val) {
+  S.set('notif-' + key, val);
+}
+
+function saveAllNotifs() {
+  ['job-matches','career-updates','app-reminders','skill-alerts','courses','profile-tips','newsletter'].forEach(k => {
+    const el = document.getElementById('n-' + k);
+    if (el) S.set('notif-' + k, el.checked);
+  });
+  showToast('✓ All notification preferences saved!');
+}
+
+// ── PRIVACY ──
+function savePrivacy(key, val) {
+  S.set('privacy-' + key, val);
+  showToast('✓ Privacy setting updated.');
+}
+
+function selectVisibility(val, silent) {
+  ['public','recruiters','private'].forEach(v => {
+    document.getElementById('vis-' + v).classList.toggle('selected', v === val);
+  });
+  S.set('visibility', val);
+  if (!silent) showToast('✓ Visibility set to: ' + val.charAt(0).toUpperCase() + val.slice(1));
+}
+
+// ── APPEARANCE ──
+function applyTheme(theme, el, silent) {
+  document.querySelectorAll('.s-theme-opt').forEach(o => o.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+
+  document.body.classList.remove('theme-midnight');
+  if (theme === 'midnight') {
+    document.body.classList.add('theme-midnight');
+    document.documentElement.style.setProperty('--bg',    '#060B18');
+    document.documentElement.style.setProperty('--bg2',   '#080E1F');
+    document.documentElement.style.setProperty('--card',  '#0D1526');
+    document.documentElement.style.setProperty('--card2', '#111B30');
+  } else {
+    document.documentElement.style.setProperty('--bg',    '#0A0A0A');
+    document.documentElement.style.setProperty('--bg2',   '#0D0D0D');
+    document.documentElement.style.setProperty('--card',  '#111111');
+    document.documentElement.style.setProperty('--card2', '#161616');
+  }
+  S.set('theme', theme);
+  if (!silent) showToast('✓ Theme applied site-wide! Changes visible on all pages.');
+}
+
+function applyCompact(checked) {
+  document.body.classList.toggle('compact-sidebar', checked);
+  S.set('compact', checked);
+  showToast(checked ? '✓ Compact sidebar enabled on all pages!' : '✓ Full sidebar restored on all pages!');
+}
+
+function applyAnimations(checked) {
+  document.body.classList.toggle('no-animations', checked);
+  if (checked) {
+    if (!document.getElementById('no-anim-style')) {
+      const s = document.createElement('style');
+      s.id = 'no-anim-style';
+      s.textContent = '*, *::before, *::after { transition: none !important; animation: none !important; }';
+      document.head.appendChild(s);
+    }
+  } else {
+    const s = document.getElementById('no-anim-style');
+    if (s) s.remove();
+  }
+  S.set('no-animations', checked);
+  showToast(checked ? '✓ Animations reduced site-wide!' : '✓ Animations restored site-wide!');
+}
+
+function saveToggle(key, val) {
+  S.set(key, val);
+}
+
+function saveAppearance() {
+  const theme   = S.get('theme', 'dark');
+  const compact = document.getElementById('toggle-compact').checked;
+  const noAnim  = document.getElementById('toggle-animations').checked;
+  const score   = document.getElementById('toggle-career-score').checked;
+  S.set('theme', theme);
+  S.set('compact', compact);
+  S.set('no-animations', noAnim);
+  S.set('career-score', score);
+  showToast('✓ All appearance preferences saved! Applied across all pages.');
+}
+
+// ── SESSIONS ──
+function revokeSession(id) {
+  const row = document.getElementById(id);
+  if (!row) return;
+  row.classList.add('revoked');
+  row.querySelector('.s-connect-btn').textContent = 'Revoked';
+  row.querySelector('.s-session-meta').textContent += ' · Revoked';
+  showToast('✓ Session revoked successfully.');
+}
+
+function revokeAllSessions() {
+  if (!confirm('Sign out all other sessions? You will stay logged in on this device.')) return;
+  ['session-android','session-iphone'].forEach(id => {
+    const row = document.getElementById(id);
+    if (row && !row.classList.contains('revoked')) revokeSession(id);
+  });
+  showToast('✓ All other sessions signed out!');
+}
+
+function refreshSessions() {
+  ['session-android','session-iphone'].forEach(id => {
+    const row = document.getElementById(id);
+    if (row) row.classList.remove('revoked');
+  });
+  showToast('Sessions refreshed.');
+}
+
+// ── EXPORT DATA ──
+function startExport() {
+  openModal('modal-export');
+  const bar    = document.getElementById('export-bar');
+  const status = document.getElementById('export-status');
+  const done   = document.getElementById('export-done');
+  const steps  = [
+    [20, 'Collecting profile data...'],
+    [45, 'Gathering career history...'],
+    [65, 'Compiling skills & activity...'],
+    [85, 'Packaging export file...'],
+    [100, 'Finalizing...'],
+  ];
+  let i = 0;
+  const run = () => {
+    if (i >= steps.length) {
+      setTimeout(() => { bar.style.width = '100%'; status.style.display = 'none'; done.style.display = 'block'; }, 400);
+      return;
+    }
+    const [pct, msg] = steps[i++];
+    bar.style.width = pct + '%';
+    status.textContent = msg;
+    setTimeout(run, 700);
+  };
+  bar.style.width = '0%';
+  done.style.display = 'none';
+  status.style.display = 'block';
+  setTimeout(run, 300);
+}
+
+// ── ACCOUNT DELETION / DEACTIVATION ──
+function confirmDelete() {
+  const val = document.getElementById('delete-confirm-input').value.trim();
+  if (val !== 'DELETE') { showToast('Type DELETE in all caps to confirm.'); return; }
+  document.getElementById('modal-delete').classList.remove('open');
+  showToast('Account scheduled for deletion. Signing out...');
+  setTimeout(() => { localStorage.clear(); window.location.href = 'index.html'; }, 2500);
+}
+
+function closeConfirmDelete() {
+  document.getElementById('modal-delete').classList.remove('open');
+  document.getElementById('delete-confirm-input').value = '';
+}
+
+function deactivateAccount() {
+  document.getElementById('modal-deactivate').classList.remove('open');
+  showToast('Account deactivated. Signing out...');
+  setTimeout(() => { localStorage.clear(); window.location.href = 'index.html'; }, 2000);
+}
+
+// ── UPGRADE ──
+function handleUpgrade(plan) {
+  showToast('Redirecting to payment for ' + (plan === 'monthly' ? '₹299/mo' : '₹2,499/yr') + ' Pro plan...');
+}
+
+// ── MODALS ──
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ── HELPERS ──
+function setSelectByText(id, text) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  for (let o of el.options) { if (o.text === text || o.value === text) { o.selected = true; break; } }
+}
+</script>
+</body>
+</html>

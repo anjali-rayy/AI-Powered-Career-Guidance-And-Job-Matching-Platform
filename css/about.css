@@ -1,0 +1,126 @@
+/* =========================================================
+   ABOUT PAGE — about.css  (luxury gold theme)
+   ========================================================= */
+
+/* ── HERO ── */
+.about-hero {
+  padding: 110px 48px 70px; text-align: center;
+}
+@media (max-width: 768px) { .about-hero { padding: 80px 24px 50px; } }
+
+.about-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 56px); font-weight: 600;
+  line-height: 1.1; letter-spacing: -0.025em;
+  color: var(--text); margin: 14px 0 22px;
+}
+.about-hero h1 em { font-style: italic; color: var(--gold); }
+.about-hero p { font-size: 16px; color: var(--muted); max-width: 600px; margin: 0 auto; line-height: 1.75; }
+
+/* ── MISSION CARDS ── */
+.mission-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  padding: 0 48px 80px;
+}
+@media (max-width: 900px) { .mission-grid { grid-template-columns: repeat(2, 1fr); padding: 0 24px 60px; } }
+@media (max-width: 520px) { .mission-grid { grid-template-columns: 1fr; } }
+
+.m-card { padding: 30px 26px; }
+.m-icon { font-size: 1.8rem; margin-bottom: 16px; }
+.m-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+.m-card p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ── PROBLEM / SOLUTION ── */
+.problem-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+}
+@media (max-width: 860px) { .problem-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.problem-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 3.5vw, 34px); font-weight: 600;
+  color: var(--text); line-height: 1.2; letter-spacing: -0.02em; margin: 14px 0 18px;
+}
+.problem-text h2 em { font-style: italic; color: var(--gold); }
+.problem-text p { font-size: 14.5px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
+.problem-text em { color: var(--gold); font-style: normal; }
+
+.bullets { margin-top: 24px; display: flex; flex-direction: column; gap: 11px; }
+.bullet  { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text); }
+.bullet-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+/* Code block */
+.code-panel {
+  background: #080808; border: 1px solid rgba(212,175,55,0.15);
+  border-radius: 16px; overflow: hidden;
+}
+.code-header {
+  display: flex; align-items: center; gap: 7px; padding: 11px 16px;
+  background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.code-dot { width: 11px; height: 11px; border-radius: 50%; }
+.code-dot.r { background: #ff5f57; }
+.code-dot.y { background: #febc2e; }
+.code-dot.g { background: #28c840; }
+.code-file { margin-left: 8px; font-size: 12px; color: var(--subtle); font-family: monospace; }
+.code-body { padding: 22px 20px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.85; }
+.cl { display: block; }
+.cl.i1 { padding-left: 18px; }
+.cl.i2 { padding-left: 36px; }
+.cc { color: #3D5060; }
+.ck { color: #ff79c6; }
+.cf { color: #50fa7b; }
+.cp { color: #f1fa8c; }
+
+/* ── STATS ROW ── */
+.about-stats-wrap { padding: 0 48px 80px; }
+@media (max-width: 768px) { .about-stats-wrap { padding: 0 24px 60px; } }
+
+.about-stats-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+@media (max-width: 640px) { .about-stats-strip { grid-template-columns: 1fr 1fr; } }
+.a-stat {
+  background: var(--card); padding: 38px 24px; text-align: center;
+  border-right: 1px solid var(--border); transition: background 0.2s;
+}
+.a-stat:last-child { border-right: none; }
+.a-stat:hover { background: #141414; }
+.a-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 600; color: var(--gold); line-height: 1; display: block; margin-bottom: 7px;
+}
+.a-stat-lbl { font-size: 12.5px; color: var(--muted); display: block; line-height: 1.4; }
+
+/* ── TECH STACK ── */
+.tech-rows { display: flex; flex-direction: column; gap: 26px; margin-top: 40px; }
+.tech-row-group { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.tech-group-label { width: 100px; flex-shrink: 0; font-size: 11.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--subtle); }
+.tech-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.chip {
+  padding: 7px 16px; border-radius: 7px;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.01em;
+  transition: transform 0.2s;
+}
+.chip:hover { transform: translateY(-2px); }
+.chip-gold   { background: rgba(212,175,55,0.08);  border: 1px solid rgba(212,175,55,0.22); color: #C9A227; }
+.chip-green  { background: rgba(80,250,123,0.07);  border: 1px solid rgba(80,250,123,0.18); color: #50fa7b; }
+.chip-muted  { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); }
+
+/* ── PHASES ── */
+.phases-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 52px;
+}
+@media (max-width: 860px) { .phases-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .phases-grid { grid-template-columns: 1fr; } }
+
+.phase-card { padding: 26px 24px; display: flex; gap: 16px; align-items: flex-start; }
+.phase-num-badge {
+  width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+  background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.22);
+  display: grid; place-items: center;
+  font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; color: var(--gold);
+}
+.phase-card h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+.phase-card p  { font-size: 12.5px; color: var(--muted); line-height: 1.6; }

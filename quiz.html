@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Career Quiz Hub | PathwayAI</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <style>
+    .page-content { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 24px 60px; }
+
+    .quiz-hub-wrap { max-width: 780px; width: 100%; text-align: center; }
+
+    .hub-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.05));
+      border: 1px solid rgba(212,175,55,0.3);
+      display: grid; place-items: center; margin: 0 auto 28px;
+    }
+    .hub-icon svg { width: 30px; height: 30px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+
+    .hub-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 42px); font-weight: 600;
+      color: var(--text); letter-spacing: -0.02em; margin-bottom: 12px;
+    }
+    .hub-title em { font-style: italic; color: var(--gold); }
+    .hub-sub { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 480px; margin: 0 auto 48px; }
+
+    .hub-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+    @media (max-width: 600px) { .hub-cards { grid-template-columns: 1fr; } }
+
+    .hub-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px; text-align: left;
+      cursor: pointer; transition: border-color 0.2s, transform 0.2s, background 0.2s;
+      position: relative; overflow: hidden;
+      text-decoration: none; display: block;
+    }
+    .hub-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent);
+    }
+    .hub-card:hover { border-color: var(--border-g); background: #141414; transform: translateY(-3px); }
+
+    .hub-card-icon {
+      width: 44px; height: 44px; border-radius: 11px; margin-bottom: 18px;
+      display: grid; place-items: center;
+    }
+    .hub-card-icon.gold { background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); }
+    .hub-card-icon.muted { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .hub-card-icon svg { width: 20px; height: 20px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .hub-card-icon.gold svg { stroke: var(--gold); }
+    .hub-card-icon.muted svg { stroke: var(--muted); }
+
+    .hub-card-arrow {
+      position: absolute; top: 24px; right: 24px;
+      color: var(--subtle); font-size: 18px; transition: color 0.2s, transform 0.2s;
+    }
+    .hub-card:hover .hub-card-arrow { color: var(--gold); transform: translate(2px, -2px); }
+
+    .hub-card-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .hub-card-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+
+    .hub-card-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11.5px; font-weight: 500; padding: 4px 10px; border-radius: 5px;
+    }
+    .hub-card-badge.gold { background: rgba(212,175,55,0.08); color: #C9A227; border: 1px solid rgba(212,175,55,0.18); }
+    .hub-card-badge.muted { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid rgba(255,255,255,0.07); }
+    .hub-card-badge svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .hub-back { font-size: 13px; color: var(--muted); }
+    .hub-back a { color: var(--gold); text-decoration: none; }
+    .hub-back a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    PathwayAI
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="#">Features</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="dashboard.html"><button class="btn-ghost">Dashboard</button></a>
+    <a href="login.html"><button class="btn-gold">Sign in</button></a>
+  </div>
+</nav>
+
+<main class="page-content">
+  <div class="quiz-hub-wrap">
+
+    <div class="hub-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+
+    <h1 class="hub-title">Career <em>Quiz Hub</em></h1>
+    <p class="hub-sub">Discover your perfect career path with AI-powered assessments and track your journey over time.</p>
+
+    <div class="hub-cards">
+
+      <!-- Start New Assessment -->
+      <a href="quiz-assessment.html" class="hub-card">
+        <div class="hub-card-arrow">→</div>
+        <div class="hub-card-icon gold">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div class="hub-card-title">Start New Assessment</div>
+        <div class="hub-card-desc">Take our comprehensive AI-powered career assessment to discover your ideal career path with personalized insights and recommendations.</div>
+        <div class="hub-card-badge gold">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          Powered by Advanced AI
+        </div>
+      </a>
+
+      <!-- View Quiz History -->
+      <div class="hub-card" onclick="location.href='quiz-history.html'">
+        <div class="hub-card-arrow">→</div>
+        <div class="hub-card-icon muted">
+          <svg viewBox="0 0 24 24"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+        </div>
+        <div class="hub-card-title">View Quiz History</div>
+        <div class="hub-card-desc">Track your career assessment progress over time and see how your interests and career matches have evolved.</div>
+        <div class="hub-card-badge muted">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          0 Quizzes Completed
+        </div>
+      </div>
+
+    </div>
+
+    <p class="hub-back">← <a href="index.html">Back to Home</a></p>
+  </div>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="js/nav.js"></script>
+</body>
+</html>

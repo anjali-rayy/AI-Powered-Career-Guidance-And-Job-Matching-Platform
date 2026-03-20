@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz History | PathwayAI</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <style>
+    .page-content {
+      min-height: 100vh;
+      padding: 100px 24px 60px;
+    }
+
+    .qh-wrap { max-width: 860px; margin: 0 auto; }
+
+    /* ── PAGE HEADER ── */
+    .qh-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
+    }
+    .qh-header-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px; font-weight: 600; color: var(--text);
+      letter-spacing: -0.02em; margin-bottom: 6px;
+    }
+    .qh-header-left h1 em { font-style: italic; color: var(--gold); }
+    .qh-header-left p { font-size: 13.5px; color: var(--muted); }
+
+    /* ── STATS ROW ── */
+    .qh-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 14px; margin-bottom: 32px;
+    }
+    @media (max-width: 640px) { .qh-stats { grid-template-columns: repeat(2,1fr); } }
+
+    .qh-stat {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px;
+      position: relative; overflow: hidden;
+    }
+    .qh-stat::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent);
+    }
+    .qh-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px; font-weight: 600; color: var(--gold);
+      line-height: 1; margin-bottom: 5px;
+    }
+    .qh-stat-lbl { font-size: 12px; color: var(--muted); }
+
+    /* ── FILTER BAR ── */
+    .qh-filters {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .qh-filter-btn {
+      padding: 7px 16px; border-radius: 7px; font-size: 12.5px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03); color: var(--muted);
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all 0.18s;
+    }
+    .qh-filter-btn:hover { border-color: rgba(212,175,55,0.3); color: var(--text); }
+    .qh-filter-btn.active {
+      background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.3);
+      color: #C9A227; font-weight: 500;
+    }
+
+    /* ── QUIZ CARD ── */
+    .qh-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .qh-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      position: relative; transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .qh-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.15), transparent);
+    }
+    .qh-card:hover { border-color: var(--border-g); transform: translateY(-2px); }
+
+    .qh-card-main {
+      display: flex; align-items: center; gap: 18px;
+      padding: 20px 24px;
+    }
+
+    .qh-card-icon {
+      width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+      display: grid; place-items: center; font-size: 20px;
+    }
+    .qh-card-icon.gold { background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); }
+    .qh-card-icon.blue { background: rgba(59,91,219,0.1); border: 1px solid rgba(59,91,219,0.2); }
+    .qh-card-icon.green { background: rgba(46,107,62,0.1); border: 1px solid rgba(46,107,62,0.2); }
+
+    .qh-card-info { flex: 1; min-width: 0; }
+    .qh-card-title {
+      font-size: 15px; font-weight: 600; color: var(--text);
+      margin-bottom: 4px; letter-spacing: -0.01em;
+    }
+    .qh-card-meta { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; }
+
+    .qh-card-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+    .qh-tag {
+      font-size: 11px; padding: 2px 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      color: var(--muted);
+    }
+    .qh-tag.gold { background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.18); color: #C9A227; }
+    .qh-tag.green { background: rgba(46,107,62,0.1); border-color: rgba(46,107,62,0.2); color: #4CAF70; }
+
+    .qh-card-score { text-align: right; flex-shrink: 0; }
+    .qh-score-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 600; color: var(--gold);
+      line-height: 1;
+    }
+    .qh-score-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Progress bar inside card */
+    .qh-card-progress { padding: 0 24px 18px; }
+    .qh-prog-label {
+      display: flex; justify-content: space-between;
+      font-size: 12px; color: var(--muted); margin-bottom: 7px;
+    }
+    .qh-prog-bg { height: 4px; background: rgba(255,255,255,0.06); border-radius:100px; overflow:hidden; }
+    .qh-prog-fill { height:100%; border-radius:100px; background: linear-gradient(90deg,#8B6914,var(--gold)); }
+
+    /* Top matches inside card */
+    .qh-card-matches { padding: 0 24px 20px; }
+    .qh-matches-title { font-size: 11.5px; color: var(--subtle); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+    .qh-match-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .qh-match-row:last-child { border-bottom: none; }
+    .qh-match-icon { font-size: 14px; flex-shrink: 0; }
+    .qh-match-name { flex: 1; font-size: 12.5px; color: var(--text); }
+    .qh-match-bar-bg { width: 80px; height: 3px; background: rgba(255,255,255,0.06); border-radius:100px; overflow:hidden; }
+    .qh-match-bar-fill { height:100%; border-radius:100px; background: linear-gradient(90deg,#8B6914,var(--gold)); }
+    .qh-match-pct { font-size: 12px; font-weight:600; color: var(--gold); min-width: 36px; text-align:right; }
+
+    /* Card footer */
+    .qh-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; border-top: 1px solid rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.01);
+    }
+    .qh-footer-time { font-size: 12px; color: var(--subtle); }
+    .qh-footer-actions { display: flex; gap: 8px; }
+    .qh-action-btn {
+      padding: 6px 14px; border-radius: 6px; font-size: 12px;
+      font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.18s;
+    }
+    .qh-action-btn.outline {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+    }
+    .qh-action-btn.outline:hover { border-color: rgba(212,175,55,0.3); color: var(--text); }
+    .qh-action-btn.gold {
+      background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2);
+      color: #C9A227; font-weight: 500;
+    }
+    .qh-action-btn.gold:hover { background: rgba(212,175,55,0.18); }
+
+    /* ── EMPTY STATE ── */
+    .qh-empty {
+      text-align: center; padding: 80px 24px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .qh-empty-icon { font-size: 48px; margin-bottom: 20px; }
+    .qh-empty-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 8px;
+    }
+    .qh-empty-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+    /* ── EXPAND TOGGLE ── */
+    .qh-card-details { display: none; }
+    .qh-card.expanded .qh-card-details { display: block; }
+    .qh-expand-btn {
+      background: none; border: none; color: var(--subtle);
+      cursor: pointer; font-size: 18px; padding: 4px 8px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .qh-card.expanded .qh-expand-btn { transform: rotate(180deg); color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    PathwayAI
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="#">Features</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="dashboard.html"><button class="btn-ghost">Dashboard</button></a>
+    <a href="login.html"><button class="btn-gold">Sign in</button></a>
+  </div>
+</nav>
+
+<main class="page-content">
+  <div class="qh-wrap">
+
+    <!-- Header -->
+    <div class="qh-header">
+      <div class="qh-header-left">
+        <h1>Quiz <em>History</em></h1>
+        <p>Track your career assessment progress and see how your matches have evolved over time</p>
+      </div>
+      <a href="quiz-assessment.html">
+        <button class="btn-primary" style="padding:10px 22px;font-size:13px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start New Quiz
+        </button>
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="qh-stats">
+      <div class="qh-stat">
+        <div class="qh-stat-num" id="stat-total">3</div>
+        <div class="qh-stat-lbl">Quizzes Taken</div>
+      </div>
+      <div class="qh-stat">
+        <div class="qh-stat-num" id="stat-best">91</div>
+        <div class="qh-stat-lbl">Best Match Score</div>
+      </div>
+      <div class="qh-stat">
+        <div class="qh-stat-num" id="stat-careers">4</div>
+        <div class="qh-stat-lbl">Careers Discovered</div>
+      </div>
+      <div class="qh-stat">
+        <div class="qh-stat-num" id="stat-improvement">+12</div>
+        <div class="qh-stat-lbl">Score Improvement</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="qh-filters">
+      <button class="qh-filter-btn active" onclick="filterQuizzes('all', this)">All Quizzes</button>
+      <button class="qh-filter-btn" onclick="filterQuizzes('career', this)">Career Discovery</button>
+      <button class="qh-filter-btn" onclick="filterQuizzes('skill', this)">Skill Assessment</button>
+    </div>
+
+    <!-- Quiz List -->
+    <div class="qh-list" id="quiz-list">
+
+      <!-- Quiz 1 - Most Recent -->
+      <div class="qh-card" data-type="career" id="card-1">
+        <div class="qh-card-main">
+          <div class="qh-card-icon gold">🎯</div>
+          <div class="qh-card-info">
+            <div class="qh-card-title">Career Discovery Quiz #3</div>
+            <div class="qh-card-meta">8 questions · Completed in 4 min 32 sec</div>
+            <div class="qh-card-tags">
+              <span class="qh-tag gold">Latest</span>
+              <span class="qh-tag green">Best Score</span>
+              <span class="qh-tag">Career Discovery</span>
+            </div>
+          </div>
+          <div class="qh-card-score">
+            <div class="qh-score-num">91%</div>
+            <div class="qh-score-lbl">top match</div>
+          </div>
+          <button class="qh-expand-btn" onclick="toggleCard('card-1', event)">▾</button>
+        </div>
+
+        <div class="qh-card-progress">
+          <div class="qh-prog-label"><span>Frontend Engineer match</span><span style="color:var(--gold)">91%</span></div>
+          <div class="qh-prog-bg"><div class="qh-prog-fill" style="width:91%"></div></div>
+        </div>
+
+        <div class="qh-card-details">
+          <div class="qh-card-matches">
+            <div class="qh-matches-title">Career Matches from this Quiz</div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">💻</span>
+              <span class="qh-match-name">Frontend Engineer</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:91%"></div></div>
+              <span class="qh-match-pct">91%</span>
+            </div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">🎨</span>
+              <span class="qh-match-name">Product Designer</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:78%"></div></div>
+              <span class="qh-match-pct">78%</span>
+            </div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">📊</span>
+              <span class="qh-match-name">Data Analyst</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:63%"></div></div>
+              <span class="qh-match-pct">63%</span>
+            </div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">⚙️</span>
+              <span class="qh-match-name">Backend Developer</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:54%"></div></div>
+              <span class="qh-match-pct">54%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="qh-card-footer">
+          <span class="qh-footer-time">🕐 Today, 11:24 PM · March 19, 2026</span>
+          <div class="qh-footer-actions">
+            <button class="qh-action-btn outline" onclick="showToast('Downloading report...')">Download PDF</button>
+            <button class="qh-action-btn gold" onclick="location.href='quiz-assessment.html'">Retake →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz 2 -->
+      <div class="qh-card" data-type="career" id="card-2">
+        <div class="qh-card-main">
+          <div class="qh-card-icon blue">🔍</div>
+          <div class="qh-card-info">
+            <div class="qh-card-title">Career Discovery Quiz #2</div>
+            <div class="qh-card-meta">8 questions · Completed in 5 min 10 sec</div>
+            <div class="qh-card-tags">
+              <span class="qh-tag">Career Discovery</span>
+              <span class="qh-tag" style="background:rgba(59,91,219,0.08);border-color:rgba(59,91,219,0.2);color:#7B9CF5">Improved +12%</span>
+            </div>
+          </div>
+          <div class="qh-card-score">
+            <div class="qh-score-num" style="color:#7B9CF5">79%</div>
+            <div class="qh-score-lbl">top match</div>
+          </div>
+          <button class="qh-expand-btn" onclick="toggleCard('card-2', event)">▾</button>
+        </div>
+
+        <div class="qh-card-progress">
+          <div class="qh-prog-label"><span>Frontend Engineer match</span><span style="color:#7B9CF5">79%</span></div>
+          <div class="qh-prog-bg"><div class="qh-prog-fill" style="width:79%;background:linear-gradient(90deg,#3B5BDB,#7B9CF5)"></div></div>
+        </div>
+
+        <div class="qh-card-details">
+          <div class="qh-card-matches">
+            <div class="qh-matches-title">Career Matches from this Quiz</div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">💻</span>
+              <span class="qh-match-name">Frontend Engineer</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:79%"></div></div>
+              <span class="qh-match-pct">79%</span>
+            </div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">🎨</span>
+              <span class="qh-match-name">Product Designer</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:71%"></div></div>
+              <span class="qh-match-pct">71%</span>
+            </div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">📊</span>
+              <span class="qh-match-name">Data Analyst</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:55%"></div></div>
+              <span class="qh-match-pct">55%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="qh-card-footer">
+          <span class="qh-footer-time">🕐 2 days ago · March 17, 2026</span>
+          <div class="qh-footer-actions">
+            <button class="qh-action-btn outline" onclick="showToast('Downloading report...')">Download PDF</button>
+            <button class="qh-action-btn gold" onclick="location.href='quiz-assessment.html'">Retake →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz 3 - Oldest -->
+      <div class="qh-card" data-type="career" id="card-3">
+        <div class="qh-card-main">
+          <div class="qh-card-icon green">🌱</div>
+          <div class="qh-card-info">
+            <div class="qh-card-title">Career Discovery Quiz #1</div>
+            <div class="qh-card-meta">8 questions · Completed in 6 min 48 sec</div>
+            <div class="qh-card-tags">
+              <span class="qh-tag">Career Discovery</span>
+              <span class="qh-tag" style="background:rgba(46,107,62,0.08);border-color:rgba(46,107,62,0.18);color:#4CAF70">First Quiz</span>
+            </div>
+          </div>
+          <div class="qh-card-score">
+            <div class="qh-score-num" style="color:#4CAF70">67%</div>
+            <div class="qh-score-lbl">top match</div>
+          </div>
+          <button class="qh-expand-btn" onclick="toggleCard('card-3', event)">▾</button>
+        </div>
+
+        <div class="qh-card-progress">
+          <div class="qh-prog-label"><span>Product Designer match</span><span style="color:#4CAF70">67%</span></div>
+          <div class="qh-prog-bg"><div class="qh-prog-fill" style="width:67%;background:linear-gradient(90deg,#1a5c2e,#2E6B3E)"></div></div>
+        </div>
+
+        <div class="qh-card-details">
+          <div class="qh-card-matches">
+            <div class="qh-matches-title">Career Matches from this Quiz</div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">🎨</span>
+              <span class="qh-match-name">Product Designer</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:67%"></div></div>
+              <span class="qh-match-pct">67%</span>
+            </div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">💻</span>
+              <span class="qh-match-name">Frontend Engineer</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:61%"></div></div>
+              <span class="qh-match-pct">61%</span>
+            </div>
+            <div class="qh-match-row">
+              <span class="qh-match-icon">📊</span>
+              <span class="qh-match-name">Data Analyst</span>
+              <div class="qh-match-bar-bg"><div class="qh-match-bar-fill" style="width:48%"></div></div>
+              <span class="qh-match-pct">48%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="qh-card-footer">
+          <span class="qh-footer-time">🕐 4 days ago · March 15, 2026</span>
+          <div class="qh-footer-actions">
+            <button class="qh-action-btn outline" onclick="showToast('Downloading report...')">Download PDF</button>
+            <button class="qh-action-btn gold" onclick="location.href='quiz-assessment.html'">Retake →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Back link -->
+    <div style="text-align:center;margin-top:32px">
+      <a href="quiz.html" style="font-size:13px;color:var(--muted);text-decoration:none;">← Back to Quiz Hub</a>
+    </div>
+
+  </div>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="js/nav.js"></script>
+<script>
+  function toggleCard(id, e) {
+    e.stopPropagation();
+    const card = document.getElementById(id);
+    card.classList.toggle('expanded');
+  }
+
+  function filterQuizzes(type, btn) {
+    document.querySelectorAll('.qh-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.qh-card').forEach(card => {
+      if (type === 'all' || card.dataset.type === type) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
