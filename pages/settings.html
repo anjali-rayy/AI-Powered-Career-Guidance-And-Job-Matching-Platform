@@ -9,6 +9,12 @@
   <title>Settings | PathwayAI</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <script>
+    // ✅ INSTANT auth guard
+    if (!localStorage.getItem('userEmail')) {
+      window.location.replace('login.html');
+    }
+  </script>
   <style>
     /* ══ SETTINGS LAYOUT ══ */
     .settings-layout { display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
@@ -1043,7 +1049,7 @@ document.addEventListener('click', function(e) {
 // ── SIGN OUT ──
 function doSignOut(e) {
   e.preventDefault();
-  if (confirm('Sign out of PathwayAI?')) { localStorage.clear(); window.location.href = 'index.html'; }
+  if (confirm('Sign out of PathwayAI?')) { signOut(); }
 }
 
 // ── ACCOUNT SAVE ──
@@ -1402,7 +1408,7 @@ function confirmDelete() {
   if (val !== 'DELETE') { showToast('Type DELETE in all caps to confirm.'); return; }
   document.getElementById('modal-delete').classList.remove('open');
   showToast('Account scheduled for deletion. Signing out...');
-  setTimeout(() => { localStorage.clear(); window.location.href = 'index.html'; }, 2500);
+  setTimeout(() => { localStorage.clear(); window.location.href = '../index.html'; }, 2500);
 }
 
 function closeConfirmDelete() {
@@ -1413,7 +1419,7 @@ function closeConfirmDelete() {
 function deactivateAccount() {
   document.getElementById('modal-deactivate').classList.remove('open');
   showToast('Account deactivated. Signing out...');
-  setTimeout(() => { localStorage.clear(); window.location.href = 'index.html'; }, 2000);
+  setTimeout(() => { localStorage.clear(); window.location.href = '../index.html'; }, 2000);
 }
 
 // ── UPGRADE ──
@@ -1437,6 +1443,27 @@ function setSelectByText(id, text) {
   const el = document.getElementById(id);
   if (!el) return;
   for (let o of el.options) { if (o.text === text || o.value === text) { o.selected = true; break; } }
+}
+
+function signOut() {
+  // ✅ Only clear session keys — keep profile data & settings for next login
+  const keysToKeep = [];
+  const allKeys = Object.keys(localStorage);
+  
+  allKeys.forEach(key => {
+    // Keep profile data and app settings
+    if (key === 'profileData' || key.startsWith('settings_')) {
+      keysToKeep.push({ key, value: localStorage.getItem(key) });
+    }
+  });
+
+  // Clear everything
+  localStorage.clear();
+
+  // Restore kept data
+  keysToKeep.forEach(item => localStorage.setItem(item.key, item.value));
+
+  window.location.href = '../index.html';
 }
 </script>
 </body>
