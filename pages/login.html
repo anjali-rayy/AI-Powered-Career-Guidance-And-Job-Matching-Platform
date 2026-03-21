@@ -6,6 +6,12 @@
   <title>Sign In | PathwayAI</title>
   <link rel="stylesheet" href="../assets/css/styles.css"/>
   <link rel="stylesheet" href="../assets/css/auth.css"/>
+  <script>
+    // ✅ INSTANT auth guard — runs before body renders, no flash
+    if (localStorage.getItem('userEmail')) {
+      window.location.replace('dashboard.html');
+    }
+  </script>
 </head>
 <body>
 
@@ -22,7 +28,6 @@
     <li><a href="#">Features</a></li>
   </ul>
   <div class="nav-actions">
-    <a href="dashboard.html"><button class="btn-ghost">Dashboard</button></a>
     <a href="register.html"><button class="btn-gold">Create account</button></a>
   </div>
 </nav>
@@ -132,16 +137,30 @@ function handleLogin(e) {
   setLoading(true);
   setTimeout(() => {
     setLoading(false);
-    // Save user info to localStorage for personalized dashboard
     const emailVal = document.getElementById('email').value.trim();
-    const storedName = localStorage.getItem('userName');
-    if (!storedName) {
-      // fallback: use part before @ if no registered name
-      localStorage.setItem('userName', emailVal.split('@')[0]);
+
+    // ✅ Restore profile data & name for returning users
+    const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+
+    if (profileData.fname) {
+      // Returning user — restore their saved full name
+      const fullName = profileData.fname + (profileData.lname ? ' ' + profileData.lname : '');
+      localStorage.setItem('userName', fullName);
+      // Restore role if saved
+      if (profileData.eduLevel) {
+        const role = profileData.eduLevel + (profileData.eduField ? ' · ' + profileData.eduField.split('/')[0].trim() : '');
+        localStorage.setItem('userRole', role);
+      }
+    } else {
+      // First time or no profile — use capitalized email prefix
+      const emailName = emailVal.split('@')[0];
+      const displayName = emailName.charAt(0).toUpperCase() + emailName.slice(1);
+      localStorage.setItem('userName', displayName);
     }
+
     localStorage.setItem('userEmail', emailVal);
     showToast('✓ Signed in successfully');
-    setTimeout(() => location.href='dashboard.html', 1100);
+    setTimeout(() => location.href = 'dashboard.html', 1100);
   }, 1600);
 }
 function setErr(id, msg) {
