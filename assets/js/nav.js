@@ -1,6 +1,4 @@
-/* =========================================================
-   PATHWAYAI — SHARED JS  (nav.js)
-   ========================================================= */
+
 
 // Active nav link
 (function () {
@@ -36,29 +34,4 @@ function togglePwd(id, btn) {
   btn.innerHTML = hidden
     ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17.94 17.94A10 10 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9 9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
     : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-}
-
-// Skill chips
-const skillsArr = [];
-function addSkill(e) {
-  if (e.key !== 'Enter' && e.key !== ',') return;
-  e.preventDefault();
-  const v = e.target.value.trim().replace(/,$/, '');
-  if (!v || skillsArr.includes(v)) { e.target.value = ''; return; }
-  skillsArr.push(v);
-  renderChips();
-  e.target.value = '';
-}
-function removeSkill(s) { skillsArr.splice(skillsArr.indexOf(s), 1); renderChips(); }
-function renderChips() {
-  const area = document.getElementById('skills-area');
-  const inp  = document.getElementById('skill-input');
-  if (!area || !inp) return;
-  area.innerHTML = '';
-  skillsArr.forEach(s => {
-    const c = document.createElement('div'); c.className = 'skill-chip';
-    c.innerHTML = `<span>${s}</span><button type="button" onclick="removeSkill('${s}')">×</button>`;
-    area.appendChild(c);
-  });
-  area.appendChild(inp);
 }

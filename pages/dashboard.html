@@ -9,10 +9,8 @@
   <link rel="stylesheet" href="../assets/css/styles.css"/>
   <link rel="stylesheet" href="../assets/css/dashboard.css"/>
   <script>
-    // ✅ INSTANT auth guard — fires before page renders, zero flash
-    if (!localStorage.getItem('userEmail')) {
-      window.location.replace('login.html');
-    }
+    // Quick auth check before render
+    if (!localStorage.getItem('authToken')) window.location.replace('login.html');
   </script>
 </head>
 <body>
@@ -501,9 +499,13 @@
 <div id="toast" class="toast"></div>
 
 <!-- ✅ Apply saved appearance settings site-wide -->
+<script src="../assets/js/api.js"></script>
 <script src="../assets/js/settings-apply.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script>
+  /* ── LOAD FRESH DATA FROM MONGODB ── */
+  requireAuth().then(function() {
+
   /* ── PERSONALIZED DASHBOARD ── */
   const userName  = localStorage.getItem('userName')  || '';
   const userEmail = localStorage.getItem('userEmail') || '';
@@ -565,6 +567,8 @@
       menu.style.display = 'none';
     }
   });
+
+  }); // end requireAuth
 
 function signOut() {
   // ✅ Only clear session keys — keep profile data & settings for next login

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../assets/css/dashboard.css" />
     <script>
       // ✅ INSTANT auth guard
-      if (!localStorage.getItem('userEmail')) {
+      if (!localStorage.getItem('authToken')) {
         window.location.replace('login.html');
       }
     </script>
@@ -482,6 +482,7 @@
 </div>
 
 <div id="toast" class="toast"></div>
+<script src="../assets/js/api.js"></script>
 <script src="../assets/js/settings-apply.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script>
@@ -530,7 +531,7 @@
     }
 
     /* ── SAVE PROFILE ── */
-    function saveProfile() {
+    async function saveProfile() {
         const fname    = document.getElementById('p-fname').value.trim();
         const lname    = document.getElementById('p-lname').value.trim();
         const email    = document.getElementById('p-email').value.trim();
@@ -645,7 +646,10 @@
         }
     });
 
-    loadProfile();
+    // ✅ Fetch fresh data from MongoDB on every load
+    requireAuth().then(function(user) {
+      if (user) loadProfile();
+    });
 
 function signOut() {
   // ✅ Only clear session keys — keep profile data & settings for next login

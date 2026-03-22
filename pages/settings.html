@@ -9,6 +9,12 @@
   <title>Settings | PathwayAI</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <script>
+    // ✅ INSTANT auth guard
+    if (!localStorage.getItem('authToken')) {
+      window.location.replace('login.html');
+    }
+  </script>
   <style>
     /* ══ SETTINGS LAYOUT ══ */
     .settings-layout { display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
@@ -914,6 +920,7 @@
 </div><!-- end dash-root -->
 
 <div id="toast" class="toast"></div>
+<script src="../assets/js/api.js"></script>
 <script src="../assets/js/settings-apply.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script>
@@ -926,6 +933,9 @@ const S = {
   get: (k, def) => { try { const v = localStorage.getItem('settings_' + k); return v === null ? def : JSON.parse(v); } catch(e){ return def; } },
   set: (k, v)   => localStorage.setItem('settings_' + k, JSON.stringify(v)),
 };
+
+// ── LOAD FRESH DATA FROM MONGODB ──
+requireAuth().then(function() {
 
 // ── INIT USER ──
 (function initUser() {
@@ -1019,6 +1029,8 @@ const S = {
   if (accSettings.currency) setSelectByText('acc-currency', accSettings.currency);
 })();
 
+}); // end requireAuth().then
+
 // ── TAB SWITCH ──
 function switchTab(id, btn) {
   document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
@@ -1043,7 +1055,7 @@ document.addEventListener('click', function(e) {
 // ── SIGN OUT ──
 function doSignOut(e) {
   e.preventDefault();
-  if (confirm('Sign out of PathwayAI?')) { localStorage.clear(); window.location.href = 'index.html'; }
+  if (confirm('Sign out of PathwayAI?')) { signOut(); }
 }
 
 // ── ACCOUNT SAVE ──
@@ -1132,7 +1144,7 @@ function checkConfirm() {
   else           { el.textContent = '✗ Passwords do not match'; el.style.color = '#CF6679'; }
 }
 
-function changePassword() {
+async function changePassword() {
   const cur = document.getElementById('pwd-current').value;
   const nw  = document.getElementById('pwd-new').value;
   const cf  = document.getElementById('pwd-confirm').value;
@@ -1397,12 +1409,16 @@ function startExport() {
 }
 
 // ── ACCOUNT DELETION / DEACTIVATION ──
-function confirmDelete() {
+async function confirmDelete() {
   const val = document.getElementById('delete-confirm-input').value.trim();
   if (val !== 'DELETE') { showToast('Type DELETE in all caps to confirm.'); return; }
   document.getElementById('modal-delete').classList.remove('open');
-  showToast('Account scheduled for deletion. Signing out...');
-  setTimeout(() => { localStorage.clear(); window.location.href = 'index.html'; }, 2500);
+  showToast('Deleting account from database...');
+  try {
+    await apiDeleteAccount(); // deletes from MongoDB + clears localStorage
+  } catch(err) {
+    showToast('✗ ' + err.message);
+  }
 }
 
 function closeConfirmDelete() {
@@ -1413,7 +1429,7 @@ function closeConfirmDelete() {
 function deactivateAccount() {
   document.getElementById('modal-deactivate').classList.remove('open');
   showToast('Account deactivated. Signing out...');
-  setTimeout(() => { localStorage.clear(); window.location.href = 'index.html'; }, 2000);
+  setTimeout(() => { localStorage.clear(); window.location.href = '../index.html'; }, 2000);
 }
 
 // ── UPGRADE ──
@@ -1437,6 +1453,27 @@ function setSelectByText(id, text) {
   const el = document.getElementById(id);
   if (!el) return;
   for (let o of el.options) { if (o.text === text || o.value === text) { o.selected = true; break; } }
+}
+
+function signOut() {
+  // ✅ Only clear session keys — keep profile data & settings for next login
+  const keysToKeep = [];
+  const allKeys = Object.keys(localStorage);
+  
+  allKeys.forEach(key => {
+    // Keep profile data and app settings
+    if (key === 'profileData' || key.startsWith('settings_')) {
+      keysToKeep.push({ key, value: localStorage.getItem(key) });
+    }
+  });
+
+  // Clear everything
+  localStorage.clear();
+
+  // Restore kept data
+  keysToKeep.forEach(item => localStorage.setItem(item.key, item.value));
+
+  window.location.href = '../index.html';
 }
 </script>
 </body>
