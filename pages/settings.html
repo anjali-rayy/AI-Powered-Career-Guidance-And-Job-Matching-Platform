@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../assets/css/dashboard.css" />
   <script>
     // ✅ INSTANT auth guard
-    if (!localStorage.getItem('userEmail')) {
+    if (!localStorage.getItem('authToken')) {
       window.location.replace('login.html');
     }
   </script>
@@ -920,6 +920,7 @@
 </div><!-- end dash-root -->
 
 <div id="toast" class="toast"></div>
+<script src="../assets/js/api.js"></script>
 <script src="../assets/js/settings-apply.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script>
@@ -932,6 +933,9 @@ const S = {
   get: (k, def) => { try { const v = localStorage.getItem('settings_' + k); return v === null ? def : JSON.parse(v); } catch(e){ return def; } },
   set: (k, v)   => localStorage.setItem('settings_' + k, JSON.stringify(v)),
 };
+
+// ── LOAD FRESH DATA FROM MONGODB ──
+requireAuth().then(function() {
 
 // ── INIT USER ──
 (function initUser() {
@@ -1024,6 +1028,8 @@ const S = {
   if (accSettings.country)  setSelectByText('acc-country', accSettings.country);
   if (accSettings.currency) setSelectByText('acc-currency', accSettings.currency);
 })();
+
+}); // end requireAuth().then
 
 // ── TAB SWITCH ──
 function switchTab(id, btn) {
@@ -1138,7 +1144,7 @@ function checkConfirm() {
   else           { el.textContent = '✗ Passwords do not match'; el.style.color = '#CF6679'; }
 }
 
-function changePassword() {
+async function changePassword() {
   const cur = document.getElementById('pwd-current').value;
   const nw  = document.getElementById('pwd-new').value;
   const cf  = document.getElementById('pwd-confirm').value;
@@ -1403,12 +1409,16 @@ function startExport() {
 }
 
 // ── ACCOUNT DELETION / DEACTIVATION ──
-function confirmDelete() {
+async function confirmDelete() {
   const val = document.getElementById('delete-confirm-input').value.trim();
   if (val !== 'DELETE') { showToast('Type DELETE in all caps to confirm.'); return; }
   document.getElementById('modal-delete').classList.remove('open');
-  showToast('Account scheduled for deletion. Signing out...');
-  setTimeout(() => { localStorage.clear(); window.location.href = '../index.html'; }, 2500);
+  showToast('Deleting account from database...');
+  try {
+    await apiDeleteAccount(); // deletes from MongoDB + clears localStorage
+  } catch(err) {
+    showToast('✗ ' + err.message);
+  }
 }
 
 function closeConfirmDelete() {
