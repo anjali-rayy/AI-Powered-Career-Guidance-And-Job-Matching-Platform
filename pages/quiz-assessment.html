@@ -5,60 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Career Discovery Quiz | PathwayAI</title>
   <link rel="stylesheet" href="../assets/css/styles.css"/>
-  <style>
-    body { min-height: 100vh; }
-    .quiz-page { min-height: 100vh; display: flex; flex-direction: column; padding-top: 64px; }
-    .quiz-topbar { text-align: center; padding: 40px 24px 0; }
-    .quiz-topbar-title { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-    .quiz-topbar-sub { font-size: 13.5px; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .quiz-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); display: inline-block; }
-    .quiz-progress-wrap { padding: 24px 24px 0; max-width: 700px; margin: 0 auto; width: 100%; }
-    .quiz-progress-bg { height: 5px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
-    .quiz-progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--gold), #E6C200); transition: width 0.4s ease; }
-    .quiz-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px 20px; }
-    .q-card { width: 100%; max-width: 700px; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 36px 40px; position: relative; overflow: hidden; }
-    .q-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent); }
-    .q-text { font-family: "Playfair Display", serif; font-size: clamp(17px,2.5vw,21px); font-weight: 600; color: var(--text); line-height: 1.4; text-align: center; margin-bottom: 8px; }
-    .q-hint { font-size: 12.5px; color: var(--muted); text-align: center; margin-bottom: 28px; }
-    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .opt-label { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: border-color 0.18s, background 0.18s; font-size: 13.5px; color: var(--text); }
-    .opt-label:hover { border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.04); }
-    .opt-circle { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.2); flex-shrink: 0; display: grid; place-items: center; }
-    .opt-circle-inner { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); opacity: 0; transition: opacity 0.18s; }
-    .opt-square { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid rgba(255,255,255,0.2); flex-shrink: 0; display: grid; place-items: center; }
-    .opt-square svg { width: 11px; height: 11px; stroke: #0A0A0A; fill: none; stroke-width: 2.5; opacity: 0; transition: opacity 0.18s; }
-    .opt-label.selected { border-color: rgba(212,175,55,0.4); background: rgba(212,175,55,0.06); }
-    .opt-label.selected .opt-circle { border-color: var(--gold); }
-    .opt-label.selected .opt-circle-inner { opacity: 1; }
-    .opt-label.selected .opt-square { border-color: var(--gold); background: var(--gold); }
-    .opt-label.selected .opt-square svg { opacity: 1; }
-    .slider-wrap { padding: 8px 0; }
-    .quiz-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; border-radius: 100px; outline: none; background: rgba(255,255,255,0.08); cursor: pointer; margin: 0 0 14px; }
-    .quiz-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #E6C200); border: 3px solid #0A0A0A; cursor: pointer; }
-    .slider-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
-    .slider-val { font-family: "Playfair Display", serif; font-size: 32px; font-weight: 600; color: var(--gold); text-align: center; margin-top: 10px; }
-    .quiz-nav { width: 100%; max-width: 700px; display: flex; align-items: center; justify-content: space-between; padding: 20px 0 0; }
-    .quiz-back-btn { display: flex; align-items: center; gap: 7px; background: none; border: none; color: var(--muted); font-size: 14px; cursor: pointer; transition: color 0.2s; font-family: "Inter", sans-serif; padding: 10px 0; }
-    .quiz-back-btn:disabled { opacity: 0.3; pointer-events: none; }
-    .quiz-next-btn { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--gold), #E6C200); border: none; color: #0A0A0A; font-size: 14px; font-weight: 600; padding: 13px 28px; border-radius: 9px; cursor: pointer; font-family: "Inter", sans-serif; }
-    .quiz-hub-link { text-align: center; padding: 14px 0 0; font-size: 13px; color: var(--muted); }
-    .quiz-hub-link a { color: var(--muted); text-decoration: none; }
-    .result-card { width: 100%; max-width: 700px; background: var(--card); border: 1px solid var(--border-g); border-radius: 18px; padding: 48px 40px; text-align: center; position: relative; overflow: hidden; }
-    .result-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-    .result-trophy { font-size: 48px; margin-bottom: 20px; }
-    .result-title { font-family: "Playfair Display", serif; font-size: 28px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .result-title em { font-style: italic; color: var(--gold); }
-    .result-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
-    .result-careers { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; text-align: left; }
-    .result-career-row { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px 16px; }
-    .result-career-icon { font-size: 20px; flex-shrink: 0; }
-    .result-career-name { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
-    .result-career-bar-wrap { width: 120px; }
-    .result-career-bar-bg { height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
-    .result-career-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #8B6914, var(--gold)); }
-    .result-career-pct { font-size: 13px; font-weight: 600; color: var(--gold); margin-top: 4px; text-align: right; }
-    .result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  </style>
+  <link rel="stylesheet" href="../assets/css/quiz-assessment.css"/>
 </head>
 <body>
 
@@ -98,76 +45,6 @@
 
 <div id="toast" class="toast"></div>
 <script src="../assets/js/nav.js"></script>
-<script>
-const questions = [
-  { type:"radio", text:"What type of work environment energizes you the most?", options:["Collaborative team environment","Independent remote work","Dynamic startup atmosphere","Structured corporate setting"] },
-  { type:"slider", text:"How much do you enjoy solving complex problems?", min:1, max:10, default:5, labels:["1 (Low)","10 (High)"] },
-  { type:"checkbox", text:"Which activities do you find most engaging?", hint:"Select all that apply:", options:["Creating and designing","Analyzing data and patterns","Leading and managing teams","Building and coding","Teaching and mentoring","Researching and exploring"] },
-  { type:"slider", text:"Rate your communication and presentation skills", min:1, max:10, default:5, labels:["1 (Low)","10 (High)"] },
-  { type:"checkbox", text:"What aspects of work give you the most satisfaction?", hint:"Select all that apply:", options:["Making a positive impact","Learning new things","Earning good money","Having flexibility","Being recognized","Working with technology"] },
-  { type:"radio", text:"Which subject area excites you the most?", options:["Technology & Engineering","Business & Finance","Arts & Design","Science & Research"] },
-  { type:"slider", text:"How comfortable are you with taking risks and uncertainty?", min:1, max:10, default:5, labels:["1 (Low)","10 (High)"] },
-  { type:"radio", text:"Where do you see yourself in 5 years?", options:["Leading a team or company","Deep technical expert","Creative director or designer","Researcher or academic"] }
-];
-let current = 0;
-const answers = new Array(questions.length).fill(null);
-
-function render() {
-  if (current >= questions.length) { showResult(); return; }
-  const q = questions[current];
-  const displayPct = Math.max(13, Math.round(((current+1)/questions.length)*100));
-  document.getElementById("q-counter").textContent = "Question "+(current+1)+" of "+questions.length;
-  document.getElementById("q-percent").textContent = displayPct+"% Complete";
-  document.getElementById("progress-fill").style.width = displayPct+"%";
-  let html = "<div class='q-text'>"+q.text+"</div>";
-  if (q.hint) html += "<div class='q-hint'>"+q.hint+"</div>";
-  if (q.type === "radio") {
-    html += "<div class='options-grid'>";
-    q.options.forEach((opt,i) => {
-      const sel = answers[current]===i?"selected":"";
-      html += "<label class='opt-label "+sel+"' onclick='selectRadio("+i+",this)'><div class='opt-circle'><div class='opt-circle-inner'></div></div>"+opt+"</label>";
-    });
-    html += "</div>";
-  } else if (q.type === "checkbox") {
-    const saved = Array.isArray(answers[current])?answers[current]:[];
-    html += "<div class='options-grid'>";
-    q.options.forEach((opt,i) => {
-      const sel = saved.includes(i)?"selected":"";
-      html += "<label class='opt-label "+sel+"' onclick='toggleCheck("+i+",this)'><div class='opt-square'><svg viewBox='0 0 24 24'><polyline points='20 6 9 17 4 12'/></svg></div>"+opt+"</label>";
-    });
-    html += "</div>";
-  } else if (q.type === "slider") {
-    const val = answers[current]!==null?answers[current]:q.default;
-    html += "<div class='slider-wrap'><input type='range' class='quiz-slider' id='quiz-slider' min='"+q.min+"' max='"+q.max+"' value='"+val+"' oninput='updateSlider(this.value)'/><div class='slider-labels'><span>"+q.labels[0]+"</span><span>"+q.labels[1]+"</span></div><div class='slider-val' id='slider-display'>"+val+"</div></div>";
-  }
-  document.getElementById("quiz-body").innerHTML = "<div class='q-card'>"+html+"</div><div class='quiz-nav'><button class='quiz-back-btn' onclick='goBack()' "+(current===0?"disabled":"")+">← Previous</button><button class='quiz-next-btn' onclick='goNext()'>"+(current===questions.length-1?"See Results":"Next")+" →</button></div><div class='quiz-hub-link'>← <a href='quiz.html'>Back to Quiz Hub</a></div>";
-}
-
-function selectRadio(i,el) { answers[current]=i; document.querySelectorAll(".opt-label").forEach(l=>l.classList.remove("selected")); el.classList.add("selected"); }
-function toggleCheck(i,el) { if(!Array.isArray(answers[current]))answers[current]=[]; const idx=answers[current].indexOf(i); if(idx===-1){answers[current].push(i);el.classList.add("selected");}else{answers[current].splice(idx,1);el.classList.remove("selected");} }
-function updateSlider(val) { answers[current]=parseInt(val); document.getElementById("slider-display").textContent=val; }
-function goNext() {
-  const q=questions[current];
-  if(q.type==="slider"&&answers[current]===null)answers[current]=q.default;
-  if(q.type==="radio"&&answers[current]===null){showToast("Please select an option to continue");return;}
-  current++; render();
-}
-function goBack() { if(current>0){current--;render();} }
-
-function showResult() {
-  document.getElementById("quiz-topbar").style.display="none";
-  document.getElementById("progress-wrap").style.display="none";
-  const careers=[{icon:"💻",name:"Frontend Engineer",score:91},{icon:"🎨",name:"Product Designer",score:78},{icon:"📊",name:"Data Analyst",score:63},{icon:"⚙️",name:"Backend Developer",score:54}];
-  let rows="";
-  careers.forEach(c=>{rows+="<div class='result-career-row'><div class='result-career-icon'>"+c.icon+"</div><div class='result-career-name'>"+c.name+"</div><div class='result-career-bar-wrap'><div class='result-career-bar-bg'><div class='result-career-bar-fill' style='width:"+c.score+"%'></div></div><div class='result-career-pct'>"+c.score+"% match</div></div></div>";});
-  // ✅ FIX: Check if logged in before going to dashboard
-  const isLoggedIn = !!localStorage.getItem("userEmail");
-  const dashBtn = isLoggedIn
-    ? "<a href='dashboard.html'><button class='btn-primary' style='padding:12px 24px;font-size:14px'>View Full Dashboard →</button></a>"
-    : "<a href='login.html'><button class='btn-primary' style='padding:12px 24px;font-size:14px'>Sign in to save results →</button></a>";
-  document.getElementById("quiz-body").innerHTML="<div class='result-card'><div class='result-trophy'>🎯</div><div class='result-title'>Your Best <em>Career Matches</em></div><div class='result-sub'>Based on your answers — here are your top career paths</div><div class='result-careers'>"+rows+"</div><div class='result-btns'>"+dashBtn+"<a href='quiz.html'><button class='btn-outline' style='padding:11px 22px;font-size:14px'>Retake Quiz</button></a></div></div><div class='quiz-hub-link' style='margin-top:20px'>← <a href='quiz.html'>Back to Quiz Hub</a></div>";
-}
-render();
-</script>
+<script src="../assets/js/quiz-assessment.js"></script>
 </body>
 </html>
