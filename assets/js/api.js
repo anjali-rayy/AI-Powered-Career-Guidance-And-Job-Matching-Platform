@@ -1,9 +1,3 @@
-/* ============================================================
-   PATHWAYAI — api.js
-   Shared API helper for all frontend pages.
-   Place this in: assets/js/api.js
-   ============================================================ */
-
 const API_URL = 'http://localhost:3000/api';
 
 // ── TOKEN HELPERS ──
