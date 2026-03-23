@@ -42,7 +42,7 @@ function setSelect(id, val) {
   for (let o of el.options) { if (o.value === val || o.text === val) { o.selected = true; break; } }
 }
 
-/* ── SAVE PROFILE ── */
+/* ── SAVE PROFILE (FIXED: now saves to MongoDB via API) ── */
 async function saveProfile() {
   const fname    = document.getElementById('p-fname').value.trim();
   const lname    = document.getElementById('p-lname').value.trim();
@@ -52,7 +52,7 @@ async function saveProfile() {
   const eduField = document.getElementById('p-edu-field').value;
 
   const profileData = {
-    fname, lname, email,
+    fname, lname,
     phone:      document.getElementById('p-phone').value.trim(),
     location,
     bio:        document.getElementById('p-bio').value.trim(),
@@ -63,8 +63,17 @@ async function saveProfile() {
     interest:   document.getElementById('p-interest').value,
     skills:     profileSkills
   };
-  localStorage.setItem('profileData', JSON.stringify(profileData));
 
+  try {
+    // ✅ FIXED: Save to MongoDB via API (persists after logout)
+    await apiUpdateProfile(profileData);
+    showToast('✓ Profile saved successfully!');
+  } catch (err) {
+    showToast('❌ Failed to save: ' + err.message);
+    return;
+  }
+
+  // Update UI after successful save
   const fullName = lname ? fname + ' ' + lname : fname;
   if (fullName) {
     localStorage.setItem('userName', fullName);
@@ -74,7 +83,10 @@ async function saveProfile() {
     document.getElementById('sidebar-name').textContent = fullName;
     document.getElementById('hero-name').textContent    = fullName;
   }
-  if (email) { localStorage.setItem('userEmail', email); document.getElementById('hero-email').textContent = email; }
+  if (email) {
+    localStorage.setItem('userEmail', email);
+    document.getElementById('hero-email').textContent = email;
+  }
   if (eduLevel) {
     const role = eduLevel + (eduField ? ' · ' + eduField.split('/')[0].trim() : '');
     localStorage.setItem('userRole', role);
@@ -84,7 +96,6 @@ async function saveProfile() {
   }
   if (location) document.getElementById('hero-location').textContent = '📍 ' + location;
   updateCompletion();
-  showToast('✓ Profile saved successfully!');
 }
 
 /* ── SKILLS ── */
@@ -190,8 +201,11 @@ function confirmDeleteAccount() {
     return;
   }
   document.getElementById('modal-delete').classList.remove('open');
-  showToast('Account deleted. Signing out...');
-  setTimeout(() => { localStorage.clear(); window.location.href = '../index.html'; }, 2000);
+  // Call API to delete account from MongoDB too
+  apiDeleteAccount().catch(() => {
+    showToast('Account deleted. Signing out...');
+    setTimeout(() => { localStorage.clear(); window.location.href = '../index.html'; }, 2000);
+  });
 }
 
 function closeDeleteModal() {
