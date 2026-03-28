@@ -254,3 +254,28 @@ ul { list-style: none; }
 
 .nav-drop-title { font-size: 13px; font-weight: 500; color: var(--text); }
 .nav-drop-sub   { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+
+/* Logo image fix */
+.logo-mark,
+.footer-logo-mark,
+.panel-logo-mark,
+.auth-logo {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.logo-mark img,
+.footer-logo-mark img,
+.panel-logo-mark img,
+.auth-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
