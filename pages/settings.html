@@ -11,13 +11,12 @@
   <link rel="stylesheet" href="../assets/css/dashboard.css" />
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <script>
-    // ✅ INSTANT auth guard
     if (!localStorage.getItem('authToken')) {
       window.location.replace('login.html');
     }
   </script>
   <style>
-    /* ══ SETTINGS LAYOUT ══ */
+    /* SETTINGS LAYOUT */
     .settings-layout { display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
     @media (max-width: 860px) { .settings-layout { grid-template-columns: 1fr; } }
 
@@ -43,7 +42,7 @@
     .s-form-grid .s-input, .s-form-grid .s-select { min-width: 0; width: 100%; }
     .settings-panel.active { display: flex; }
 
-    /* ══ FORM ══ */
+    /* FORM */
     .s-section-title { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
     @media (max-width: 600px) { .s-form-grid { grid-template-columns: 1fr; } }
     .s-form-group { display: flex; flex-direction: column; gap: 7px; }
@@ -60,7 +59,7 @@
     .s-select:focus { border-color: rgba(212,175,55,0.4); }
     .s-select option { background: #111; }
 
-    /* ══ TOGGLE ══ */
+    /* TOGGLE */
     .s-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); gap: 20px; }
     .s-toggle-row:last-child { border-bottom: none; }
     .s-toggle-info { flex: 1; }
@@ -75,18 +74,18 @@
     .toggle-switch input:checked + .toggle-track::after { transform: translateX(18px); background: var(--gold); }
     .toggle-switch input:disabled + .toggle-track { opacity: 0.5; cursor: not-allowed; }
 
-    /* ══ SAVE BAR ══ */
+    /* SAVE BAR */
     .s-save-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px 0 0; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; gap: 12px; }
     .s-save-hint { font-size: 12px; color: var(--subtle); }
 
-    /* ══ PASSWORD ══ */
+    /* PASSWORD */
     .s-pwd-wrap { position: relative; }
     .s-pwd-wrap .s-input { padding-right: 42px; }
     .s-pwd-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--subtle); cursor: pointer; display: grid; place-items: center; transition: color 0.2s; }
     .s-pwd-toggle:hover { color: var(--muted); }
     .s-pwd-toggle svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
 
-    /* ══ CONNECTED ACCOUNTS ══ */
+    /* CONNECTED ACCOUNTS */
     .s-account-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; }
     .s-account-row:last-child { border-bottom: none; }
     .s-account-icon { width: 36px; height: 36px; border-radius: 9px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); display: grid; place-items: center; flex-shrink: 0; }
@@ -100,11 +99,10 @@
     .s-connect-btn.connected { background: rgba(107,44,44,0.1); border-color: rgba(107,44,44,0.2); color: #CF6679; }
     .s-connect-btn.connected:hover { background: rgba(107,44,44,0.2); }
 
-    /* URL input for portfolio */
     .s-url-input-wrap { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
     .s-url-input-wrap .s-input { flex: 1; }
 
-    /* ══ PLAN CARD ══ */
+    /* PLAN CARD */
     .s-plan-card { background: linear-gradient(135deg, rgba(212,175,55,0.06) 0%, rgba(212,175,55,0.02) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 14px; padding: 24px; position: relative; overflow: hidden; }
     .s-plan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent); }
     .s-plan-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(212,175,55,0.3); background: rgba(212,175,55,0.08); font-size: 11px; font-weight: 600; color: #C9A227; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
@@ -115,7 +113,7 @@
     .s-plan-feat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); }
     .s-plan-feat::before { content: '✓'; color: var(--gold); font-weight: 700; font-size: 12px; }
 
-    /* ══ DANGER ZONE ══ */
+    /* DANGER ZONE */
     .danger-zone { background: rgba(107,44,44,0.06); border: 1px solid rgba(107,44,44,0.2); border-radius: 12px; padding: 18px 20px; }
     .danger-zone-title { font-size: 13px; font-weight: 600; color: #CF6679; margin-bottom: 6px; }
     .danger-zone-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
@@ -123,7 +121,7 @@
     .btn-danger { background: rgba(107,44,44,0.15); border: 1px solid rgba(107,44,44,0.3); color: #CF6679; font-size: 12.5px; font-weight: 500; padding: 8px 16px; border-radius: 7px; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; }
     .btn-danger:hover { background: rgba(107,44,44,0.28); }
 
-    /* ══ SESSIONS ══ */
+    /* SESSIONS */
     .s-session-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.04); transition: opacity 0.3s; }
     .s-session-row:last-child { border-bottom: none; }
     .s-session-row.revoked { opacity: 0.35; pointer-events: none; }
@@ -133,7 +131,7 @@
     .s-session-meta { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
     .s-session-this { font-size: 11px; background: rgba(76,175,112,0.1); border: 1px solid rgba(76,175,112,0.2); color: #4CAF70; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
 
-    /* ══ THEME ══ */
+    /* THEME */
     .s-theme-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 4px; }
     .s-theme-opt { border-radius: 10px; border: 2px solid rgba(255,255,255,0.08); padding: 12px; cursor: pointer; transition: border-color 0.25s, background 0.25s; text-align: center; }
     .s-theme-opt.selected { border-color: var(--gold); background: rgba(212,175,55,0.06); }
@@ -141,11 +139,11 @@
     .s-theme-name { font-size: 12px; color: var(--muted); transition: color 0.25s; }
     .s-theme-opt.selected .s-theme-name { color: var(--gold); }
 
-    /* ══ NOTIFICATIONS ══ */
+    /* NOTIFICATIONS */
     .s-notif-section { margin-bottom: 20px; }
     .s-notif-section-title { font-size: 11px; font-weight: 600; color: var(--subtle); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
 
-    /* ══ PRIVACY RADIO ══ */
+    /* PRIVACY RADIO */
     .s-radio-group { display: flex; flex-direction: column; gap: 10px; }
     .s-radio-opt { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.07); cursor: pointer; transition: border-color 0.2s, background 0.2s; }
     .s-radio-opt:hover { border-color: rgba(212,175,55,0.2); background: rgba(212,175,55,0.03); }
@@ -156,7 +154,7 @@
     .s-radio-label { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
     .s-radio-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-    /* ══ COMPACT SIDEBAR ══ */
+    /* COMPACT SIDEBAR */
     body.compact-sidebar .sidebar { width: 64px; }
     body.compact-sidebar .sidebar .sidebar-logo span,
     body.compact-sidebar .sidebar .sidebar-logo { justify-content: center; }
@@ -173,15 +171,15 @@
     body.compact-sidebar .sidebar-user { justify-content: center; padding: 12px 8px; }
     body.compact-sidebar .dash-main { margin-left: 0; }
 
-    /* ══ MIDNIGHT THEME ══ */
+    /* MIDNIGHT THEME */
     body.theme-midnight { --bg: #060B18; --bg2: #080E1F; --card: #0D1526; --card2: #111B30; }
     body.theme-midnight .sidebar { background: #080E1F; }
     body.theme-midnight .dash-topbar { background: rgba(6,11,24,0.93); }
 
-    /* ══ REDUCE ANIMATIONS ══ */
+    /* REDUCE ANIMATIONS */
     body.no-animations *, body.no-animations *::before, body.no-animations *::after { transition: none !important; animation: none !important; }
 
-    /* ══ 2FA MODAL ══ */
+    /* 2FA MODAL */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 5000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.2s; }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal-box { background: #111; border: 1px solid rgba(212,175,55,0.2); border-radius: 16px; padding: 28px; width: 380px; max-width: 90vw; position: relative; }
@@ -193,12 +191,12 @@
     .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
     .qr-placeholder { width: 120px; height: 120px; background: white; border-radius: 8px; margin: 0 auto 16px; display: grid; place-items: center; font-size: 11px; color: #333; text-align: center; padding: 8px; }
 
-    /* ══ EXPORT MODAL ══ */
+    /* EXPORT MODAL */
     .export-progress { margin-top: 16px; }
     .export-bar-bg { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-top: 8px; }
     .export-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
 
-    /* ══ CONFIRM MODAL ══ */
+    /* CONFIRM MODAL */
     .confirm-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 6000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
     .confirm-modal.open { display: flex; }
     .confirm-box { background: #111; border: 1px solid rgba(107,44,44,0.3); border-radius: 14px; padding: 24px; width: 360px; max-width: 90vw; }
@@ -207,13 +205,12 @@
     .confirm-input { margin-bottom: 16px; }
     .confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
 
-    /* ══ NOTIFICATION BADGE (live) ══ */
     .notif-count { font-size: 10px; background: var(--gold); color: #0A0A0A; border-radius: 4px; padding: 1px 5px; font-weight: 700; margin-left: auto; }
   </style>
 </head>
 <body>
 
-<!-- ═══ 2FA MODAL ═══ -->
+<!-- 2FA MODAL -->
 <div class="modal-overlay" id="modal-2fa">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('modal-2fa')">×</button>
@@ -236,7 +233,7 @@
   </div>
 </div>
 
-<!-- ═══ SMS MODAL ═══ -->
+<!-- SMS MODAL -->
 <div class="modal-overlay" id="modal-sms">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('modal-sms')">×</button>
@@ -257,7 +254,7 @@
   </div>
 </div>
 
-<!-- ═══ EXPORT MODAL ═══ -->
+<!-- EXPORT MODAL -->
 <div class="modal-overlay" id="modal-export">
   <div class="modal-box" style="text-align:center">
     <div class="modal-title" style="margin-bottom:8px">Exporting Your Data</div>
@@ -267,7 +264,6 @@
       <div class="export-bar-bg"><div class="export-bar-fill" id="export-bar"></div></div>
     </div>
     <div id="export-done" style="display:none;margin-top:16px">
-      <div style="font-size:28px;margin-bottom:8px">✅</div>
       <div style="font-size:13px;color:#4CAF70;font-weight:500">Export ready!</div>
       <div style="font-size:12px;color:var(--muted);margin-top:4px">A download link has been sent to your email.</div>
       <button class="btn-primary" style="margin-top:16px;padding:9px 20px;font-size:13px" onclick="closeModal('modal-export')">Done</button>
@@ -275,10 +271,10 @@
   </div>
 </div>
 
-<!-- ═══ CONFIRM DELETE MODAL ═══ -->
+<!-- CONFIRM DELETE MODAL -->
 <div class="confirm-modal" id="modal-delete">
   <div class="confirm-box">
-    <div class="confirm-title">⚠ Delete Account</div>
+    <div class="confirm-title">Delete Account</div>
     <div class="confirm-desc">This will permanently delete your account, profile, career history, and all data. This cannot be undone.</div>
     <div class="confirm-input">
       <label class="s-label" style="margin-bottom:6px;display:block">Type <strong style="color:#CF6679">DELETE</strong> to confirm</label>
@@ -291,7 +287,7 @@
   </div>
 </div>
 
-<!-- ═══ CONFIRM DEACTIVATE MODAL ═══ -->
+<!-- CONFIRM DEACTIVATE MODAL -->
 <div class="confirm-modal" id="modal-deactivate">
   <div class="confirm-box">
     <div class="confirm-title">Deactivate Account</div>
@@ -305,13 +301,11 @@
 
 <div class="dash-root" id="dash-root">
 
-  <!-- ════ SIDEBAR ════ -->
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="main-sidebar">
     <div class="sidebar-logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-        </svg>
+        <img src="../assets/images/logo.png" alt="PathwayAI Logo">
       </div>
       <span>PathwayAI</span>
     </div>
@@ -376,7 +370,7 @@
     </div>
   </aside>
 
-  <!-- ════ MAIN ════ -->
+  <!-- MAIN -->
   <div class="dash-main">
     <header class="dash-topbar">
       <div class="topbar-left"><h1>My <em>Settings</em></h1></div>
@@ -417,7 +411,7 @@
     <div class="dash-body">
       <div class="settings-layout">
 
-        <!-- ── TAB NAV ── -->
+        <!-- TAB NAV -->
         <div class="settings-tabs">
           <div class="settings-tab-label">Account</div>
           <button class="settings-tab active" onclick="switchTab('account',this)">
@@ -450,24 +444,23 @@
           </button>
         </div>
 
-        <!-- ── PANELS ── -->
+        <!-- PANELS -->
         <div>
 
-          <!-- ═ ACCOUNT INFO ═ -->
+          <!-- ACCOUNT INFO -->
           <div class="settings-panel active" id="panel-account">
             <div class="d-card">
               <div class="d-card-head">
                 <div><div class="d-card-title">Account Information</div><div class="d-card-sub">Update your basic account details</div></div>
               </div>
               <div class="d-card-body">
-                <!-- Profile Avatar Row -->
                 <div style="display:flex;align-items:center;gap:18px;padding:4px 0 22px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:20px">
                   <div id="settings-av" style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(212,175,55,0.08));border:2px solid rgba(212,175,55,0.3);display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--gold);flex-shrink:0">SA</div>
                   <div style="flex:1">
                     <div id="settings-av-name" style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px">User</div>
                     <div id="settings-av-email" style="font-size:12.5px;color:var(--muted);margin-bottom:10px">—</div>
                     <button onclick="showToast('Photo upload coming soon!')" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--muted);font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif;transition:all 0.2s" onmouseover="this.style.borderColor='rgba(212,175,55,0.3)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='var(--muted)'">
-                      📷 Change Photo
+                      Change Photo
                     </button>
                   </div>
                 </div>
@@ -528,7 +521,7 @@
               </div>
             </div>
             <div class="danger-zone">
-              <div class="danger-zone-title">⚠ Danger Zone</div>
+              <div class="danger-zone-title">Danger Zone</div>
               <div class="danger-zone-sub">These actions are permanent and cannot be undone. Please be absolutely sure before proceeding.</div>
               <div class="danger-actions">
                 <button class="btn-danger" onclick="startExport()">Export My Data</button>
@@ -538,7 +531,7 @@
             </div>
           </div>
 
-          <!-- ═ PASSWORD & SECURITY ═ -->
+          <!-- PASSWORD & SECURITY -->
           <div class="settings-panel" id="panel-security">
             <div class="d-card">
               <div class="d-card-head">
@@ -623,7 +616,7 @@
                     <div class="s-toggle-desc">Get notified when a new device logs into your account</div>
                   </div>
                   <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-login-alert" onchange="saveToggle('login-alert', this.checked); showToast(this.checked ? '✓ Login alerts enabled!' : 'Login alerts disabled')"/>
+                    <input type="checkbox" id="toggle-login-alert" onchange="saveToggle('login-alert', this.checked); showToast(this.checked ? 'Login alerts enabled!' : 'Login alerts disabled')"/>
                     <span class="toggle-track"></span>
                   </label>
                 </div>
@@ -631,15 +624,13 @@
             </div>
           </div>
 
-          <!-- ═ CONNECTED ACCOUNTS ═ -->
+          <!-- CONNECTED ACCOUNTS -->
           <div class="settings-panel" id="panel-connected">
             <div class="d-card">
               <div class="d-card-head">
                 <div><div class="d-card-title">Connected Accounts</div><div class="d-card-sub">Link external accounts to enrich your profile</div></div>
               </div>
               <div class="d-card-body">
-
-                <!-- LinkedIn -->
                 <div class="s-account-row" id="row-linkedin">
                   <div class="s-account-icon"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
                   <div class="s-account-info">
@@ -648,8 +639,6 @@
                   </div>
                   <button class="s-connect-btn" id="btn-linkedin" onclick="toggleConnect('linkedin', 'linkedin.com/in/user')">Connect</button>
                 </div>
-
-                <!-- GitHub -->
                 <div class="s-account-row" id="row-github">
                   <div class="s-account-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
                   <div class="s-account-info">
@@ -658,8 +647,6 @@
                   </div>
                   <button class="s-connect-btn" id="btn-github" onclick="toggleConnect('github', 'github.com/user')">Connect</button>
                 </div>
-
-                <!-- Portfolio -->
                 <div class="s-account-row" id="row-portfolio">
                   <div class="s-account-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
                   <div class="s-account-info">
@@ -674,8 +661,6 @@
                     <button class="btn-primary" style="padding:9px 16px;font-size:13px;white-space:nowrap" onclick="savePortfolio()">Save URL</button>
                   </div>
                 </div>
-
-                <!-- Google -->
                 <div class="s-account-row" id="row-google">
                   <div class="s-account-icon"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.5C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></div>
                   <div class="s-account-info">
@@ -684,12 +669,11 @@
                   </div>
                   <button class="s-connect-btn" id="btn-google" onclick="toggleConnect('google', 'google.com/account')">Connect</button>
                 </div>
-
               </div>
             </div>
           </div>
 
-          <!-- ═ NOTIFICATIONS ═ -->
+          <!-- NOTIFICATIONS -->
           <div class="settings-panel" id="panel-notifications">
             <div class="d-card">
               <div class="d-card-head">
@@ -745,7 +729,7 @@
             </div>
           </div>
 
-          <!-- ═ PRIVACY ═ -->
+          <!-- PRIVACY -->
           <div class="settings-panel" id="panel-privacy">
             <div class="d-card">
               <div class="d-card-head">
@@ -791,13 +775,13 @@
                 </div>
                 <div class="s-save-bar">
                   <span class="s-save-hint">Your data is never sold to third parties</span>
-                  <button class="btn-primary" style="padding:9px 20px;font-size:13px" onclick="showToast('✓ Privacy settings saved!')">Save Settings →</button>
+                  <button class="btn-primary" style="padding:9px 20px;font-size:13px" onclick="showToast('Privacy settings saved!')">Save Settings →</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- ═ APPEARANCE ═ -->
+          <!-- APPEARANCE -->
           <div class="settings-panel" id="panel-appearance">
             <div class="d-card">
               <div class="d-card-head">
@@ -815,7 +799,6 @@
                     <div class="s-theme-name">Midnight</div>
                   </div>
                 </div>
-
                 <div style="margin-top:24px">
                   <div class="s-section-title">Interface</div>
                   <div class="s-toggle-row">
@@ -828,7 +811,7 @@
                   </div>
                   <div class="s-toggle-row">
                     <div class="s-toggle-info"><div class="s-toggle-name">Show Career Score on Dashboard</div><div class="s-toggle-desc">Display your readiness score prominently on the dashboard</div></div>
-                    <label class="toggle-switch"><input type="checkbox" id="toggle-career-score" onchange="saveToggle('career-score', this.checked); showToast(this.checked ? '✓ Career score will show on dashboard' : 'Career score hidden from dashboard')"/><span class="toggle-track"></span></label>
+                    <label class="toggle-switch"><input type="checkbox" id="toggle-career-score" onchange="saveToggle('career-score', this.checked); showToast(this.checked ? 'Career score will show on dashboard' : 'Career score hidden from dashboard')"/><span class="toggle-track"></span></label>
                   </div>
                 </div>
                 <div class="s-save-bar">
@@ -839,10 +822,10 @@
             </div>
           </div>
 
-          <!-- ═ PLAN & BILLING ═ -->
+          <!-- PLAN & BILLING -->
           <div class="settings-panel" id="panel-plan">
             <div class="s-plan-card">
-              <div class="s-plan-badge">★ Current Plan — Free</div>
+              <div class="s-plan-badge">Current Plan — Free</div>
               <div class="s-plan-title">Upgrade to <em>Pro</em></div>
               <div class="s-plan-desc">Unlock unlimited career matches, AI resume builder, priority job listings, and advanced skill gap analysis.</div>
               <div class="s-plan-features">
@@ -856,9 +839,9 @@
               <div style="display:flex;gap:12px;flex-wrap:wrap">
                 <button class="btn-primary" onclick="handleUpgrade('monthly')">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  Monthly — ₹299/mo
+                  Monthly — Rs.299/mo
                 </button>
-                <button class="btn-outline" style="padding:13px 20px;font-size:13px" onclick="handleUpgrade('yearly')">Yearly — ₹2,499/yr <span style="font-size:11px;color:var(--gold);margin-left:4px">Save 30%</span></button>
+                <button class="btn-outline" style="padding:13px 20px;font-size:13px" onclick="handleUpgrade('yearly')">Yearly — Rs.2,499/yr <span style="font-size:11px;color:var(--gold);margin-left:4px">Save 30%</span></button>
               </div>
             </div>
             <div class="d-card">
@@ -867,7 +850,6 @@
               </div>
               <div class="d-card-body">
                 <div style="text-align:center;padding:30px 0">
-                  <div style="font-size:28px;margin-bottom:10px">🧾</div>
                   <div style="font-size:14px;color:var(--muted)">No billing history yet</div>
                   <div style="font-size:12px;color:var(--subtle);margin-top:4px">Invoices will appear here after your first payment</div>
                 </div>
@@ -875,7 +857,7 @@
             </div>
           </div>
 
-          <!-- ═ ACTIVE SESSIONS ═ -->
+          <!-- ACTIVE SESSIONS -->
           <div class="settings-panel" id="panel-sessions">
             <div class="d-card">
               <div class="d-card-head">
@@ -908,37 +890,30 @@
                 </div>
                 <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:10px;flex-wrap:wrap">
                   <button class="btn-danger" onclick="revokeAllSessions()">Sign Out All Other Sessions</button>
-                  <button class="btn-outline" style="padding:8px 16px;font-size:12.5px" onclick="refreshSessions()">↻ Refresh</button>
+                  <button class="btn-outline" style="padding:8px 16px;font-size:12.5px" onclick="refreshSessions()">Refresh</button>
                 </div>
               </div>
             </div>
           </div>
 
-        </div><!-- end panels -->
-      </div><!-- end settings-layout -->
-    </div><!-- end dash-body -->
-  </div><!-- end dash-main -->
-</div><!-- end dash-root -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="toast" class="toast"></div>
 <script src="../assets/js/api.js"></script>
 <script src="../assets/js/settings-apply.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script>
-/* ════════════════════════════════════════
-   PATHWAYAI SETTINGS — FULLY FUNCTIONAL
-════════════════════════════════════════ */
-
-// ── STORAGE HELPERS ──
 const S = {
   get: (k, def) => { try { const v = localStorage.getItem('settings_' + k); return v === null ? def : JSON.parse(v); } catch(e){ return def; } },
   set: (k, v)   => localStorage.setItem('settings_' + k, JSON.stringify(v)),
 };
 
-// ── LOAD FRESH DATA FROM MONGODB ──
 requireAuth().then(function() {
 
-// ── INIT USER ──
 (function initUser() {
   const userName  = localStorage.getItem('userName')  || '';
   const userEmail = localStorage.getItem('userEmail') || '';
@@ -953,7 +928,6 @@ requireAuth().then(function() {
   document.getElementById('sidebar-role').textContent = userRole;
   document.getElementById('topbar-av').textContent    = initials;
 
-  // Update settings page avatar
   const settingsAv = document.getElementById('settings-av');
   const settingsAvName = document.getElementById('settings-av-name');
   const settingsAvEmail = document.getElementById('settings-av-email');
@@ -961,7 +935,6 @@ requireAuth().then(function() {
   if (settingsAvName) settingsAvName.textContent = userName || 'User';
   if (settingsAvEmail) settingsAvEmail.textContent = userEmail || '—';
 
-  // Pre-fill account form
   const p = JSON.parse(localStorage.getItem('profileData') || '{}');
   const n = userName.split(' ');
   document.getElementById('acc-fname').value = p.fname || n[0] || '';
@@ -969,16 +942,13 @@ requireAuth().then(function() {
   document.getElementById('acc-email').value = p.email || userEmail || '';
   document.getElementById('acc-phone').value = p.phone || '';
 
-  // Detect session device
   const ua = navigator.userAgent;
   const device = /iPhone/i.test(ua) ? 'iPhone · Safari' : /Android/i.test(ua) ? 'Android · Chrome' : /Mac/i.test(ua) ? 'Mac · Safari' : 'Windows PC · Chrome';
   document.getElementById('session-device-name').textContent = device + ' (current)';
   document.getElementById('session-device-meta').textContent = 'Active now · This session';
 })();
 
-// ── LOAD ALL SAVED SETTINGS ──
 (function loadAllSettings() {
-  // Appearance
   const theme = S.get('theme', 'dark');
   applyTheme(theme, document.getElementById('theme-' + theme), true);
 
@@ -991,38 +961,31 @@ requireAuth().then(function() {
   if (noAnim) document.body.classList.add('no-animations');
 
   document.getElementById('toggle-career-score').checked = S.get('career-score', true);
-
-  // Security toggles
   document.getElementById('toggle-totp').checked        = S.get('2fa-totp', false);
   document.getElementById('toggle-sms').checked         = S.get('2fa-sms', false);
   document.getElementById('toggle-login-alert').checked = S.get('login-alert', true);
 
-  // Notifications
   const notifDefaults = { 'job-matches': true, 'career-updates': true, 'app-reminders': false, 'skill-alerts': true, 'courses': false, 'profile-tips': true, 'newsletter': false };
   Object.entries(notifDefaults).forEach(([k, def]) => {
     const el = document.getElementById('n-' + k);
     if (el) el.checked = S.get('notif-' + k, def);
   });
 
-  // Privacy toggles
   const privacyDefaults = { 'personalized': true, 'show-employers': true, 'analytics': false, 'open-to-work': true };
   Object.entries(privacyDefaults).forEach(([k, def]) => {
     const el = document.getElementById('p-' + k);
     if (el) el.checked = S.get('privacy-' + k, def);
   });
 
-  // Visibility radio
   const vis = S.get('visibility', 'public');
   selectVisibility(vis, true);
 
-  // Connected accounts
   ['linkedin','github','portfolio','google'].forEach(name => {
     const connected = S.get('connected-' + name, name === 'github');
     const handle    = S.get('connected-' + name + '-handle', name === 'github' ? 'github.com/user' : '');
     if (connected) setConnected(name, handle, true);
   });
 
-  // Account selects
   const accSettings = S.get('account-settings', {});
   if (accSettings.lang)     setSelectByText('acc-lang', accSettings.lang);
   if (accSettings.tz)       setSelectByText('acc-tz', accSettings.tz);
@@ -1030,9 +993,8 @@ requireAuth().then(function() {
   if (accSettings.currency) setSelectByText('acc-currency', accSettings.currency);
 })();
 
-}); // end requireAuth().then
+});
 
-// ── TAB SWITCH ──
 function switchTab(id, btn) {
   document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
@@ -1040,7 +1002,6 @@ function switchTab(id, btn) {
   document.getElementById('panel-' + id).classList.add('active');
 }
 
-// ── AVATAR MENU ──
 function toggleAvatarMenu() {
   const menu = document.getElementById('avatar-menu');
   menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
@@ -1053,13 +1014,11 @@ document.addEventListener('click', function(e) {
   if (menu && !menu.contains(e.target) && !av.contains(e.target)) menu.style.display = 'none';
 });
 
-// ── SIGN OUT ──
 function doSignOut(e) {
   e.preventDefault();
   if (confirm('Sign out of PathwayAI?')) { signOut(); }
 }
 
-// ── ACCOUNT SAVE ──
 function saveAccount() {
   const fname    = document.getElementById('acc-fname').value.trim();
   const lname    = document.getElementById('acc-lname').value.trim();
@@ -1070,14 +1029,12 @@ function saveAccount() {
   const country  = document.getElementById('acc-country').value;
   const currency = document.getElementById('acc-currency').value;
 
-  // Validate email
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     document.getElementById('acc-email').classList.add('error');
     showToast('Please enter a valid email address.'); return;
   }
   document.getElementById('acc-email').classList.remove('error');
 
-  // Save to profile
   const p = JSON.parse(localStorage.getItem('profileData') || '{}');
   Object.assign(p, { fname, lname, email, phone });
   localStorage.setItem('profileData', JSON.stringify(p));
@@ -1095,21 +1052,12 @@ function saveAccount() {
   if (email) localStorage.setItem('userEmail', email);
 
   const hint = document.getElementById('acc-saved-hint');
-  hint.textContent = '✓ Saved at ' + new Date().toLocaleTimeString();
+  hint.textContent = 'Saved at ' + new Date().toLocaleTimeString();
   hint.style.color = '#4CAF70';
   setTimeout(() => { hint.textContent = 'Changes are saved to your browser'; hint.style.color = ''; }, 3000);
-  // Update settings page avatar too
-  const settingsAv = document.getElementById('settings-av');
-  const settingsAvName = document.getElementById('settings-av-name');
-  const settingsAvEmail = document.getElementById('settings-av-email');
-  if (settingsAv && full.trim()) settingsAv.textContent = full.trim().split(' ').length >= 2 ? (full[0] + full.split(' ')[1][0]).toUpperCase() : full.slice(0,2).toUpperCase();
-  if (settingsAvName && full.trim()) settingsAvName.textContent = full;
-  if (settingsAvEmail && email) settingsAvEmail.textContent = email;
-
-  showToast('✓ Account info saved!');
+  showToast('Account info saved!');
 }
 
-// ── PASSWORD ──
 function togglePwdField(id, btn) {
   const inp = document.getElementById(id);
   const hidden = inp.type === 'password';
@@ -1126,7 +1074,7 @@ function checkPwdStrength(val) {
   if (/[0-9]/.test(val)) score++;
   if (/[^A-Za-z0-9]/.test(val)) score++;
   const colors = ['#CF6679','#E69C4A','#C9A227','#4CAF70'];
-  const labels = ['Weak — add uppercase, numbers, symbols','Fair — getting better!','Good — almost there','Strong ✓'];
+  const labels = ['Weak — add uppercase, numbers, symbols','Fair — getting better!','Good — almost there','Strong'];
   ['str1','str2','str3','str4'].forEach((id, i) => {
     document.getElementById(id).style.background = i < score ? colors[score-1] : 'rgba(255,255,255,0.08)';
   });
@@ -1141,34 +1089,32 @@ function checkConfirm() {
   const el = document.getElementById('confirm-match');
   if (!cf) { el.style.display = 'none'; return; }
   el.style.display = 'block';
-  if (nw === cf) { el.textContent = '✓ Passwords match'; el.style.color = '#4CAF70'; }
-  else           { el.textContent = '✗ Passwords do not match'; el.style.color = '#CF6679'; }
+  if (nw === cf) { el.textContent = 'Passwords match'; el.style.color = '#4CAF70'; }
+  else           { el.textContent = 'Passwords do not match'; el.style.color = '#CF6679'; }
 }
 
 async function changePassword() {
   const cur = document.getElementById('pwd-current').value;
   const nw  = document.getElementById('pwd-new').value;
   const cf  = document.getElementById('pwd-confirm').value;
-  if (!cur)        { showToast('Please enter your current password.'); return; }
-  if (!nw)         { showToast('Please enter a new password.'); return; }
+  if (!cur)          { showToast('Please enter your current password.'); return; }
+  if (!nw)           { showToast('Please enter a new password.'); return; }
   if (nw.length < 8) { showToast('Password must be at least 8 characters.'); return; }
-  if (nw !== cf)   { showToast('New passwords do not match!'); return; }
-  // Simulate save
-  showToast('✓ Password updated successfully!');
+  if (nw !== cf)     { showToast('New passwords do not match!'); return; }
+  showToast('Password updated successfully!');
   ['pwd-current','pwd-new','pwd-confirm'].forEach(id => document.getElementById(id).value = '');
   checkPwdStrength('');
   document.getElementById('confirm-match').style.display = 'none';
 }
 
-// ── 2FA ──
 function handle2FAToggle(type, checkbox) {
   if (checkbox.checked) {
     if (type === 'totp') openModal('modal-2fa');
     if (type === 'sms')  openModal('modal-sms');
-    checkbox.checked = false; // will be set to true after verification
+    checkbox.checked = false;
   } else {
     S.set('2fa-' + type, false);
-    showToast('✓ ' + (type === 'totp' ? 'Authenticator' : 'SMS') + ' 2FA disabled.');
+    showToast((type === 'totp' ? 'Authenticator' : 'SMS') + ' 2FA disabled.');
   }
 }
 
@@ -1178,7 +1124,7 @@ function verify2FA() {
   S.set('2fa-totp', true);
   document.getElementById('toggle-totp').checked = true;
   closeModal('modal-2fa');
-  showToast('✓ Authenticator 2FA enabled!');
+  showToast('Authenticator 2FA enabled!');
   document.getElementById('totp-code').value = '';
 }
 
@@ -1197,19 +1143,18 @@ function sendSMSCode() {
     S.set('2fa-sms', true);
     document.getElementById('toggle-sms').checked = true;
     closeModal('modal-sms');
-    showToast('✓ SMS 2FA enabled!');
+    showToast('SMS 2FA enabled!');
     smsSent = false;
     document.getElementById('sms-code-wrap').style.display = 'none';
     document.getElementById('sms-btn').textContent = 'Send Code';
   }
 }
 
-// ── CONNECTED ACCOUNTS ──
 function setConnected(name, handle, silent) {
   const statusEl = document.getElementById('status-' + name);
   const btnEl    = document.getElementById('btn-' + name);
   if (!statusEl || !btnEl) return;
-  statusEl.textContent = '● Connected · ' + handle;
+  statusEl.textContent = 'Connected · ' + handle;
   statusEl.className   = 's-account-status connected';
   btnEl.textContent    = 'Disconnect';
   btnEl.className      = 's-connect-btn connected';
@@ -1231,11 +1176,11 @@ function toggleConnect(name, handle) {
   if (connected) {
     if (confirm('Disconnect ' + name.charAt(0).toUpperCase() + name.slice(1) + '?')) {
       setDisconnected(name);
-      showToast('✓ ' + name.charAt(0).toUpperCase() + name.slice(1) + ' disconnected.');
+      showToast(name.charAt(0).toUpperCase() + name.slice(1) + ' disconnected.');
     }
   } else {
     setConnected(name, handle);
-    showToast('✓ ' + name.charAt(0).toUpperCase() + name.slice(1) + ' connected!');
+    showToast(name.charAt(0).toUpperCase() + name.slice(1) + ' connected!');
   }
 }
 
@@ -1245,7 +1190,7 @@ function togglePortfolio() {
     if (confirm('Disconnect Portfolio Website?')) {
       setDisconnected('portfolio');
       document.getElementById('portfolio-url-wrap').style.display = 'none';
-      showToast('✓ Portfolio disconnected.');
+      showToast('Portfolio disconnected.');
     }
   } else {
     document.getElementById('portfolio-url-wrap').style.display = 'block';
@@ -1261,26 +1206,22 @@ function savePortfolio() {
   const display = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
   setConnected('portfolio', display);
   document.getElementById('portfolio-url-wrap').style.display = 'none';
-  showToast('✓ Portfolio connected!');
+  showToast('Portfolio connected!');
 }
 
-// ── NOTIFICATIONS ──
-function saveNotif(key, val) {
-  S.set('notif-' + key, val);
-}
+function saveNotif(key, val) { S.set('notif-' + key, val); }
 
 function saveAllNotifs() {
   ['job-matches','career-updates','app-reminders','skill-alerts','courses','profile-tips','newsletter'].forEach(k => {
     const el = document.getElementById('n-' + k);
     if (el) S.set('notif-' + k, el.checked);
   });
-  showToast('✓ All notification preferences saved!');
+  showToast('All notification preferences saved!');
 }
 
-// ── PRIVACY ──
 function savePrivacy(key, val) {
   S.set('privacy-' + key, val);
-  showToast('✓ Privacy setting updated.');
+  showToast('Privacy setting updated.');
 }
 
 function selectVisibility(val, silent) {
@@ -1288,14 +1229,12 @@ function selectVisibility(val, silent) {
     document.getElementById('vis-' + v).classList.toggle('selected', v === val);
   });
   S.set('visibility', val);
-  if (!silent) showToast('✓ Visibility set to: ' + val.charAt(0).toUpperCase() + val.slice(1));
+  if (!silent) showToast('Visibility set to: ' + val.charAt(0).toUpperCase() + val.slice(1));
 }
 
-// ── APPEARANCE ──
 function applyTheme(theme, el, silent) {
   document.querySelectorAll('.s-theme-opt').forEach(o => o.classList.remove('selected'));
   if (el) el.classList.add('selected');
-
   document.body.classList.remove('theme-midnight');
   if (theme === 'midnight') {
     document.body.classList.add('theme-midnight');
@@ -1310,13 +1249,13 @@ function applyTheme(theme, el, silent) {
     document.documentElement.style.setProperty('--card2', '#161616');
   }
   S.set('theme', theme);
-  if (!silent) showToast('✓ Theme applied site-wide! Changes visible on all pages.');
+  if (!silent) showToast('Theme applied site-wide!');
 }
 
 function applyCompact(checked) {
   document.body.classList.toggle('compact-sidebar', checked);
   S.set('compact', checked);
-  showToast(checked ? '✓ Compact sidebar enabled on all pages!' : '✓ Full sidebar restored on all pages!');
+  showToast(checked ? 'Compact sidebar enabled!' : 'Full sidebar restored!');
 }
 
 function applyAnimations(checked) {
@@ -1333,12 +1272,10 @@ function applyAnimations(checked) {
     if (s) s.remove();
   }
   S.set('no-animations', checked);
-  showToast(checked ? '✓ Animations reduced site-wide!' : '✓ Animations restored site-wide!');
+  showToast(checked ? 'Animations reduced!' : 'Animations restored!');
 }
 
-function saveToggle(key, val) {
-  S.set(key, val);
-}
+function saveToggle(key, val) { S.set(key, val); }
 
 function saveAppearance() {
   const theme   = S.get('theme', 'dark');
@@ -1349,17 +1286,16 @@ function saveAppearance() {
   S.set('compact', compact);
   S.set('no-animations', noAnim);
   S.set('career-score', score);
-  showToast('✓ All appearance preferences saved! Applied across all pages.');
+  showToast('All appearance preferences saved!');
 }
 
-// ── SESSIONS ──
 function revokeSession(id) {
   const row = document.getElementById(id);
   if (!row) return;
   row.classList.add('revoked');
   row.querySelector('.s-connect-btn').textContent = 'Revoked';
   row.querySelector('.s-session-meta').textContent += ' · Revoked';
-  showToast('✓ Session revoked successfully.');
+  showToast('Session revoked successfully.');
 }
 
 function revokeAllSessions() {
@@ -1368,7 +1304,7 @@ function revokeAllSessions() {
     const row = document.getElementById(id);
     if (row && !row.classList.contains('revoked')) revokeSession(id);
   });
-  showToast('✓ All other sessions signed out!');
+  showToast('All other sessions signed out!');
 }
 
 function refreshSessions() {
@@ -1379,7 +1315,6 @@ function refreshSessions() {
   showToast('Sessions refreshed.');
 }
 
-// ── EXPORT DATA ──
 function startExport() {
   openModal('modal-export');
   const bar    = document.getElementById('export-bar');
@@ -1409,16 +1344,15 @@ function startExport() {
   setTimeout(run, 300);
 }
 
-// ── ACCOUNT DELETION / DEACTIVATION ──
 async function confirmDelete() {
   const val = document.getElementById('delete-confirm-input').value.trim();
   if (val !== 'DELETE') { showToast('Type DELETE in all caps to confirm.'); return; }
   document.getElementById('modal-delete').classList.remove('open');
-  showToast('Deleting account from database...');
+  showToast('Deleting account...');
   try {
-    await apiDeleteAccount(); // deletes from MongoDB + clears localStorage
+    await apiDeleteAccount();
   } catch(err) {
-    showToast('✗ ' + err.message);
+    showToast(err.message);
   }
 }
 
@@ -1433,23 +1367,19 @@ function deactivateAccount() {
   setTimeout(() => { localStorage.clear(); window.location.href = '../index.html'; }, 2000);
 }
 
-// ── UPGRADE ──
 function handleUpgrade(plan) {
-  showToast('Redirecting to payment for ' + (plan === 'monthly' ? '₹299/mo' : '₹2,499/yr') + ' Pro plan...');
+  showToast('Redirecting to payment for ' + (plan === 'monthly' ? 'Rs.299/mo' : 'Rs.2,499/yr') + ' Pro plan...');
 }
 
-// ── MODALS ──
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', function(e) {
     if (e.target === overlay) overlay.classList.remove('open');
   });
 });
 
-// ── HELPERS ──
 function setSelectByText(id, text) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -1457,23 +1387,15 @@ function setSelectByText(id, text) {
 }
 
 function signOut() {
-  // ✅ Only clear session keys — keep profile data & settings for next login
   const keysToKeep = [];
   const allKeys = Object.keys(localStorage);
-  
   allKeys.forEach(key => {
-    // Keep profile data and app settings
     if (key === 'profileData' || key.startsWith('settings_')) {
       keysToKeep.push({ key, value: localStorage.getItem(key) });
     }
   });
-
-  // Clear everything
   localStorage.clear();
-
-  // Restore kept data
   keysToKeep.forEach(item => localStorage.setItem(item.key, item.value));
-
   window.location.href = '../index.html';
 }
 </script>
