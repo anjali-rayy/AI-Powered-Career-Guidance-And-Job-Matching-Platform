@@ -16,11 +16,7 @@
   <nav class="navbar">
     <a href="index.html" class="nav-logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round">
-          <path d="M12 2L2 7l10 5 10-5-10-5z" />
-          <path d="M2 17l10 5 10-5" />
-          <path d="M2 12l10 5 10-5" />
-        </svg>
+        <img src="assets/images/logo.png" alt="PathwayAI Logo">
       </div>
       PathwayAI
     </a>
@@ -350,32 +346,18 @@
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════
-     PATHWAYAI — FULL SITE FOOTER
-     Drop this <footer> block just before </main> on every
-     page, replacing the existing .site-footer element.
-     Requires: footer.css linked after styles.css
-     ═══════════════════════════════════════════════════════ -->
-
 <footer class="footer">
-
-  <!-- ── TOP BAND: brand + newsletter ── -->
   <div class="footer-top">
     <div class="footer-brand">
-      <a href="../index.html" class="footer-logo">
+      <a href="index.html" class="footer-logo">
         <div class="footer-logo-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5"/>
-            <path d="M2 12l10 5 10-5"/>
-          </svg>
+          <img src="assets/images/logo.png" alt="PathwayAI Logo">
         </div>
         PathwayAI
       </a>
       <p class="footer-tagline">
         Your comprehensive platform for AI-powered career guidance and college recommendations — built for every student, everywhere.
       </p>
-      <!-- Social links -->
       <div class="footer-socials">
         <a href="#" class="footer-social" aria-label="Twitter">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.7 5.4 4.4 8.8 4.5-.4-1.8.3-3.7 1.7-4.8 2.2-1.7 5.2-1.4 7 .7.7-.2 1.4-.5 2-.9z"/></svg>
@@ -391,19 +373,11 @@
         </a>
       </div>
     </div>
-
-    <!-- Newsletter -->
     <div class="footer-newsletter">
       <div class="newsletter-label">Stay updated</div>
       <p class="newsletter-sub">Get career tips, new features, and platform updates — straight to your inbox.</p>
       <div class="newsletter-form" id="newsletter-form">
-        <input
-          type="email"
-          id="newsletter-email"
-          class="newsletter-input"
-          placeholder="Enter your email"
-          autocomplete="email"
-        />
+        <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Enter your email" autocomplete="email"/>
         <button class="newsletter-btn" onclick="handleSubscribe()">
           Subscribe
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -412,13 +386,8 @@
       <p class="newsletter-fine">No spam, ever. Unsubscribe any time.</p>
     </div>
   </div>
-
-  <!-- ── DIVIDER ── -->
   <div class="footer-rule"></div>
-
-  <!-- ── LINK COLUMNS ── -->
   <div class="footer-links-grid">
-
     <div class="footer-col">
       <div class="footer-col-title">Features</div>
       <ul class="footer-col-list">
@@ -431,7 +400,6 @@
         <li><a href="#" onclick="showToast('Coming soon!')">College Finder</a></li>
       </ul>
     </div>
-
     <div class="footer-col">
       <div class="footer-col-title">Company</div>
       <ul class="footer-col-list">
@@ -443,7 +411,6 @@
         <li><a href="#" onclick="showToast('Coming soon!')">Contact</a></li>
       </ul>
     </div>
-
     <div class="footer-col">
       <div class="footer-col-title">Support</div>
       <ul class="footer-col-list">
@@ -455,7 +422,6 @@
         <li><a href="#" onclick="showToast('Coming soon!')">Community</a></li>
       </ul>
     </div>
-
     <div class="footer-col">
       <div class="footer-col-title">Legal</div>
       <ul class="footer-col-list">
@@ -466,13 +432,8 @@
         <li><a href="#" onclick="showToast('Coming soon!')">Accessibility</a></li>
       </ul>
     </div>
-
   </div>
-
-  <!-- ── DIVIDER ── -->
   <div class="footer-rule"></div>
-
-  <!-- ── BOTTOM BAR ── -->
   <div class="footer-bottom">
     <div class="footer-copy">
       © 2025 PathwayAI. All rights reserved. Built with
@@ -486,7 +447,6 @@
       </a>
     </div>
   </div>
-
 </footer>
 
 <script>
@@ -499,7 +459,6 @@ function handleSubscribe() {
     showToast("Please enter a valid email address.");
     return;
   }
-  // Replace the form with a success state
   const form = document.getElementById("newsletter-form");
   form.innerHTML = `
     <div class="newsletter-success">
