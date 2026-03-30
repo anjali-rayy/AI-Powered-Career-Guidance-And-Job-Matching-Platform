@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════════════════
-   footer.css  —  PathwayAI Full Site Footer
-   Requires styles.css to be loaded first (uses its
-   CSS variables and font imports)
-   ═══════════════════════════════════════════════════ */
-
 /* ── SHELL ── */
 .footer {
   position: relative;
@@ -56,9 +50,7 @@
 }
 @media (max-width: 768px) { .footer-rule { margin: 40px 0; } }
 
-/* ════════════════════════════════
-   TOP BAND
-════════════════════════════════ */
+/* TOP BAND */
 .footer-top {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -85,11 +77,18 @@
 .footer-logo-mark {
   width: 34px; height: 34px;
   border-radius: 9px;
-  background: var(--gold);
+  background: transparent;        /* ← remove gold background */
   display: grid; place-items: center;
   flex-shrink: 0;
 }
 .footer-logo-mark svg { width: 16px; height: 16px; }
+.footer-logo-mark img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border-radius: 9px;
+  display: block;
+}
 
 .footer-tagline {
   font-size: 13.5px;
@@ -122,9 +121,7 @@
   transform: translateY(-2px);
 }
 
-/* ════════════════════════════════
-   NEWSLETTER
-════════════════════════════════ */
+/* NEWSLETTER */
 .newsletter-label {
   font-size: 11px;
   font-weight: 600;
@@ -209,9 +206,7 @@
 }
 .newsletter-success svg { width: 16px; height: 16px; stroke: var(--gold); }
 
-/* ════════════════════════════════
-   LINK COLUMNS
-════════════════════════════════ */
+   /* LINK COLUMNS */
 .footer-links-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -263,9 +258,7 @@
   padding-left: 4px;
 }
 
-/* ════════════════════════════════
-   BOTTOM BAR
-════════════════════════════════ */
+   /* BOTTOM BAR */
 .footer-bottom {
   display: flex;
   align-items: center;

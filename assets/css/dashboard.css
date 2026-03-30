@@ -1,7 +1,3 @@
-/* =========================================================
-   DASHBOARD PAGE — dashboard.css  (luxury gold theme)
-   ========================================================= */
-
 /* ── LAYOUT ── */
 .dash-root {
   display: flex;
@@ -32,9 +28,25 @@
 }
 .sidebar-logo .logo-mark {
   width: 32px; height: 32px; border-radius: 8px;
-  background: var(--gold); display: grid; place-items: center; flex-shrink: 0;
+  background: transparent;        /* ← remove gold background */
+  display: grid; place-items: center; flex-shrink: 0;
 }
 .sidebar-logo .logo-mark svg { width: 15px; height: 15px; }
+.sidebar-logo .logo-mark img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+/* ✅ FIX: make the img fill the logo-mark box properly */
+.sidebar-logo .logo-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
 
 /* User block */
 .sidebar-user {

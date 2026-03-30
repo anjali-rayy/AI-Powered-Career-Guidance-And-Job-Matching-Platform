@@ -1,7 +1,3 @@
-/* =========================================================
-   AUTH PAGES — auth.css  (luxury gold theme)
-   ========================================================= */
-
 /* ── LAYOUT ── */
 .auth-layout {
   min-height: calc(100vh - 64px);
@@ -29,11 +25,19 @@
 .panel-ring-2 { width: 360px; height: 360px; top: -110px; left: -110px; border-color: rgba(212,175,55,0.04); }
 
 .panel-content { position: relative; z-index: 2; max-width: 360px; }
+
+/* ── PANEL LOGO — transparent, shows road logo as-is ── */
 .panel-logo-mark {
-  width: 48px; height: 48px; border-radius: 13px;
-  background: var(--gold); display: grid; place-items: center; margin-bottom: 28px;
+  width: 56px; height: 56px; border-radius: 13px;
+  background: transparent;
+  display: grid; place-items: center;
+  margin-bottom: 28px;
 }
-.panel-logo-mark svg { width: 22px; height: 22px; }
+.panel-logo-mark img {
+  width: 56px; height: 56px;
+  object-fit: contain; display: block;
+}
+.panel-logo-mark svg { width: 24px; height: 24px; }
 
 .panel-content h2 {
   font-family: 'Playfair Display', serif;
@@ -87,12 +91,18 @@
 }
 @media (max-width: 480px) { .auth-card { padding: 32px 24px; border-radius: 16px; } }
 
+/* ── AUTH LOGO — transparent, shows road logo as-is ── */
 .auth-logo {
-  width: 52px; height: 52px; border-radius: 14px;
-  background: var(--gold); display: grid; place-items: center;
+  width: 60px; height: 60px; border-radius: 14px;
+  background: transparent;
+  display: grid; place-items: center;
   margin: 0 auto 24px;
 }
-.auth-logo svg { width: 22px; height: 22px; }
+.auth-logo img {
+  width: 60px; height: 60px;
+  object-fit: contain; display: block;
+}
+.auth-logo svg { width: 24px; height: 24px; }
 
 .auth-title {
   font-family: 'Playfair Display', serif;
