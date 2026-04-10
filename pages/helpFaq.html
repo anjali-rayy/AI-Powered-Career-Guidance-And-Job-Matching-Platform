@@ -48,10 +48,13 @@ button { font-family: 'Inter', sans-serif; cursor: pointer; }
 }
 .logo-mark {
   width: 36px; height: 36px; border-radius: 8px;
-  background: var(--gold-dim); border: 1px solid var(--border-g);
+  /* ✅ FIXED: removed gold background and border that was showing through */
+  background: transparent;
+  border: none;
   display: grid; place-items: center; overflow: hidden;
 }
-.logo-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+/* ✅ FIXED: object-fit: contain so logo fills without cropping or showing bg */
+.logo-mark img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
 .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
 .nav-links a { padding: 6px 14px; border-radius: 7px; color: var(--muted); font-size: 13.5px; transition: color 0.2s, background 0.2s; }
 .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
@@ -304,8 +307,9 @@ button { font-family: 'Inter', sans-serif; cursor: pointer; }
 /* FOOTER */
 .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .footer-logo { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: #444; display: flex; align-items: center; gap: 8px; }
-.footer-logo-mark { width: 28px; height: 28px; border-radius: 5px; background: var(--gold-dim); border: 1px solid var(--border-g); display: grid; place-items: center; overflow: hidden; }
-.footer-logo-mark img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
+/* ✅ FIXED: footer logo-mark also gets transparent background */
+.footer-logo-mark { width: 28px; height: 28px; border-radius: 5px; background: transparent; border: none; display: grid; place-items: center; overflow: hidden; }
+.footer-logo-mark img { width: 100%; height: 100%; object-fit: contain; border-radius: 5px; }
 .footer-links { display: flex; gap: 22px; }
 .footer-links a { font-size: 12.5px; color: #333; transition: color 0.2s; }
 .footer-links a:hover { color: var(--muted); }

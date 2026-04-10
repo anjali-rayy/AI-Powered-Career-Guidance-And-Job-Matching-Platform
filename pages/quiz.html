@@ -13,7 +13,8 @@
 <nav class="navbar">
   <a href="../index.html" class="nav-logo">
     <div class="logo-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      <!-- ✅ FIXED: was an SVG icon, now uses actual logo image -->
+      <img src="../assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
     </div>
     PathwayAI
   </a>
@@ -53,13 +54,13 @@
       </div>
       <div><div class="nav-drop-title">Job Matching Score</div><div class="nav-drop-sub">AI-powered job compatibility</div></div>
     </a>
-    <a href="#" class="nav-drop-item" onclick="showToast('3D Career Tree coming soon!')">
+    <a href="pages/career-tree.html" class="nav-drop-item">
       <div class="nav-drop-icon">
         <svg viewBox="0 0 24 24"><path d="M12 22v-7M9 22H5a2 2 0 0 1-2-2v-1a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v1a2 2 0 0 1-2 2h-4"/><circle cx="12" cy="7" r="4"/></svg>
       </div>
       <div><div class="nav-drop-title">3D Career Tree</div><div class="nav-drop-sub">Interactive career exploration</div></div>
     </a>
-    <a href="#" class="nav-drop-item" onclick="showToast('AI Roadmap coming soon!')">
+    <a href="pages/roadmap.html" class="nav-drop-item">
       <div class="nav-drop-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       </div>
@@ -118,12 +119,6 @@
 
     <p class="hub-back">← <a href="../index.html">Back to Home</a></p>
   </div>
-  <!-- ═══════════════════════════════════════════════════════
-     PATHWAYAI — FULL SITE FOOTER
-     Drop this <footer> block just before </main> on every
-     page, replacing the existing .site-footer element.
-     Requires: footer.css linked after styles.css
-     ═══════════════════════════════════════════════════════ -->
 
 <footer class="footer">
 
@@ -132,7 +127,8 @@
     <div class="footer-brand">
       <a href="../index.html" class="footer-logo">
         <div class="footer-logo-mark">
-          <img src="assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
+          <!-- ✅ FIXED: was "assets/images/logo.png", now "../assets/images/logo.png" -->
+          <img src="../assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
         </div>
         PathwayAI
       </a>
@@ -190,8 +186,8 @@
         <li><a href="#" onclick="showToast('Coming soon!')">Resume Analysis</a></li>
         <li><a href="#" onclick="showToast('Coming soon!')">Skill Gap Detection</a></li>
         <li><a href="#" onclick="showToast('Coming soon!')">Job Matching Score</a></li>
-        <li><a href="#" onclick="showToast('Coming soon!')">3D Career Tree</a></li>
-        <li><a href="#" onclick="showToast('Coming soon!')">AI Roadmap</a></li>
+        <li><a href="pages/career-tree.html">3D Career Tree</a></li>
+        <li><a href="pages/roadmap.html">AI Roadmap</a></li>
         <li><a href="#" onclick="showToast('Coming soon!')">College Finder</a></li>
       </ul>
     </div>
@@ -263,7 +259,6 @@ function handleSubscribe() {
     showToast("Please enter a valid email address.");
     return;
   }
-  // Replace the form with a success state
   const form = document.getElementById("newsletter-form");
   form.innerHTML = `
     <div class="newsletter-success">
