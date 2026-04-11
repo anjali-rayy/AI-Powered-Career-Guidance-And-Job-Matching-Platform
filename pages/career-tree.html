@@ -722,6 +722,7 @@ const PATH_COLORS  = ['#D4AF37','#5B9BD5','#9B6FD4','#E87040','#5bc88a'];
 const KNOWN_SKILLS = ['html','css','javascript','python','sql','git','communication','excel','figma','react','node'];
 
 function openDrawer(n) {
+window._selectedNode = n;
   document.getElementById('drawerBadge').textContent  = BADGE_LABELS[n.level] || 'Level '+n.level;
   document.getElementById('drawerTitle').textContent  = n.role;
   document.getElementById('drawerSalary').textContent = n.salary;

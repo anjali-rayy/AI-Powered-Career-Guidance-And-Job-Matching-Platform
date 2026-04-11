@@ -11,15 +11,6 @@
 
   <!-- ── INLINE FIXES (stats strip + features grid) ── -->
   <style>
-
-    /* ════════════════════════════════
-       STATS STRIP — fixed
-       Issues fixed:
-       1. Added bordered card container (no more floating cells)
-       2. Vertical dividers between cells
-       3. Proper centering of numbers + labels
-       4. Hover state on each cell
-    ════════════════════════════════ */
     .stats-strip {
       display: grid !important;
       grid-template-columns: repeat(3, 1fr) !important;
@@ -75,16 +66,6 @@
       padding: 48px 0 !important;
     }
 
-
-    /* ════════════════════════════════
-       FEATURES GRID — fixed
-       Issues fixed:
-       1. Orphan 5th card: top 3-col row + bottom centred 2-col row
-       2. Icons: amber-tinted container with proper size & weight
-       3. Typography hierarchy: title vs description clearly distinct
-       4. Hover: lift + border accent on card
-       5. Card containment: white bg + border so each card reads as a unit
-    ════════════════════════════════ */
 
     /* Override the old feat-grid to only hold 3 cards */
     .feat-grid {
@@ -377,14 +358,6 @@
 
     <div class="divider-line"></div>
 
-    <!-- ════════════════════════════════
-         FEATURES — FIXED
-         - Top row: 3 cards (3-col grid)
-         - Bottom row: 2 cards centred (2-col grid, max 2/3 width)
-         - Icon containers: amber-tinted pill
-         - Strong title / muted description hierarchy
-         - Hover: lift + gold border
-    ════════════════════════════════ -->
     <section class="section features-section">
       <div class="max-w">
         <div class="section-kicker reveal">What we offer</div>
@@ -591,16 +564,13 @@
             <li><a href="#" onclick="showToast('Coming soon!')">Job Matching Score</a></li>
             <li><a href="pages/career-tree.html">3D Career Tree</a></li>
             <li><a href="pages/roadmap.html">AI Roadmap</a></li>
-            <li><a href="#" onclick="showToast('Coming soon!')">College Finder</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Company</div>
           <ul class="footer-col-list">
             <li><a href="pages/about.html">About</a></li>
-            <li><a href="#" onclick="showToast('Coming soon!')">Team</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">Careers</a></li>
-            <li><a href="#" onclick="showToast('Coming soon!')">Press</a></li>
             <li><a href="pages/blog.html">Blog</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">Contact</a></li>
           </ul>
@@ -612,14 +582,13 @@
             <li><a href="#" onclick="showToast('Coming soon!')">Study Materials</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">Career Guides</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">API Docs</a></li>
-            <li><a href="#" onclick="showToast('Coming soon!')">Status</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">Community</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Legal</div>
           <ul class="footer-col-list">
-            <li><a href="#" onclick="showToast('Coming soon!')">Privacy Policy</a></li>
+            <li><a href="pages/privacy-policy.html">Privacy Policy</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">Terms of Service</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">Cookie Policy</a></li>
             <li><a href="#" onclick="showToast('Coming soon!')">GDPR</a></li>
