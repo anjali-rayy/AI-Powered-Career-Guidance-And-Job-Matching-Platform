@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="../assets/css/styles.css"/>
   <link rel="stylesheet" href="../assets/css/footer.css"/>
   <style>
-    /* ── CSS VARIABLES (mirror your site) ── */
     :root {
       --gold: #D4AF37;
       --gold-light: rgba(212,175,55,0.12);
@@ -31,16 +30,13 @@
       min-height: 100vh;
     }
 
-    /* ── REVEAL ANIMATION ── */
     .reveal {
       opacity: 0;
       transform: translateY(22px);
       animation: fadeUp 0.6s ease forwards;
       animation-delay: var(--delay, 0s);
     }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
     /* ── HERO ── */
     .roadmap-hero {
@@ -67,32 +63,23 @@
       border-radius: 99px;
       padding: 6px 16px;
       font-size: 11px;
-      font-family: 'Inter', sans-serif;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 28px;
     }
-    .eyebrow-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
+    .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
 
     .roadmap-hero h1 {
       font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 5vw, 64px);
+      font-size: clamp(36px, 5vw, 64px);
       font-weight: 700;
       line-height: 1.1;
       letter-spacing: -0.02em;
       margin-bottom: 20px;
     }
-    .roadmap-hero h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
+    .roadmap-hero h1 em { font-style: italic; color: var(--gold); }
     .roadmap-hero p {
-      font-family: 'Inter', sans-serif;
       font-size: 17px;
       color: var(--text2);
       max-width: 560px;
@@ -100,12 +87,8 @@
       line-height: 1.7;
     }
 
-    /* ── CAREER INPUT FORM ── */
-    .form-wrap {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+    /* ── FORM ── */
+    .form-wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
     .career-form {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -113,19 +96,8 @@
       padding: 32px;
       margin-bottom: 60px;
     }
-    .form-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text2);
-      margin-bottom: 10px;
-      display: block;
-    }
-    .form-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
+    .form-label { font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 10px; display: block; }
+    .form-row { display: flex; gap: 12px; margin-bottom: 18px; }
     .form-input {
       flex: 1;
       background: rgba(255,255,255,0.04);
@@ -156,16 +128,8 @@
     .form-select:focus { border-color: var(--gold-border); }
     .form-select option { background: #1a1a1a; }
 
-    .skills-input-wrap {
-      margin-bottom: 18px;
-    }
-    .skills-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      min-height: 36px;
-    }
+    .skills-input-wrap { margin-bottom: 18px; }
+    .skills-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; min-height: 36px; }
     .skill-tag-input {
       display: inline-flex;
       align-items: center;
@@ -174,7 +138,6 @@
       border: 1px solid var(--gold-border);
       border-radius: 99px;
       padding: 4px 12px;
-      font-family: 'Inter', sans-serif;
       font-size: 12px;
       color: var(--gold);
     }
@@ -206,12 +169,8 @@
     .btn-generate:active { transform: translateY(0); }
     .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    /* ── LOADING STATE ── */
-    .loading-state {
-      display: none;
-      text-align: center;
-      padding: 60px 24px;
-    }
+    /* ── LOADING ── */
+    .loading-state { display: none; text-align: center; padding: 60px 24px; }
     .loading-state.active { display: block; }
     .spinner {
       width: 40px; height: 40px;
@@ -222,22 +181,38 @@
       margin: 0 auto 16px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text {
-      font-family: 'Inter', sans-serif;
-      color: var(--text2);
-      font-size: 14px;
+    .loading-text { color: var(--text2); font-size: 14px; }
+    .dot-loader { display: inline-flex; gap: 6px; margin-top: 12px; }
+    .dot-loader span {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.3;
+      animation: dotPulse 1.2s ease-in-out infinite;
     }
+    .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
+    .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse { 0%,100% { opacity:0.2; transform:scale(0.85); } 50% { opacity:1; transform:scale(1); } }
+
+    /* ── ERROR BOX ── */
+    .error-box {
+      display: none;
+      max-width: 680px;
+      margin: 0 auto 32px;
+      padding: 16px 20px;
+      background: rgba(220,60,40,0.08);
+      border: 1px solid rgba(220,60,40,0.25);
+      border-radius: 10px;
+      color: #f87060;
+      font-size: 14px;
+      text-align: center;
+    }
+    .error-box.active { display: block; }
 
     /* ── ROADMAP OUTPUT ── */
-    .roadmap-output {
-      display: none;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 24px 80px;
-    }
+    .roadmap-output { display: none; max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
     .roadmap-output.active { display: block; }
 
-    /* summary bar */
     .summary-bar {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -250,37 +225,21 @@
       flex-wrap: wrap;
       margin-bottom: 40px;
     }
-    .summary-meta h2 {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
+    .summary-meta h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
     .summary-meta h2 em { font-style: italic; color: var(--gold); }
-    .summary-meta p {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: var(--text2);
-      margin-top: 4px;
-    }
-    .summary-chips {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .summary-meta p { font-size: 13px; color: var(--text2); margin-top: 4px; }
+    .summary-chips { display: flex; gap: 10px; flex-wrap: wrap; }
     .summary-chip {
       background: var(--gold-light);
       border: 1px solid var(--gold-border);
       border-radius: 99px;
       padding: 6px 14px;
-      font-family: 'Inter', sans-serif;
       font-size: 12px;
       color: var(--gold);
       font-weight: 500;
     }
 
-    /* phase timeline */
     .phases-label {
-      font-family: 'Inter', sans-serif;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.1em;
@@ -289,25 +248,10 @@
       margin-bottom: 20px;
     }
 
-    .phase-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
+    .phase-list { display: flex; flex-direction: column; gap: 0; }
 
-    .phase-item {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 0 20px;
-      position: relative;
-    }
-
-    /* left timeline column */
-    .phase-left {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    .phase-item { display: grid; grid-template-columns: 48px 1fr; gap: 0 20px; position: relative; }
+    .phase-left { display: flex; flex-direction: column; align-items: center; }
     .phase-dot {
       width: 36px; height: 36px;
       border-radius: 50%;
@@ -316,7 +260,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Inter', sans-serif;
       font-size: 12px;
       font-weight: 700;
       color: var(--text2);
@@ -324,29 +267,12 @@
       z-index: 1;
       transition: border-color 0.3s, color 0.3s, background 0.3s;
     }
-    .phase-dot.active-dot {
-      border-color: var(--gold);
-      color: var(--gold);
-      background: var(--gold-light);
-    }
-    .phase-dot.done-dot {
-      border-color: rgba(212,175,55,0.4);
-      background: rgba(212,175,55,0.08);
-      color: rgba(212,175,55,0.6);
-    }
-
-    .phase-line {
-      width: 2px;
-      flex: 1;
-      min-height: 24px;
-      background: var(--border);
-    }
+    .phase-dot.active-dot { border-color: var(--gold); color: var(--gold); background: var(--gold-light); }
+    .phase-dot.done-dot { border-color: rgba(212,175,55,0.4); background: rgba(212,175,55,0.08); color: rgba(212,175,55,0.6); }
+    .phase-line { width: 2px; flex: 1; min-height: 24px; background: var(--border); }
     .phase-item:last-child .phase-line { display: none; }
 
-    /* right content column */
-    .phase-content {
-      padding-bottom: 32px;
-    }
+    .phase-content { padding-bottom: 32px; }
     .phase-item:last-child .phase-content { padding-bottom: 0; }
 
     .phase-card {
@@ -356,146 +282,69 @@
       padding: 22px 24px;
       cursor: pointer;
       transition: border-color 0.25s, transform 0.2s;
-      margin-top: 0;
       position: relative;
       top: -4px;
     }
     .phase-card:hover { border-color: rgba(212,175,55,0.3); transform: translateX(2px); }
     .phase-card.expanded { border-color: var(--gold-border); }
 
-    .phase-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
+    .phase-card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .phase-title-wrap { flex: 1; }
-    .phase-duration {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      color: var(--gold);
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .phase-title {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-    .phase-chevron {
-      color: var(--text3);
-      font-size: 18px;
-      transition: transform 0.25s;
-      flex-shrink: 0;
-    }
+    .phase-duration { font-size: 11px; color: var(--gold); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .phase-title { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+    .phase-chevron { color: var(--text3); font-size: 18px; transition: transform 0.25s; flex-shrink: 0; }
     .phase-card.expanded .phase-chevron { transform: rotate(180deg); }
 
-    .phase-body {
-      display: none;
-      margin-top: 18px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-    }
+    .phase-body { display: none; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
     .phase-card.expanded .phase-body { display: block; }
 
-    .phase-desc {
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      color: var(--text2);
-      line-height: 1.65;
-      margin-bottom: 18px;
-    }
+    .phase-desc { font-size: 14px; color: var(--text2); line-height: 1.65; margin-bottom: 18px; }
 
-    .topics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 8px;
-      margin-bottom: 18px;
-    }
+    .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-bottom: 18px; }
     .topic-chip {
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 8px 12px;
-      font-family: 'Inter', sans-serif;
       font-size: 12px;
       color: var(--text2);
       display: flex;
       align-items: center;
       gap: 7px;
     }
-    .topic-chip::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
+    .topic-chip::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
-    .resources-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .resources-row { display: flex; gap: 8px; flex-wrap: wrap; }
     .resource-tag {
       background: rgba(255,255,255,0.04);
       border: 1px solid var(--border);
       border-radius: 99px;
       padding: 5px 12px;
-      font-family: 'Inter', sans-serif;
       font-size: 11px;
       color: var(--text3);
     }
 
-    /* milestone outcome */
     .milestone-box {
       background: var(--gold-light);
       border: 1px solid var(--gold-border);
       border-radius: 10px;
       padding: 12px 16px;
       margin-top: 16px;
-      font-family: 'Inter', sans-serif;
       font-size: 13px;
       color: var(--gold);
       display: flex;
       align-items: flex-start;
       gap: 10px;
     }
-    .milestone-box svg {
-      width: 16px; height: 16px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
+    .milestone-box svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
 
-    /* ── SKILLS GAP SIDEBAR ── */
-    .output-layout {
-      display: grid;
-      grid-template-columns: 1fr 280px;
-      gap: 28px;
-      align-items: start;
-    }
-    @media (max-width: 720px) {
-      .output-layout { grid-template-columns: 1fr; }
-    }
+    /* ── SIDEBAR ── */
+    .output-layout { display: grid; grid-template-columns: 1fr 280px; gap: 28px; align-items: start; }
+    @media (max-width: 720px) { .output-layout { grid-template-columns: 1fr; } }
 
-    .sidebar {
-      position: sticky;
-      top: 100px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .sidebar-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-    }
+    .sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 16px; }
+    .sidebar-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
     .sidebar-title {
-      font-family: 'Inter', sans-serif;
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -504,110 +353,30 @@
       margin-bottom: 14px;
     }
 
-    /* match score ring */
-    .score-ring-wrap {
-      text-align: center;
-      padding: 8px 0 16px;
-    }
-    .score-ring {
-      width: 90px; height: 90px;
-      margin: 0 auto 12px;
-      position: relative;
-    }
+    .score-ring-wrap { text-align: center; padding: 8px 0 16px; }
+    .score-ring { width: 90px; height: 90px; margin: 0 auto 12px; position: relative; }
     .score-ring svg { transform: rotate(-90deg); }
-    .score-ring-text {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .score-ring-num {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--gold);
-      line-height: 1;
-    }
-    .score-ring-sub {
-      font-family: 'Inter', sans-serif;
-      font-size: 9px;
-      color: var(--text3);
-      margin-top: 2px;
-    }
-    .score-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      color: var(--text2);
-      text-align: center;
-    }
+    .score-ring-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .score-ring-num { font-size: 22px; font-weight: 700; color: var(--gold); line-height: 1; }
+    .score-ring-sub { font-size: 9px; color: var(--text3); margin-top: 2px; }
+    .score-label { font-size: 12px; color: var(--text2); text-align: center; }
 
-    /* gap skills */
-    .gap-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .gap-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .gap-name {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: var(--text1);
-    }
-    .gap-pill {
-      font-family: 'Inter', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 99px;
-    }
+    .gap-list { display: flex; flex-direction: column; gap: 8px; }
+    .gap-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .gap-name { font-size: 13px; color: var(--text1); }
+    .gap-pill { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 99px; }
     .gap-high { background: rgba(220,60,40,0.12); color: #f87060; }
     .gap-med  { background: rgba(212,175,55,0.12); color: var(--gold); }
     .gap-low  { background: rgba(60,180,100,0.12); color: #5bc88a; }
 
-    /* timeline progress */
     .timeline-bar { display: flex; flex-direction: column; gap: 10px; }
     .tl-row { display: flex; align-items: center; gap: 10px; }
-    .tl-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      color: var(--text2);
-      min-width: 60px;
-    }
-    .tl-track {
-      flex: 1;
-      height: 4px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .tl-fill {
-      height: 100%;
-      background: var(--gold);
-      border-radius: 99px;
-      opacity: 0.7;
-    }
-    .tl-weeks {
-      font-family: 'Inter', sans-serif;
-      font-size: 10px;
-      color: var(--text3);
-      min-width: 32px;
-      text-align: right;
-    }
+    .tl-label { font-size: 11px; color: var(--text2); min-width: 60px; }
+    .tl-track { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+    .tl-fill { height: 100%; background: var(--gold); border-radius: 99px; opacity: 0.7; }
+    .tl-weeks { font-size: 10px; color: var(--text3); min-width: 32px; text-align: right; }
 
-    /* ── REGENERATE BTN ── */
-    .regen-row {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 40px;
-      flex-wrap: wrap;
-    }
+    .regen-row { display: flex; justify-content: center; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
     .btn-outline-gold {
       background: transparent;
       border: 1px solid var(--gold-border);
@@ -621,85 +390,26 @@
     }
     .btn-outline-gold:hover { background: var(--gold-light); }
 
-    /* ── EMPTY / INTRO SECTION ── */
-    .intro-section {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 24px 80px;
-    }
-    .intro-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 40px;
-    }
+    /* ── INTRO ── */
+    .intro-section { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+    .intro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
     @media (max-width: 600px) { .intro-grid { grid-template-columns: 1fr; } }
-
-    .intro-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-    }
-    .intro-num {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--gold);
-      opacity: 0.4;
-      line-height: 1;
-      margin-bottom: 12px;
-      font-style: italic;
-    }
-    .intro-card h4 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .intro-card p {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: var(--text2);
-      line-height: 1.6;
-    }
-
-    /* ── FOOTER ADJUSTMENTS ── */
-    .footer { margin-top: 0; }
-
-    /* ── UTILITY ── */
-    .max-w { max-width: 1100px; margin: 0 auto; }
-    .divider-line { height: 1px; background: var(--border); margin: 0 24px; }
-
-    /* spinner dots for generation */
-    .dot-loader {
-      display: inline-flex;
-      gap: 6px;
-      margin-top: 12px;
-    }
-    .dot-loader span {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-      opacity: 0.3;
-      animation: dotPulse 1.2s ease-in-out infinite;
-    }
-    .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
-    .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes dotPulse {
-      0%,100% { opacity: 0.2; transform: scale(0.85); }
-      50% { opacity: 1; transform: scale(1); }
-    }
+    .intro-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .intro-num { font-size: 28px; font-weight: 700; color: var(--gold); opacity: 0.4; line-height: 1; margin-bottom: 12px; font-style: italic; }
+    .intro-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .intro-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
 
     .toast {
-  position: fixed; bottom: 28px; left: 50%;
-  transform: translateX(-50%) translateY(60px);
-  background: var(--bg2); border: 1px solid var(--gold-border);
-  padding: 13px 26px; border-radius: 10px; color: var(--text1);
-  font-size: 13.5px; z-index: 9999; pointer-events: none;
-  white-space: nowrap;
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.7);
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: var(--bg2); border: 1px solid var(--gold-border);
+      padding: 13px 26px; border-radius: 10px; color: var(--text1);
+      font-size: 13.5px; z-index: 9999; pointer-events: none;
+      white-space: nowrap;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -728,7 +438,7 @@
         </a>
         <a href="#" class="nav-drop-item" onclick="showToast('Skill Gap Detection coming soon!')">
           <div class="nav-drop-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
-          <div><div class="nav-drop-title">Skill Gap Detection</div><div class="nav-drop-sub">Find what skills you're missing</div></div>
+          <div><div class="nav-drop-title">Skill Gap Detection</div><div class="nav-drop-sub">Find what skills you are missing</div></div>
         </a>
         <a href="#" class="nav-drop-item" onclick="showToast('Career Recommendation coming soon!')">
           <div class="nav-drop-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
@@ -772,7 +482,7 @@
       <div class="form-row">
         <div style="flex:1">
           <label class="form-label">Target Career Goal</label>
-          <input class="form-input" id="careerGoal" type="text" placeholder="e.g. Frontend Developer, Data Scientist…"/>
+          <input class="form-input" id="careerGoal" type="text" placeholder="e.g. Blockchain Developer, Game Designer, Nurse Practitioner…"/>
         </div>
         <div style="flex:0 0 160px">
           <label class="form-label">Experience Level</label>
@@ -806,10 +516,13 @@
     </div>
   </div>
 
-  <!-- INTRO CARDS (visible before generation) -->
+  <!-- ERROR BOX -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- INTRO CARDS -->
   <div class="intro-section" id="introSection">
     <div style="text-align:center">
-      <div style="font-family:-apple-system,sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">How It Works</div>
+      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px">How It Works</div>
       <div style="font-size:26px;font-weight:700;letter-spacing:-0.02em">Three steps to <em style="font-style:italic;color:var(--gold)">career clarity</em></div>
     </div>
     <div class="intro-grid">
@@ -826,12 +539,12 @@
       <div class="intro-card reveal" style="--delay:0.22s">
         <div class="intro-num">03</div>
         <h4>Follow Your Path</h4>
-        <p>Get a phased, week-by-week roadmap with topics, milestones, and curated resources to follow at your pace.</p>
+        <p>Get a phased roadmap with topics, milestones, and curated resources to follow at your pace.</p>
       </div>
     </div>
   </div>
 
-  <!-- LOADING STATE -->
+  <!-- LOADING -->
   <div class="loading-state" id="loadingState">
     <div class="spinner"></div>
     <div class="loading-text" id="loadingText">Analysing your profile…</div>
@@ -842,14 +555,13 @@
   <div class="roadmap-output" id="roadmapOutput">
     <div class="summary-bar reveal" id="summaryBar">
       <div class="summary-meta">
-        <h2 id="summaryTitle">Roadmap to <em>Frontend Developer</em></h2>
-        <p id="summaryMeta">6-month plan · Intermediate level · 3 phases</p>
+        <h2 id="summaryTitle">Roadmap to <em>Your Career</em></h2>
+        <p id="summaryMeta"></p>
       </div>
       <div class="summary-chips" id="summaryChips"></div>
     </div>
 
     <div class="output-layout">
-      <!-- LEFT: Timeline phases -->
       <div>
         <div class="phases-label">Learning Phases</div>
         <div class="phase-list" id="phaseList"></div>
@@ -858,10 +570,7 @@
           <button class="btn-outline-gold" onclick="generateRoadmap()">↻ Regenerate</button>
         </div>
       </div>
-
-      <!-- RIGHT: Sidebar -->
       <div class="sidebar">
-        <!-- Readiness Score -->
         <div class="sidebar-card">
           <div class="sidebar-title">Readiness Score</div>
           <div class="score-ring-wrap">
@@ -880,14 +589,10 @@
             <div class="score-label" id="scoreLabel">Calculating…</div>
           </div>
         </div>
-
-        <!-- Skill Gaps -->
         <div class="sidebar-card">
           <div class="sidebar-title">Skills to Develop</div>
           <div class="gap-list" id="gapList"></div>
         </div>
-
-        <!-- Timeline breakdown -->
         <div class="sidebar-card">
           <div class="sidebar-title">Timeline Breakdown</div>
           <div class="timeline-bar" id="timelineBar"></div>
@@ -931,7 +636,7 @@
     <div class="footer-col"><div class="footer-col-title">Features</div><ul class="footer-col-list"><li><a href="quiz.html">Career Quiz</a></li><li><a href="#" onclick="showToast('Coming soon!')">Resume Analysis</a></li><li><a href="#" onclick="showToast('Coming soon!')">Skill Gap Detection</a></li><li><a href="#" onclick="showToast('Coming soon!')">Job Matching Score</a></li><li><a href="pages/career-tree.html">3D Career Tree</a></li><li><a href="roadmap.html">AI Roadmap</a></li></ul></div>
     <div class="footer-col"><div class="footer-col-title">Company</div><ul class="footer-col-list"><li><a href="about.html">About</a></li><li><a href="#" onclick="showToast('Coming soon!')">Team</a></li><li><a href="#" onclick="showToast('Coming soon!')">Careers</a></li><li><a href="#" onclick="showToast('Coming soon!')">Blog</a></li><li><a href="#" onclick="showToast('Coming soon!')">Contact</a></li></ul></div>
     <div class="footer-col"><div class="footer-col-title">Support</div><ul class="footer-col-list"><li><a href="helpFaq.html">Help Center</a></li><li><a href="#" onclick="showToast('Coming soon!')">Career Guides</a></li><li><a href="#" onclick="showToast('Coming soon!')">API Docs</a></li><li><a href="#" onclick="showToast('Coming soon!')">Community</a></li></ul></div>
-    <div class="footer-col"><div class="footer-col-title">Legal</div><ul class="footer-col-list"><li><a href="#" onclick="showToast('Coming soon!')">Privacy Policy</a></li><li><a href="#" onclick="showToast('Coming soon!')">Terms of Service</a></li><li><a href="#" onclick="showToast('Coming soon!')">Cookie Policy</a></li><li><a href="#" onclick="showToast('Coming soon!')">GDPR</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Legal</div><ul class="footer-col-list"><li><a href="pages/privacy-policy.html">Privacy Policy</a></li><li><a href="#" onclick="showToast('Coming soon!')">Terms of Service</a></li><li><a href="#" onclick="showToast('Coming soon!')">Cookie Policy</a></li><li><a href="#" onclick="showToast('Coming soon!')">GDPR</a></li></ul></div>
   </div>
   <div class="footer-rule"></div>
   <div class="footer-bottom">
@@ -944,9 +649,8 @@
 <script src="../assets/js/nav.js"></script>
 
 <script>
-/* ══════════════════════════════════════════
-   SKILL TAG INPUT
-══════════════════════════════════════════ */
+
+  //  SKILL TAG INPUT
 let currentSkills = [];
 
 function handleSkillKey(e) {
@@ -971,280 +675,127 @@ function renderTags() {
   container.innerHTML = currentSkills.map(s => `
     <span class="skill-tag-input">
       ${s}
-      <button onclick="removeSkill('${s}')" title="Remove">×</button>
+      <button onclick="removeSkill('${s.replace(/'/g,"\\'")}')">×</button>
     </span>
   `).join('');
 }
 
-/* ══════════════════════════════════════════
-   ROADMAP DATA (role-based templates)
-══════════════════════════════════════════ */
-const roleData = {
-  default: {
-    phases: [
-      {
-        title: "Core Foundations",
-        weeks: 4,
-        desc: "Build the essential fundamentals every professional in this field must know. Focus on concepts before tools.",
-        topics: ["Problem Solving","Version Control (Git)","Command Line Basics","Logical Thinking","Documentation Writing"],
-        resources: ["FreeCodeCamp","The Odin Project","MDN Web Docs","YouTube Tutorials"],
-        milestone: "Complete 2 foundational projects and push them to GitHub."
-      },
-      {
-        title: "Core Skills Development",
-        weeks: 8,
-        desc: "Develop the primary technical skills required for your target role. Build and break things intentionally.",
-        topics: ["Role-specific Technologies","Industry Best Practices","Debugging Techniques","Code Review Culture","Project Structure"],
-        resources: ["Udemy","Coursera","Official Docs","Dev.to Articles"],
-        milestone: "Build a portfolio project that uses all core skills learned in this phase."
-      },
-      {
-        title: "Advanced & Specialisation",
-        weeks: 8,
-        desc: "Go deeper into advanced patterns, optimisation, and specialised tools that differentiate senior candidates.",
-        topics: ["Advanced Patterns","Performance Optimisation","Testing & QA","System Design Basics","Soft Skills"],
-        resources: ["Advanced Courses","Tech Blogs","Open Source Contribution","Mock Interviews"],
-        milestone: "Contribute to an open source project or build a complex end-to-end application."
-      }
-    ],
-    gaps: [
-      { name: "Core Technology", level: "high" },
-      { name: "Testing", level: "med" },
-      { name: "Git / GitHub", level: "low" }
-    ]
-  },
-  frontend: {
-    phases: [
-      {
-        title: "Web Fundamentals",
-        weeks: 3,
-        desc: "Master the building blocks of the web — HTML semantics, CSS layout systems, and vanilla JavaScript. These aren't shortcuts, they're the foundation everything else rests on.",
-        topics: ["HTML5 Semantics & Accessibility","CSS Flexbox & Grid","JavaScript ES6+","DOM Manipulation","Responsive Design","Browser DevTools"],
-        resources: ["MDN Web Docs","CSS-Tricks","javascript.info","Kevin Powell (YouTube)"],
-        milestone: "Build a fully responsive portfolio page using only HTML, CSS, and vanilla JS — no frameworks."
-      },
-      {
-        title: "React & Modern Tooling",
-        weeks: 6,
-        desc: "Dive into the React ecosystem — components, hooks, state management, and the tooling that powers modern frontend development.",
-        topics: ["React Components & JSX","useState / useEffect / useContext","React Router","Fetch API & Axios","Vite / Webpack","npm & package management"],
-        resources: ["React Docs (react.dev)","Scrimba React Course","Jack Herrington (YouTube)","Frontend Masters"],
-        milestone: "Build a multi-page React app that fetches real data from a public API."
-      },
-      {
-        title: "TypeScript & Advanced Patterns",
-        weeks: 5,
-        desc: "Add type safety with TypeScript, learn performance best practices, testing fundamentals, and prepare for real-world team environments.",
-        topics: ["TypeScript Basics & Generics","Component Design Patterns","Unit Testing with Jest","React Testing Library","Web Performance Optimisation","Accessibility (WCAG)"],
-        resources: ["TypeScript Handbook","Kent C. Dodds Blog","web.dev","Total TypeScript"],
-        milestone: "Refactor your React project in TypeScript with 80%+ test coverage."
-      }
-    ],
-    gaps: [
-      { name: "TypeScript", level: "high" },
-      { name: "React Hooks", level: "high" },
-      { name: "Unit Testing", level: "med" },
-      { name: "CSS Grid", level: "low" }
-    ]
-  },
-  backend: {
-    phases: [
-      {
-        title: "Server & Language Foundations",
-        weeks: 4,
-        desc: "Learn how servers work, pick your primary language deeply, and understand the HTTP layer that powers all APIs.",
-        topics: ["HTTP & REST Principles","Node.js / Python Fundamentals","Express / FastAPI Basics","JSON & Data Formats","Environment Variables","Error Handling"],
-        resources: ["Node.js Docs","FastAPI Docs","Hussein Nasser (YouTube)","CS50 Web"],
-        milestone: "Build a REST API with full CRUD operations for a resource of your choice."
-      },
-      {
-        title: "Databases & Authentication",
-        weeks: 6,
-        desc: "Connect your server to a database, model data correctly, and implement secure user authentication from scratch.",
-        topics: ["SQL Fundamentals (PostgreSQL)","NoSQL with MongoDB","ORM / ODM (Sequelize / Mongoose)","JWT Authentication","Password Hashing (bcrypt)","Database Indexing"],
-        resources: ["PostgreSQL Tutorial","MongoDB University","Auth0 Blog","The Primeagen (YouTube)"],
-        milestone: "Build an authenticated REST API with a relational database and role-based access."
-      },
-      {
-        title: "Scalability & DevOps Basics",
-        weeks: 6,
-        desc: "Learn how to deploy, monitor, and scale backend services. Cover caching, message queues, and containerisation.",
-        topics: ["Docker & Containers","CI/CD with GitHub Actions","Redis Caching","Rate Limiting & Security","Cloud Basics (AWS / GCP)","System Design Patterns"],
-        resources: ["Docker Docs","AWS Free Tier","Fireship.io","ByteByteGo"],
-        milestone: "Dockerise your API and deploy it to a cloud provider with a CI/CD pipeline."
-      }
-    ],
-    gaps: [
-      { name: "SQL Databases", level: "high" },
-      { name: "Docker", level: "high" },
-      { name: "JWT Auth", level: "med" },
-      { name: "Redis", level: "med" },
-      { name: "System Design", level: "low" }
-    ]
-  },
-  data: {
-    phases: [
-      {
-        title: "Python & Data Foundations",
-        weeks: 4,
-        desc: "Build fluency with Python for data work — NumPy, Pandas, and the statistical thinking that underpins all analysis.",
-        topics: ["Python for Data (NumPy, Pandas)","Data Cleaning & Wrangling","Descriptive Statistics","Matplotlib / Seaborn","SQL for Data Analysis","Jupyter Notebooks"],
-        resources: ["Kaggle Learn","Python for Data Analysis (Wes McKinney)","StatQuest (YouTube)","Mode Analytics SQL Tutorial"],
-        milestone: "Complete an end-to-end EDA (Exploratory Data Analysis) on a real dataset and publish it."
-      },
-      {
-        title: "Machine Learning Fundamentals",
-        weeks: 7,
-        desc: "Learn the core ML algorithms, understand when to use each, and build intuition through hands-on Kaggle competitions.",
-        topics: ["Supervised Learning (Regression, Classification)","Decision Trees & Random Forests","Model Evaluation & Cross-Validation","Feature Engineering","Scikit-learn Workflow","Kaggle Competitions"],
-        resources: ["fast.ai","Hands-On ML (Aurélien Géron)","Kaggle","3Blue1Brown (Neural Networks)"],
-        milestone: "Achieve a top 25% score on a Kaggle competition using custom feature engineering."
-      },
-      {
-        title: "Deep Learning & Deployment",
-        weeks: 5,
-        desc: "Extend into neural networks, NLP basics, and learn how to deploy ML models as real products.",
-        topics: ["Neural Networks & PyTorch Basics","NLP Fundamentals","Transfer Learning","Model Deployment (Flask / FastAPI)","MLflow Tracking","A/B Testing Basics"],
-        resources: ["PyTorch Docs","Hugging Face","Full Stack Deep Learning","Chip Huyen's Blog"],
-        milestone: "Build and deploy an ML model as a public API — share the link on LinkedIn."
-      }
-    ],
-    gaps: [
-      { name: "Machine Learning", level: "high" },
-      { name: "PyTorch / TensorFlow", level: "high" },
-      { name: "SQL", level: "med" },
-      { name: "Statistics", level: "med" },
-      { name: "Model Deployment", level: "low" }
-    ]
-  }
-};
 
-/* ══════════════════════════════════════════
-   DETECT ROLE FROM INPUT
-══════════════════════════════════════════ */
-function detectRole(goal) {
-  goal = goal.toLowerCase();
-  if (goal.includes('frontend') || goal.includes('ui') || goal.includes('react') || goal.includes('web dev')) return 'frontend';
-  if (goal.includes('backend') || goal.includes('server') || goal.includes('api') || goal.includes('node') || goal.includes('python dev')) return 'backend';
-  if (goal.includes('data') || goal.includes('ml') || goal.includes('machine learning') || goal.includes('ai engineer') || goal.includes('analyst')) return 'data';
-  return 'default';
-}
-
-/* ══════════════════════════════════════════
-   READINESS SCORE CALC
-══════════════════════════════════════════ */
-function calcScore(skills, role) {
-  const roleSkillMap = {
-    frontend: ['html','css','javascript','react','typescript','git','node'],
-    backend:  ['python','node','sql','mongodb','docker','rest','jwt','git'],
-    data:     ['python','sql','pandas','numpy','statistics','ml','tensorflow','git'],
-    default:  ['git','python','javascript','sql','html']
-  };
-  const required = roleSkillMap[role] || roleSkillMap.default;
-  const userSkills = skills.map(s => s.toLowerCase());
-  const matched = required.filter(r => userSkills.some(u => u.includes(r) || r.includes(u)));
-  return Math.round((matched.length / required.length) * 100);
-}
-
-/* ══════════════════════════════════════════
-   GENERATE ROADMAP
-══════════════════════════════════════════ */
+  //  LOADING MESSAGES
 const loadingMessages = [
   'Analysing your profile…',
   'Mapping skill gaps…',
   'Building your learning phases…',
-  'Curating resources…',
+  'Curating the best resources…',
   'Finalising your roadmap…'
 ];
 
-function generateRoadmap() {
-  const goal = document.getElementById('careerGoal').value.trim();
-  if (!goal) {
-    showToast('Please enter your target career goal.');
-    return;
+  //  AI ROADMAP GENERATOR
+   
+async function fetchRoadmapFromAI(goal, level, months, skills) {
+  const response = await fetch('http://localhost:3000/api/roadmap/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ goal, level, months, skills })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || `Server error ${response.status}`);
   }
 
-  const expLevel = document.getElementById('expLevel').value;
-  const months = document.getElementById('timeline').value;
+  return data;
+}
 
-  // Hide intro, show loading
+  //  GENERATE ROADMAP
+function generateRoadmap() {
+  const goal = document.getElementById('careerGoal').value.trim();
+  if (!goal) { showToast('Please enter your target career goal.'); return; }
+
+  const expLevel = document.getElementById('expLevel').value;
+  const months   = parseInt(document.getElementById('timeline').value);
+
+  // UI: hide intro/output, show loading
   document.getElementById('introSection').style.display = 'none';
   document.getElementById('roadmapOutput').classList.remove('active');
+  document.getElementById('errorBox').classList.remove('active');
   document.getElementById('loadingState').classList.add('active');
   document.getElementById('generateBtn').disabled = true;
 
-  // Cycle loading messages
   let msgIdx = 0;
   const msgInterval = setInterval(() => {
     msgIdx = (msgIdx + 1) % loadingMessages.length;
     document.getElementById('loadingText').textContent = loadingMessages[msgIdx];
-  }, 700);
+  }, 900);
 
-  // Simulate AI generation delay
-  setTimeout(() => {
-    clearInterval(msgInterval);
-    document.getElementById('loadingState').classList.remove('active');
-    document.getElementById('generateBtn').disabled = false;
-    renderRoadmap(goal, expLevel, parseInt(months));
-  }, 2800);
+  fetchRoadmapFromAI(goal, expLevel, months, currentSkills)
+    .then(aiData => {
+      clearInterval(msgInterval);
+      document.getElementById('loadingState').classList.remove('active');
+      document.getElementById('generateBtn').disabled = false;
+      renderRoadmap(goal, expLevel, months, aiData);
+    })
+    .catch(err => {
+      clearInterval(msgInterval);
+      document.getElementById('loadingState').classList.remove('active');
+      document.getElementById('generateBtn').disabled = false;
+      document.getElementById('introSection').style.display = 'block';
+      const box = document.getElementById('errorBox');
+      box.textContent = 'Could not generate roadmap: ' + (err.message || 'Please try again.');
+      box.classList.add('active');
+    });
 }
 
-function renderRoadmap(goal, level, months) {
-  const role = detectRole(goal);
-  const data = roleData[role];
-  const score = calcScore(currentSkills, role);
-
-  // Adjust weeks per phase based on timeline
+  //  RENDER ROADMAP FROM AI DATA
+function renderRoadmap(goal, level, months, data) {
   const totalWeeks = months * 4;
-  const baseWeeks = data.phases.map(p => p.weeks);
-  const baseTotal = baseWeeks.reduce((a, b) => a + b, 0);
-  const adjustedPhases = data.phases.map((p, i) => ({
-    ...p,
-    weeks: Math.round((p.weeks / baseTotal) * totalWeeks)
-  }));
+  const phases     = data.phases;
+  const score      = Math.min(100, Math.max(0, data.readinessScore || 0));
+  const gaps       = data.skillGaps || [];
 
   // Summary bar
-  const titleEl = document.getElementById('summaryTitle');
-  titleEl.innerHTML = `Roadmap to <em>${goal}</em>`;
+  document.getElementById('summaryTitle').innerHTML = `Roadmap to <em>${goal}</em>`;
   document.getElementById('summaryMeta').textContent =
-    `${months}-month plan · ${level.charAt(0).toUpperCase()+level.slice(1)} level · ${adjustedPhases.length} phases`;
+    `${months}-month plan · ${level.charAt(0).toUpperCase() + level.slice(1)} level · ${phases.length} phases`;
 
-  const chips = document.getElementById('summaryChips');
-  chips.innerHTML = [
+  document.getElementById('summaryChips').innerHTML = [
     `${totalWeeks} weeks`,
-    `${adjustedPhases.length} phases`,
-    score + '% ready'
+    `${phases.length} phases`,
+    `${score}% ready`
   ].map(t => `<span class="summary-chip">${t}</span>`).join('');
 
   // Phases
-  const phaseList = document.getElementById('phaseList');
-  phaseList.innerHTML = adjustedPhases.map((phase, i) => `
+  document.getElementById('phaseList').innerHTML = phases.map((phase, i) => `
     <div class="phase-item">
       <div class="phase-left">
-        <div class="phase-dot ${i === 0 ? 'active-dot' : ''}" id="dot-${i}">${i+1}</div>
+        <div class="phase-dot ${i === 0 ? 'active-dot' : ''}" id="dot-${i}">${i + 1}</div>
         <div class="phase-line"></div>
       </div>
       <div class="phase-content">
-        <div class="phase-card ${i === 0 ? 'expanded' : ''}" id="card-${i}" onclick="togglePhase(${i}, ${adjustedPhases.length})">
+        <div class="phase-card ${i === 0 ? 'expanded' : ''}" id="card-${i}" onclick="togglePhase(${i}, ${phases.length})">
           <div class="phase-card-header">
             <div class="phase-title-wrap">
-              <div class="phase-duration">Phase ${i+1} · ${phase.weeks} weeks</div>
+              <div class="phase-duration">Phase ${i + 1} · ${phase.weeks} weeks</div>
               <div class="phase-title">${phase.title}</div>
             </div>
             <div class="phase-chevron">⌄</div>
           </div>
           <div class="phase-body">
             <p class="phase-desc">${phase.desc}</p>
-            <div style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Topics Covered</div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Topics Covered</div>
             <div class="topics-grid">
-              ${phase.topics.map(t => `<div class="topic-chip">${t}</div>`).join('')}
+              ${(phase.topics || []).map(t => `<div class="topic-chip">${t}</div>`).join('')}
             </div>
-            <div style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin:14px 0 8px">Resources</div>
+            <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin:14px 0 8px">Resources</div>
             <div class="resources-row">
-              ${phase.resources.map(r => `<span class="resource-tag">${r}</span>`).join('')}
+              ${(phase.resources || []).map(r => `<span class="resource-tag">${r}</span>`).join('')}
             </div>
             <div class="milestone-box">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
               <div><strong>Milestone:</strong> ${phase.milestone}</div>
             </div>
           </div>
@@ -1254,7 +805,6 @@ function renderRoadmap(goal, level, months) {
   `).join('');
 
   // Skill gaps sidebar
-  const gaps = data.gaps;
   document.getElementById('gapList').innerHTML = gaps.map(g => `
     <div class="gap-item">
       <span class="gap-name">${g.name}</span>
@@ -1263,36 +813,32 @@ function renderRoadmap(goal, level, months) {
   `).join('');
 
   // Timeline breakdown sidebar
-  document.getElementById('timelineBar').innerHTML = adjustedPhases.map((p, i) => `
+  document.getElementById('timelineBar').innerHTML = phases.map((p, i) => `
     <div class="tl-row">
-      <div class="tl-label">Phase ${i+1}</div>
-      <div class="tl-track"><div class="tl-fill" style="width:${Math.round((p.weeks/totalWeeks)*100)}%"></div></div>
+      <div class="tl-label">Phase ${i + 1}</div>
+      <div class="tl-track"><div class="tl-fill" style="width:${Math.round((p.weeks / totalWeeks) * 100)}%"></div></div>
       <div class="tl-weeks">${p.weeks}w</div>
     </div>
   `).join('');
 
-  // Animate score ring
-  const circle = document.getElementById('scoreCircle');
+  // Readiness score ring
   const circumference = 238.76;
   const offset = circumference - (score / 100) * circumference;
   document.getElementById('scoreNum').textContent = score + '%';
-  document.getElementById('scoreLabel').textContent =
-    score >= 60 ? 'You\'re well-positioned!' :
-    score >= 30 ? 'Good starting point' : 'Great time to start learning';
-
-  setTimeout(() => {
-    circle.style.strokeDashoffset = offset;
-  }, 200);
+  document.getElementById('scoreLabel').textContent = data.scoreLabel ||
+    (score >= 60 ? "You're well-positioned!" : score >= 30 ? 'Good starting point' : 'Great time to start learning');
+  setTimeout(() => { document.getElementById('scoreCircle').style.strokeDashoffset = offset; }, 200);
 
   // Show output
   document.getElementById('roadmapOutput').classList.add('active');
   window.scrollTo({ top: document.getElementById('roadmapOutput').offsetTop - 100, behavior: 'smooth' });
 }
 
+  //  TOGGLE PHASE EXPAND
 function togglePhase(idx, total) {
   for (let i = 0; i < total; i++) {
     const card = document.getElementById(`card-${i}`);
-    const dot = document.getElementById(`dot-${i}`);
+    const dot  = document.getElementById(`dot-${i}`);
     if (i === idx) {
       card.classList.toggle('expanded');
       if (card.classList.contains('expanded')) {
@@ -1305,8 +851,10 @@ function togglePhase(idx, total) {
   }
 }
 
+  //  RESET
 function resetForm() {
   document.getElementById('roadmapOutput').classList.remove('active');
+  document.getElementById('errorBox').classList.remove('active');
   document.getElementById('introSection').style.display = 'block';
   document.getElementById('careerGoal').value = '';
   currentSkills = [];
@@ -1314,37 +862,33 @@ function resetForm() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+  //  AUTO-FILL FROM URL PARAM (?goal=...)
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const goal = params.get('goal');
+  if (goal) {
+    document.getElementById('careerGoal').value = goal;
+    setTimeout(() => generateRoadmap(), 400);
+  }
+})();
+
+  //  NEWSLETTER
 function handleSubscribe() {
-  const input = document.getElementById("newsletter-email");
+  const input = document.getElementById('newsletter-email');
   if (!input) return;
   const val = input.value.trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-    showToast("Please enter a valid email address.");
+    showToast('Please enter a valid email address.');
     return;
   }
-  document.getElementById("newsletter-form").innerHTML = `
+  document.getElementById('newsletter-form').innerHTML = `
     <div class="newsletter-success">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       You're subscribed!
     </div>`;
 }
 
-/* ══════════════════════════════════════════
-   AUTO-FILL FROM URL PARAM (?goal=...)
-══════════════════════════════════════════ */
-(function () {
-  const params = new URLSearchParams(window.location.search);
-  const goal = params.get('goal');
-  if (goal) {
-    document.getElementById('careerGoal').value = goal;
-    // Small delay so the page renders first, then auto-generate
-    setTimeout(() => generateRoadmap(), 400);
-  }
-})();
-
-/* ══════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════ */
+  //  TOAST
 function showToast(msg) {
   const t = document.getElementById('toast');
   if (!t) return;
@@ -1352,9 +896,6 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
 }
-
-
 </script>
-<div id="toast" class="toast"></div>
 </body>
 </html>
