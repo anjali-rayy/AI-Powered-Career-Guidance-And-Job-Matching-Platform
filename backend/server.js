@@ -5,6 +5,9 @@ const jwt        = require('jsonwebtoken');
 const cors       = require('cors');
 require('dotenv').config();
 
+// ── node-fetch (install with: npm install node-fetch@2) ──
+const fetch = require('node-fetch');
+
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: '*' }));
@@ -50,9 +53,43 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// ═══════════════════════════════
+// ══════════════════════════════════════════
+// ── ANTHROPIC PROXY ROUTE ──
+// Forwards roadmap requests to Claude API
+// so the browser avoids CORS restrictions
+// ══════════════════════════════════════════
+app.post('/api/roadmap', async (req, res) => {
+  try {
+    const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+
+    if (!ANTHROPIC_API_KEY) {
+      return res.status(500).json({ error: { message: 'ANTHROPIC_API_KEY is not set in .env' } });
+    }
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type':      'application/json',
+        'x-api-key':         ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify(req.body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+
+    res.json(data);
+  } catch (err) {
+    console.error('Anthropic proxy error:', err);
+    res.status(500).json({ error: { message: err.message } });
+  }
+});
+
 //  ROUTES
-// ═══════════════════════════════
 
 // ── REGISTER ──
 app.post('/api/register', async (req, res) => {
@@ -242,3 +279,6 @@ app.get('/api/verify', authMiddleware, async (req, res) => {
 // ── START SERVER ──
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 PathwayAI server running on http://localhost:${PORT}`));
+
+const roadmapRoute = require('./routes/roadmap');
+app.use('/api/roadmap', roadmapRoute);
