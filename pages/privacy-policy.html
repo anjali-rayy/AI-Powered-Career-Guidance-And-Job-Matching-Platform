@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Privacy Policy | PathwayAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #D4AF37;
+      --gold-light: rgba(212,175,55,0.08);
+      --gold-border: rgba(212,175,55,0.22);
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --bg3: #161616;
+      --border: rgba(255,255,255,0.07);
+      --border-mid: rgba(255,255,255,0.11);
+      --text1: #f0ede8;
+      --text2: rgba(240,237,232,0.60);
+      --text3: rgba(240,237,232,0.30);
+      --radius: 10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text1);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 64px;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text1);
+      font-weight: 600; font-size: 16px; letter-spacing: -0.01em;
+    }
+    .logo-mark {
+      width: 30px; height: 30px; background: var(--gold);
+      border-radius: 7px; display: flex; align-items: center;
+      justify-content: center; font-size: 15px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--text2); text-decoration: none; font-size: 13.5px; transition: color .2s; }
+    .nav-links a:hover { color: var(--text1); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 7px; padding: 7px 16px; color: var(--text2);
+      font-family: 'Inter', sans-serif; font-size: 13px; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--border-mid); color: var(--text1); }
+    .btn-gold {
+      background: var(--gold); border: none; border-radius: 7px;
+      padding: 7px 16px; color: #0a0a0a;
+      font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: opacity .2s;
+    }
+    .btn-gold:hover { opacity: .88; }
+
+    /* PAGE HEADER */
+    .page-header {
+      border-bottom: 1px solid var(--border);
+      padding: 44px 0 32px;
+    }
+    .page-header-inner {
+      max-width: 1060px; margin: 0 auto; padding: 0 40px;
+    }
+    .breadcrumb {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 12px; color: var(--text3); margin-bottom: 20px;
+    }
+    .breadcrumb a { color: var(--text3); text-decoration: none; transition: color .15s; }
+    .breadcrumb a:hover { color: var(--gold); }
+
+    .doc-label {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--gold-border); border-radius: 99px;
+      padding: 4px 13px; font-size: 10.5px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
+    }
+    .doc-label-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
+      color: var(--text1); margin-bottom: 20px;
+    }
+    .page-header h1 em { font-style: italic; color: var(--gold); }
+
+    .doc-meta-bar {
+      display: flex; flex-wrap: wrap; gap: 0;
+      border-top: 1px solid var(--border); padding-top: 16px;
+    }
+    .meta-item {
+      font-size: 12px; color: var(--text3);
+      padding-right: 20px; margin-right: 20px;
+      border-right: 1px solid var(--border);
+    }
+    .meta-item:last-child { border-right: none; }
+    .meta-item strong { color: var(--text2); font-weight: 500; }
+
+    /* LAYOUT */
+    .doc-wrap {
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 40px 80px;
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 0;
+      align-items: start;
+    }
+    @media (max-width: 760px) {
+      .doc-wrap { grid-template-columns: 1fr; padding: 0 20px 60px; }
+      .toc-col { display: none; }
+      .navbar { padding: 0 20px; }
+      .page-header-inner { padding: 0 20px; }
+    }
+
+    /* TOC */
+    .toc-col {
+      position: sticky; top: 64px;
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 36px 0;
+    }
+    .toc-inner { padding-right: 24px; }
+    .toc-heading {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text3); margin-bottom: 12px;
+    }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+    .toc-list a {
+      display: block; font-size: 12px; color: var(--text3);
+      text-decoration: none; padding: 5px 10px;
+      border-left: 2px solid transparent; border-radius: 0 4px 4px 0;
+      line-height: 1.45; transition: color .15s, border-color .15s, background .15s;
+    }
+    .toc-list a:hover { color: var(--text2); border-left-color: var(--border-mid); background: rgba(255,255,255,.02); }
+    .toc-list a.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-light); }
+
+    /* CONTENT */
+    .content-col {
+      padding: 40px 0 0 48px;
+      min-width: 0;
+    }
+
+    .policy-intro {
+      background: var(--gold-light);
+      border: 1px solid var(--gold-border);
+      border-left: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 40px;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+    .policy-intro strong { color: var(--gold); font-weight: 500; }
+
+    .policy-section {
+      margin-bottom: 44px;
+      scroll-margin-top: 76px;
+    }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+    .sec-num {
+      font-size: 10.5px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); flex-shrink: 0;
+    }
+    .policy-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--text1); letter-spacing: -0.01em; line-height: 1.2;
+    }
+    .policy-section h3 {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text3); margin: 22px 0 10px;
+    }
+    .policy-section p {
+      font-size: 14px; color: var(--text2);
+      line-height: 1.8; margin-bottom: 12px;
+    }
+    .policy-section p:last-child { margin-bottom: 0; }
+    .policy-section p a { color: var(--gold); text-decoration: none; }
+    .policy-section p a:hover { text-decoration: underline; }
+
+    .policy-section ul, .policy-section ol {
+      margin: 10px 0 14px; padding-left: 0;
+      list-style: none; display: flex; flex-direction: column; gap: 7px;
+    }
+    .policy-section ul li, .policy-section ol li {
+      font-size: 13.5px; color: var(--text2);
+      line-height: 1.7; display: flex; align-items: flex-start; gap: 10px;
+    }
+    .policy-section ul li::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0; margin-top: 9px;
+    }
+    .policy-section ol { counter-reset: li; }
+    .policy-section ol li { counter-increment: li; }
+    .policy-section ol li::before {
+      content: counter(li);
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--gold-light); border: 1px solid var(--gold-border);
+      color: var(--gold); font-size: 9.5px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 3px;
+    }
+    .policy-section li strong { color: var(--text1); font-weight: 500; }
+    .policy-section li a { color: var(--gold); text-decoration: none; }
+    .policy-section li a:hover { text-decoration: underline; }
+
+    .callout {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg2);
+      padding: 14px 18px; margin: 16px 0;
+      font-size: 13.5px; color: var(--text2); line-height: 1.7;
+    }
+    .callout.warn {
+      border-color: rgba(212,175,55,0.28);
+      background: rgba(212,175,55,0.05);
+      color: rgba(212,175,55,0.82);
+    }
+    .callout-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text3); margin-bottom: 5px;
+    }
+    .callout.warn .callout-label { color: rgba(212,175,55,.6); }
+
+    .table-wrap { overflow-x: auto; margin: 14px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 9px 13px; text-align: left;
+      font-size: 10.5px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3);
+    }
+    tbody td {
+      border: 1px solid var(--border);
+      padding: 10px 13px; color: var(--text2);
+      vertical-align: top; line-height: 1.65;
+    }
+    tbody tr:hover td { background: rgba(255,255,255,.015); }
+
+    .def-list { margin: 12px 0; }
+    .def-row {
+      display: grid; grid-template-columns: 150px 1fr;
+      border-top: 1px solid var(--border); padding: 11px 0; font-size: 13.5px;
+    }
+    .def-row:last-child { border-bottom: 1px solid var(--border); }
+    .def-term { font-weight: 500; color: var(--text1); padding-right: 16px; }
+    .def-desc { color: var(--text2); line-height: 1.65; }
+
+    .rights-list { margin: 14px 0; }
+    .rights-row {
+      display: grid; grid-template-columns: 155px 1fr;
+      border-top: 1px solid var(--border);
+      padding: 12px 0; gap: 12px; font-size: 13.5px; align-items: baseline;
+    }
+    .rights-row:last-child { border-bottom: 1px solid var(--border); }
+    .rights-name { font-weight: 500; color: var(--text1); font-size: 13px; }
+    .rights-desc { color: var(--text2); line-height: 1.65; }
+
+    .contact-block {
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius); overflow: hidden; margin-top: 20px;
+    }
+    .contact-block-head {
+      background: var(--gold-light); border-bottom: 1px solid var(--gold-border);
+      padding: 10px 18px; font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold);
+    }
+    .contact-block-body {
+      padding: 20px 18px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+    .ci-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text3); margin-bottom: 4px;
+    }
+    .ci-value { font-size: 13.5px; color: var(--text2); }
+    .ci-value a { color: var(--gold); text-decoration: none; }
+    .ci-value a:hover { text-decoration: underline; }
+
+    .section-divider { height: 1px; background: var(--border); margin: 44px 0; }
+
+    /* FOOTER */
+    .footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 48px 60px 28px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; margin-bottom: 40px;
+    }
+    @media (max-width: 700px) { .footer-top { grid-template-columns: 1fr; } }
+    .footer-brand-logo {
+      display: flex; align-items: center; gap: 9px;
+      text-decoration: none; color: var(--text1);
+      font-weight: 600; font-size: 15px; margin-bottom: 12px;
+    }
+    .footer-logo-mark {
+      width: 28px; height: 28px; background: var(--gold);
+      border-radius: 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 14px;
+    }
+    .footer-tagline { font-size: 12.5px; color: var(--text2); line-height: 1.65; max-width: 280px; margin-bottom: 18px; }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-social {
+      width: 32px; height: 32px; border: 1px solid var(--border);
+      border-radius: 7px; display: flex; align-items: center;
+      justify-content: center; color: var(--text3);
+      transition: border-color .2s, color .2s;
+    }
+    .footer-social:hover { border-color: var(--gold-border); color: var(--gold); }
+    .footer-social svg { width: 13px; height: 13px; }
+    .newsletter-label { font-size: 12.5px; font-weight: 600; color: var(--text1); margin-bottom: 5px; }
+    .newsletter-sub { font-size: 12px; color: var(--text2); margin-bottom: 12px; line-height: 1.55; }
+    .newsletter-form { display: flex; gap: 7px; }
+    .newsletter-input {
+      flex: 1; background: rgba(255,255,255,.04);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 9px 13px; color: var(--text1);
+      font-family: 'Inter', sans-serif; font-size: 13px; outline: none;
+    }
+    .newsletter-input::placeholder { color: var(--text3); }
+    .newsletter-btn {
+      background: var(--gold); border: none; border-radius: 8px;
+      padding: 9px 16px; color: #0a0a0a;
+      font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+      cursor: pointer; transition: opacity .2s;
+    }
+    .newsletter-btn:hover { opacity: .88; }
+    .newsletter-fine { font-size: 11px; color: var(--text3); margin-top: 7px; }
+    .footer-rule { height: 1px; background: var(--border); margin-bottom: 32px; }
+    .footer-links-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px;
+    }
+    @media (max-width: 700px) { .footer-links-grid { grid-template-columns: 1fr 1fr; } }
+    .footer-col-title {
+      font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text1);
+      margin-bottom: 12px; padding-bottom: 7px; border-bottom: 1px solid var(--border);
+    }
+    .footer-col-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .footer-col-list a { font-size: 12.5px; color: var(--text2); text-decoration: none; transition: color .2s; }
+    .footer-col-list a:hover { color: var(--text1); }
+    .footer-col-list a.active-link { color: var(--gold); }
+    .footer-bottom {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    .footer-copy { font-size: 11.5px; color: var(--text3); }
+    .footer-heart { color: #e05d5d; }
+    .footer-bottom-right { display: flex; align-items: center; gap: 12px; }
+    .footer-made { font-size: 11.5px; color: var(--text3); }
+    .footer-back-top {
+      width: 28px; height: 28px; border: 1px solid var(--border);
+      border-radius: 6px; display: flex; align-items: center;
+      justify-content: center; color: var(--text3);
+      text-decoration: none; transition: border-color .2s, color .2s;
+    }
+    .footer-back-top:hover { border-color: var(--gold-border); color: var(--gold); }
+    .footer-back-top svg { width: 12px; height: 12px; }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: var(--bg2); border: 1px solid var(--gold-border);
+      padding: 12px 24px; border-radius: 9px; color: var(--text1);
+      font-size: 13px; z-index: 9999; pointer-events: none;
+      white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,.7);
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body id="top">
+
+<nav class="navbar">
+  <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.png" alt="PathwayAI" style="width:30px;height:30px;border-radius:7px;object-fit:contain;">PathwayAI
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="#">Features</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="login.html"><button class="btn-ghost">Sign in</button></a>
+    <a href="register.html"><button class="btn-gold">Get started</button></a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="../index.html">PathwayAI</a> › <span>Legal</span> › <span>Privacy Policy</span>
+    </div>
+    <div class="doc-label"><div class="doc-label-dot"></div>Legal Document</div>
+    <h1>Privacy <em>Policy</em></h1>
+    <div class="doc-meta-bar">
+      <div class="meta-item"><strong>Effective date:</strong> April 11, 2025</div>
+      <div class="meta-item"><strong>Last revised:</strong> April 11, 2025</div>
+      <div class="meta-item"><strong>Version:</strong> 1.0</div>
+      <div class="meta-item"><strong>Applies to:</strong> pathwayai.app and all subdomains</div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-wrap">
+
+  <aside class="toc-col">
+    <div class="toc-inner">
+      <div class="toc-heading">Contents</div>
+      <ul class="toc-list" id="tocList">
+        <li><a href="#s1" class="active">1. Introduction</a></li>
+        <li><a href="#s2">2. Definitions</a></li>
+        <li><a href="#s3">3. Information We Collect</a></li>
+        <li><a href="#s4">4. Legal Basis for Processing</a></li>
+        <li><a href="#s5">5. How We Use Your Data</a></li>
+        <li><a href="#s6">6. Cookies &amp; Tracking</a></li>
+        <li><a href="#s7">7. Data Sharing &amp; Disclosure</a></li>
+        <li><a href="#s8">8. International Transfers</a></li>
+        <li><a href="#s9">9. Data Retention</a></li>
+        <li><a href="#s10">10. Your Rights</a></li>
+        <li><a href="#s11">11. Children's Privacy</a></li>
+        <li><a href="#s12">12. Security</a></li>
+        <li><a href="#s13">13. Changes to This Policy</a></li>
+        <li><a href="#s14">14. Contact &amp; Complaints</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="content-col">
+
+    <div class="policy-intro">
+      <strong>Plain-language summary:</strong> This policy explains how PathwayAI collects and uses your personal data. We do not sell your data. We do not use it to train AI models. We do not run advertising. You can request access, correction, or deletion of your data at any time. The full legal terms are set out below.
+    </div>
+
+    <div class="policy-section" id="s1">
+      <div class="section-header"><span class="sec-num">§ 01</span><h2>Introduction</h2></div>
+      <p>PathwayAI ("PathwayAI", "we", "us", or "our") operates an AI-powered career guidance platform accessible at <strong>pathwayai.app</strong> and related subdomains (collectively, the "Service"). This Privacy Policy explains how we collect, use, store, disclose, and protect personal information about you when you access or use the Service.</p>
+      <p>This policy applies to all users, including visitors who browse without an account, registered account holders, and any individual whose personal data is submitted through the platform. It covers all features, including the Career Quiz, AI Roadmap Generator, 3D Career Tree, and any features we may introduce in the future.</p>
+      <p>PathwayAI is the data controller for personal data processed under this policy. By using the Service, you acknowledge that you have read and understood this Privacy Policy. If you do not agree, you should discontinue use of the Service immediately.</p>
+      <div class="callout">
+        <div class="callout-label">Scope note</div>
+        This policy does not cover third-party websites or services linked from our platform. We are not responsible for the privacy practices of those third parties, and we encourage you to review their respective policies.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s2">
+      <div class="section-header"><span class="sec-num">§ 02</span><h2>Definitions</h2></div>
+      <p>As used in this Privacy Policy, the following terms have the meanings set out below:</p>
+      <div class="def-list">
+        <div class="def-row"><div class="def-term">Personal Data</div><div class="def-desc">Any information relating to an identified or identifiable natural person, including information that can identify you directly or indirectly.</div></div>
+        <div class="def-row"><div class="def-term">Processing</div><div class="def-desc">Any operation performed on personal data, including collection, storage, use, disclosure, and deletion.</div></div>
+        <div class="def-row"><div class="def-term">Data Controller</div><div class="def-desc">The entity that determines the purposes and means of processing personal data — in this case, PathwayAI.</div></div>
+        <div class="def-row"><div class="def-term">Data Processor</div><div class="def-desc">A third party that processes personal data on behalf of PathwayAI under a contractual arrangement.</div></div>
+        <div class="def-row"><div class="def-term">Consent</div><div class="def-desc">A freely given, specific, informed, and unambiguous indication of your agreement to the processing of your personal data for a stated purpose.</div></div>
+        <div class="def-row"><div class="def-term">Service</div><div class="def-desc">The PathwayAI platform and all features available at pathwayai.app and related subdomains.</div></div>
+        <div class="def-row"><div class="def-term">User / You</div><div class="def-desc">Any individual who accesses or uses the Service.</div></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s3">
+      <div class="section-header"><span class="sec-num">§ 03</span><h2>Information We Collect</h2></div>
+      <p>We collect personal data in three ways: information you provide directly, information collected automatically when you use the Service, and information from third parties where applicable.</p>
+      <h3>3.1 Information You Provide Directly</h3>
+      <ul>
+        <li><strong>Account credentials:</strong> Your name, email address, and password. Passwords are stored only in hashed form and are never stored in plaintext.</li>
+        <li><strong>Career and profile data:</strong> Educational background, work experience, career goals, self-assessed skill levels, and areas of interest entered during the Career Quiz or profile setup.</li>
+        <li><strong>Communications:</strong> Messages sent to our support team, responses to surveys, and content submitted via feedback forms.</li>
+        <li><strong>Newsletter subscription:</strong> Your email address, if you choose to subscribe. Subscription is entirely optional.</li>
+      </ul>
+      <h3>3.2 Information Collected Automatically</h3>
+      <ul>
+        <li><strong>Usage data:</strong> Pages visited, features accessed, button clicks, session duration, referral URLs, and navigation paths.</li>
+        <li><strong>Technical data:</strong> IP address, browser type and version, operating system, device type, screen resolution, and time zone.</li>
+        <li><strong>Log data:</strong> Server-side logs recording interactions with the Service, including timestamps, error reports, and API request metadata.</li>
+      </ul>
+      <h3>3.3 Information We Do Not Collect</h3>
+      <p>We do not knowingly collect the following categories of sensitive personal data, and our platform is not designed to receive them:</p>
+      <ul>
+        <li>Racial or ethnic origin, political opinions, religious or philosophical beliefs</li>
+        <li>Trade union membership, genetic data, or biometric data</li>
+        <li>Data concerning health, sex life, or sexual orientation</li>
+        <li>Government-issued identification numbers (e.g., Aadhaar, passport number, SSN)</li>
+        <li>Financial account numbers or payment card data</li>
+      </ul>
+      <div class="callout warn">
+        <div class="callout-label">Please be aware</div>
+        Do not include sensitive personal information in any text field on our platform. If such data is submitted inadvertently, please contact us immediately so we can delete it.
+      </div>
+      <h3>3.4 Data Category Summary</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Category</th><th>Examples</th><th>Collection Method</th><th>Required?</th></tr></thead>
+          <tbody>
+            <tr><td>Account Information</td><td>Name, email, hashed password</td><td>Provided by you on registration</td><td>Yes, for account creation</td></tr>
+            <tr><td>Career Profile Data</td><td>Goals, skills, quiz responses, experience level</td><td>Provided by you during use</td><td>Yes, for core functionality</td></tr>
+            <tr><td>Usage Data</td><td>Pages visited, features used, session duration</td><td>Collected automatically</td><td>Automatic</td></tr>
+            <tr><td>Technical Data</td><td>IP address, browser type, OS, device info</td><td>Collected automatically via server logs</td><td>Automatic</td></tr>
+            <tr><td>Communications</td><td>Support tickets, feedback, survey responses</td><td>Provided by you voluntarily</td><td>No — optional</td></tr>
+            <tr><td>Marketing Preferences</td><td>Newsletter opt-in, email preferences</td><td>Provided by you voluntarily</td><td>No — optional</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s4">
+      <div class="section-header"><span class="sec-num">§ 04</span><h2>Legal Basis for Processing</h2></div>
+      <p>Where applicable data protection law (including the GDPR) requires us to identify a legal basis for processing your personal data, we rely on one or more of the following:</p>
+      <ol>
+        <li><strong>Performance of a contract (Art. 6(1)(b) GDPR):</strong> Processing necessary to provide the Service, including account management and generating career roadmaps.</li>
+        <li><strong>Legitimate interests (Art. 6(1)(f) GDPR):</strong> Processing necessary for our legitimate business interests — such as improving the platform, ensuring security, and preventing fraud — where those interests are not overridden by your rights.</li>
+        <li><strong>Consent (Art. 6(1)(a) GDPR):</strong> Processing carried out with your explicit consent, such as sending marketing emails. You may withdraw consent at any time without affecting the lawfulness of prior processing.</li>
+        <li><strong>Legal obligation (Art. 6(1)(c) GDPR):</strong> Processing necessary for us to comply with applicable laws and regulatory obligations.</li>
+      </ol>
+      <p>If you are located outside the EEA, the above provisions are offered for transparency. We apply equivalent data protection standards regardless of your jurisdiction.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s5">
+      <div class="section-header"><span class="sec-num">§ 05</span><h2>How We Use Your Data</h2></div>
+      <p>We use personal data only for the purposes set out below. We do not process personal data for purposes incompatible with those stated here without obtaining your prior consent or as otherwise permitted by law.</p>
+      <h3>5.1 Providing and Operating the Service</h3>
+      <ul>
+        <li>Creating and managing your account; authenticating your identity and maintaining session security</li>
+        <li>Generating personalised AI career roadmaps, skill-gap analyses, and career recommendations</li>
+        <li>Displaying your career history, progress, and saved results</li>
+        <li>Sending transactional communications, including account confirmations, password resets, and service alerts</li>
+      </ul>
+      <h3>5.2 Improving and Developing the Service</h3>
+      <ul>
+        <li>Analysing aggregated, anonymised usage patterns to identify bugs, performance issues, and improvements</li>
+        <li>Conducting internal research and product development; testing new features and interfaces</li>
+      </ul>
+      <h3>5.3 Marketing and Communications (with Consent)</h3>
+      <ul>
+        <li>Sending newsletters, career tips, and product update emails, where you have opted in</li>
+        <li>Notifying you of new features or changes that may affect your use of the Service</li>
+      </ul>
+      <h3>5.4 Security and Legal Compliance</h3>
+      <ul>
+        <li>Detecting, investigating, and preventing fraud, abuse, and security incidents</li>
+        <li>Enforcing our Terms of Service; complying with applicable laws, court orders, and legal processes</li>
+        <li>Protecting the rights, property, and safety of PathwayAI, our users, and the public</li>
+      </ul>
+      <div class="callout">
+        <div class="callout-label">Important limitation</div>
+        We do not use your personal data to train external or third-party AI or machine learning models. We do not use your data for targeted advertising or to build advertising audience profiles. We do not make solely automated decisions about you that produce legal or similarly significant effects without human review.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s6">
+      <div class="section-header"><span class="sec-num">§ 06</span><h2>Cookies &amp; Tracking Technologies</h2></div>
+      <p>We use cookies and similar technologies (such as local storage and session storage) to operate the Service, remember your preferences, and understand how users interact with the platform.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Category</th><th>Purpose</th><th>Can be disabled?</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Strictly Necessary</strong></td><td>Authentication, session management, security tokens. Required for the Service to function.</td><td>No — disabling will break core functionality</td></tr>
+            <tr><td><strong>Functional</strong></td><td>Remembers preferences (e.g., display settings). Enhances user experience.</td><td>Yes — via browser settings</td></tr>
+            <tr><td><strong>Analytics</strong></td><td>Collects anonymised data on page visits and interactions to improve the platform. No personal identifiers are retained.</td><td>Yes — via account settings or browser opt-out</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>We do not use advertising cookies or third-party tracking technologies that monitor your activity across other websites. Disabling strictly necessary cookies will impair your ability to use the Service.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s7">
+      <div class="section-header"><span class="sec-num">§ 07</span><h2>Data Sharing &amp; Disclosure</h2></div>
+      <p>We do not sell, rent, or trade your personal data. We do not permit third parties to use your personal data for their own commercial purposes. We may disclose your personal data only in the limited circumstances described below.</p>
+      <h3>7.1 Service Providers (Data Processors)</h3>
+      <p>We engage trusted third-party vendors to process personal data on our behalf. These vendors are contractually required to: (a) process data only on our documented instructions; (b) implement appropriate security measures; and (c) not use your data for any purpose other than performing services for us. Current categories include cloud infrastructure providers, transactional email delivery services, and analytics tools.</p>
+      <h3>7.2 AI Inference Providers</h3>
+      <p>Career profile data you submit may be transmitted to third-party AI API providers (such as Google Gemini API) solely to generate your personalised career roadmap and recommendations. These providers are bound by contract to: (a) not use your data to train or improve their own models; (b) not disclose your data to any other party; and (c) delete inference data after processing. We do not send account credentials or sensitive personal data to AI providers.</p>
+      <h3>7.3 Legal Requirements</h3>
+      <p>We may disclose personal data when we have a good-faith belief that disclosure is necessary to: (a) comply with a legal obligation, subpoena, or court order; (b) protect and defend our legal rights or those of our users; (c) prevent or investigate possible wrongdoing; or (d) protect the personal safety of users or the public.</p>
+      <h3>7.4 Business Transfers</h3>
+      <p>In the event of a merger, acquisition, or sale of assets, personal data may be transferred to the successor entity. We will provide notice before your data becomes subject to a materially different privacy policy, and will seek your consent where required by applicable law.</p>
+      <h3>7.5 With Your Consent</h3>
+      <p>We may share your personal data with third parties in additional circumstances where we have obtained your explicit prior consent.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s8">
+      <div class="section-header"><span class="sec-num">§ 08</span><h2>International Data Transfers</h2></div>
+      <p>PathwayAI is operated from India. If you are located in the EEA, the United Kingdom, or another jurisdiction with data transfer restrictions, please be aware that your personal data may be transferred to and processed in countries that may not provide the same level of data protection as your home country.</p>
+      <p>Where we transfer personal data outside of the EEA or UK, we ensure appropriate safeguards are in place in accordance with applicable law. These may include Standard Contractual Clauses (SCCs) approved by the European Commission, adequacy decisions, or other legally recognised transfer mechanisms.</p>
+      <p>You may request information about the specific safeguards we rely on for international transfers by contacting us using the details in <a href="#s14">Section 14</a>.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s9">
+      <div class="section-header"><span class="sec-num">§ 09</span><h2>Data Retention</h2></div>
+      <p>We retain personal data only for as long as is necessary to fulfil the purposes for which it was collected, to provide the Service, and to comply with our legal obligations.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Data Type</th><th>Retention Period</th><th>Basis</th></tr></thead>
+          <tbody>
+            <tr><td>Account and profile data</td><td>Duration of account, plus 90 days post-deletion</td><td>Service provision; post-deletion grace period</td></tr>
+            <tr><td>Career roadmap and quiz data</td><td>Deleted within 30 days of account deletion request</td><td>Erasure request or account deletion</td></tr>
+            <tr><td>Server and access logs</td><td>Up to 90 days</td><td>Security monitoring and incident response</td></tr>
+            <tr><td>Support communications</td><td>Up to 3 years from last contact</td><td>Legitimate interests; dispute resolution</td></tr>
+            <tr><td>Anonymised analytics data</td><td>Indefinitely</td><td>Cannot identify you; used for product analytics only</td></tr>
+            <tr><td>Legal and compliance records</td><td>As required by law (typically up to 7 years)</td><td>Legal obligation</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Upon account deletion, we will delete or anonymise your personal data per the schedule above. You may request deletion at any time by contacting <a href="mailto:privacy@pathwayai.app">privacy@pathwayai.app</a>.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s10">
+      <div class="section-header"><span class="sec-num">§ 10</span><h2>Your Privacy Rights</h2></div>
+      <p>Depending on your jurisdiction, you may have some or all of the following rights with respect to your personal data. To exercise any of these rights, contact us at <a href="mailto:privacy@pathwayai.app">privacy@pathwayai.app</a>. We will respond within 30 days, or within such other period required by applicable law.</p>
+      <div class="rights-list">
+        <div class="rights-row"><div class="rights-name">Right of Access</div><div class="rights-desc">Request a copy of the personal data we hold about you, along with information about how it is being processed (Art. 15 GDPR).</div></div>
+        <div class="rights-row"><div class="rights-name">Rectification</div><div class="rights-desc">Request that we correct any inaccurate or incomplete personal data (Art. 16 GDPR).</div></div>
+        <div class="rights-row"><div class="rights-name">Erasure</div><div class="rights-desc">Request deletion of your personal data where it is no longer necessary, or where you withdraw consent. Subject to certain legal retention obligations (Art. 17 GDPR).</div></div>
+        <div class="rights-row"><div class="rights-name">Restriction</div><div class="rights-desc">Request that we restrict processing in certain circumstances, such as while a rectification request is being verified (Art. 18 GDPR).</div></div>
+        <div class="rights-row"><div class="rights-name">Portability</div><div class="rights-desc">Where processing is based on consent or contract, receive your data in a structured, machine-readable format and transmit it to another controller (Art. 20 GDPR).</div></div>
+        <div class="rights-row"><div class="rights-name">Object</div><div class="rights-desc">Object to processing based on our legitimate interests, or object to direct marketing at any time (Art. 21 GDPR).</div></div>
+        <div class="rights-row"><div class="rights-name">Withdraw Consent</div><div class="rights-desc">Where processing is based on consent, you may withdraw it at any time without affecting the lawfulness of prior processing. Unsubscribe from marketing emails via the link in any email.</div></div>
+        <div class="rights-row"><div class="rights-name">Complain</div><div class="rights-desc">Lodge a complaint with your relevant supervisory authority (e.g., ICO in the UK, or your national data protection authority in the EU) if you believe we have not handled your data lawfully.</div></div>
+      </div>
+      <p>We may ask you to verify your identity before processing a rights request. We will not discriminate against you for exercising your rights. Where legal obligations prevent us from fulfilling a request in full, we will explain the applicable limitations in our response.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s11">
+      <div class="section-header"><span class="sec-num">§ 11</span><h2>Children's Privacy</h2></div>
+      <p>The Service is directed to users who are at least 13 years of age. We do not knowingly collect, solicit, or process personal data from children under 13 (or under 16 where required by applicable law, including the EU GDPR and the UK Children's Code).</p>
+      <p>If a parent or guardian becomes aware that their child has provided personal data without consent, they should contact us immediately at <a href="mailto:privacy@pathwayai.app">privacy@pathwayai.app</a>. Upon receiving verified notification, we will take reasonable steps to delete the relevant data promptly.</p>
+      <div class="callout">
+        <div class="callout-label">For parents and guardians</div>
+        Parents or legal guardians of minor users (where permitted by applicable law) may contact us to review, correct, or request deletion of their child's personal data at any time.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s12">
+      <div class="section-header"><span class="sec-num">§ 12</span><h2>Security</h2></div>
+      <p>We implement and maintain appropriate technical and organisational security measures to protect personal data against accidental or unlawful destruction, loss, alteration, unauthorised disclosure, or access. Our measures include:</p>
+      <ul>
+        <li>Encryption of all data in transit using TLS 1.2 or higher</li>
+        <li>Encryption of data at rest for sensitive stored data</li>
+        <li>One-way hashing of passwords using bcrypt with appropriate cost factors</li>
+        <li>Role-based access controls limiting personnel access to production data on a need-to-know basis</li>
+        <li>Regular security reviews, vulnerability assessments, and dependency audits</li>
+        <li>Incident response procedures to detect, report, and address personal data breaches</li>
+      </ul>
+      <p>No method of transmission over the internet is completely secure. We cannot guarantee absolute security. In the event of a personal data breach likely to result in high risk to individuals, we will notify affected users and the relevant supervisory authority in accordance with applicable law.</p>
+      <p>If you discover a potential security vulnerability, please disclose it responsibly to <a href="mailto:security@pathwayai.app">security@pathwayai.app</a> before making any public disclosure.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s13">
+      <div class="section-header"><span class="sec-num">§ 13</span><h2>Changes to This Policy</h2></div>
+      <p>We may update this Privacy Policy periodically to reflect changes in our data practices, the Service, applicable technology, or legal requirements. When we make material changes, we will:</p>
+      <ul>
+        <li>Update the "Last revised" date in the document header at the top of this page</li>
+        <li>Send an email notification to all registered users no fewer than 14 days before the revised policy takes effect</li>
+        <li>Display a prominent notice on the Service for a period of not less than 30 days following the effective date</li>
+      </ul>
+      <p>Where a proposed change involves processing your personal data in a materially different manner, we will seek your consent prior to implementing that change where required by applicable law. Your continued use of the Service after a revised policy takes effect constitutes your acceptance of the updated terms.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="policy-section" id="s14">
+      <div class="section-header"><span class="sec-num">§ 14</span><h2>Contact &amp; Complaints</h2></div>
+      <p>If you have questions about this Privacy Policy, wish to exercise your data protection rights, or have a concern about how we handle your personal data, please contact us using the details below. We aim to respond to all privacy-related enquiries within 2–5 business days, and to all formal rights requests within 30 days.</p>
+      <div class="contact-block">
+        <div class="contact-block-head">Privacy Contact Information</div>
+        <div class="contact-block-body">
+          <div>
+            <div class="ci-label">Privacy Team</div>
+            <div class="ci-value"><a href="mailto:privacy@pathwayai.app">privacy@pathwayai.app</a></div>
+          </div>
+          <div>
+            <div class="ci-label">Security Disclosures</div>
+            <div class="ci-value"><a href="mailto:security@pathwayai.app">security@pathwayai.app</a></div>
+          </div>
+          <div>
+            <div class="ci-label">Subject Line</div>
+            <div class="ci-value">Privacy Request — [Your Name]</div>
+          </div>
+          <div>
+            <div class="ci-label">Response Time</div>
+            <div class="ci-value">2–5 business days (general enquiries)<br>30 days (formal rights requests)</div>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:18px">If you are not satisfied with our response, you have the right to escalate your complaint to the relevant supervisory authority. For users in the EEA, this is your national data protection authority. For users in the UK, this is the Information Commissioner's Office at <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a>. For users in India, the Digital Personal Data Protection Act 2023 may apply.</p>
+    </div>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <a href="../index.html" class="footer-brand-logo">
+        <img src="../assets/images/logo.png" alt="PathwayAI" style="width:30px;height:30px;border-radius:7px;object-fit:contain;">PathwayAI
+      </a>
+      <p class="footer-tagline">Your comprehensive platform for AI-powered career guidance — built for every student, everywhere.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.7 5.4 4.4 8.8 4.5-.4-1.8.3-3.7 1.7-4.8 2.2-1.7 5.2-1.4 7 .7.7-.2 1.4-.5 2-.9z"/></svg></a>
+        <a href="#" class="footer-social" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="#" class="footer-social" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+        <a href="#" class="footer-social" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div class="newsletter-label">Stay updated</div>
+      <p class="newsletter-sub">Get career tips, new features, and platform updates straight to your inbox.</p>
+      <div class="newsletter-form" id="newsletter-form">
+        <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Enter your email"/>
+        <button class="newsletter-btn" onclick="handleSubscribe()">Subscribe</button>
+      </div>
+      <p class="newsletter-fine">No spam, ever. Unsubscribe any time.</p>
+    </div>
+  </div>
+  <div class="footer-rule"></div>
+  <div class="footer-links-grid">
+    <div><div class="footer-col-title">Features</div><ul class="footer-col-list"><li><a href="quiz.html">Career Quiz</a></li><li><a href="#">Resume Analysis</a></li><li><a href="#">Skill Gap Detection</a></li><li><a href="#">Job Matching Score</a></li><li><a href="pages/career-tree.html">3D Career Tree</a></li><li><a href="roadmap.html">AI Roadmap</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-col-list"><li><a href="about.html">About</a></li><li><a href="#">Team</a></li><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div><div class="footer-col-title">Support</div><ul class="footer-col-list"><li><a href="helpFaq.html">Help Center</a></li><li><a href="#">Career Guides</a></li><li><a href="#">API Docs</a></li><li><a href="#">Community</a></li></ul></div>
+    <div><div class="footer-col-title">Legal</div><ul class="footer-col-list"><li><a href="privacy-policy.html" class="active-link">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">GDPR</a></li></ul></div>
+  </div>
+  <div class="footer-rule"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 PathwayAI. All rights reserved. Built with <span class="footer-heart">♥</span> for students everywhere.</div>
+    <div class="footer-bottom-right">
+      <span class="footer-made">Made in India 🇮🇳</span>
+      <a href="#top" class="footer-back-top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script>
+  const sections = document.querySelectorAll('.policy-section[id]');
+  const tocLinks  = document.querySelectorAll('.toc-list a');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -75% 0px' });
+  sections.forEach(s => io.observe(s));
+
+  function handleSubscribe() {
+    const input = document.getElementById('newsletter-email');
+    if (!input) return;
+    const val = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { showToast('Please enter a valid email address.'); return; }
+    document.getElementById('newsletter-form').innerHTML = `<div style="color:var(--gold);font-size:13.5px;display:flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>You're subscribed!</div>`;
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+</script>
+</body>
+</html>
