@@ -266,3 +266,11 @@ ul { list-style: none; }
 
 .nav-drop-title { font-size: 13px; font-weight: 500; color: var(--text); }
 .nav-drop-sub   { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+
+/* Dropdown hidden by default, shown when .open is added by JS */
+.nav-drop-menu {
+  display: none;
+}
+.nav-drop-menu.open {
+  display: block;
+}
