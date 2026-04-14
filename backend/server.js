@@ -1,15 +1,15 @@
-const express    = require('express');
-const mongoose   = require('mongoose');
-const bcrypt     = require('bcryptjs');
-const jwt        = require('jsonwebtoken');
-const cors       = require('cors');
+const express = require('express');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
 require('dotenv').config();
 
-// ── node-fetch (install with: npm install node-fetch@2) ──
+// ── node-fetch (npm install node-fetch@2) ──
 const fetch = require('node-fetch');
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }));
 app.use(cors({ origin: '*' }));
 
 // ── CONNECT TO MONGODB ──
@@ -19,22 +19,23 @@ mongoose.connect(process.env.MONGO_URI)
 
 // ── USER SCHEMA ──
 const userSchema = new mongoose.Schema({
-  fname:      { type: String, required: true },
-  lname:      { type: String, default: '' },
-  email:      { type: String, required: true, unique: true, lowercase: true },
-  password:   { type: String, required: true },
-  phone:      { type: String, default: '' },
-  location:   { type: String, default: '' },
-  bio:        { type: String, default: '' },
-  college:    { type: String, default: '' },
-  eduLevel:   { type: String, default: '' },
-  eduField:   { type: String, default: '' },
-  gradYear:   { type: String, default: '' },
+  fname: { type: String, required: true },
+  lname: { type: String, default: '' },
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { type: String, default: '' },
+  googleId: { type: String, default: '' },
+  phone: { type: String, default: '' },
+  location: { type: String, default: '' },
+  bio: { type: String, default: '' },
+  college: { type: String, default: '' },
+  eduLevel: { type: String, default: '' },
+  eduField: { type: String, default: '' },
+  gradYear: { type: String, default: '' },
   experience: { type: String, default: '' },
-  interest:   { type: String, default: '' },
-  skills:     { type: [String], default: [] },
-  isActive:   { type: Boolean, default: true },
-  createdAt:  { type: Date, default: Date.now }
+  interest: { type: String, default: '' },
+  skills: { type: [String], default: [] },
+  isActive: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -54,9 +55,41 @@ function authMiddleware(req, res, next) {
 }
 
 // ══════════════════════════════════════════
-// ── ANTHROPIC PROXY ROUTE ──
-// Forwards roadmap requests to Claude API
-// so the browser avoids CORS restrictions
+// ── GROQ PROXY — RESUME ANALYSIS ──
+// ══════════════════════════════════════════
+app.post('/api/resume/analyze', async (req, res) => {
+  try {
+    const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+    console.log('GROQ KEY:', GROQ_API_KEY ? 'FOUND ✅' : 'MISSING ❌');
+    if (!GROQ_API_KEY) {
+      return res.status(500).json({ error: { message: 'GROQ_API_KEY is not set in .env' } });
+    }
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify(req.body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+
+    res.json(data);
+  } catch (err) {
+    console.error('Groq proxy error:', err);
+    res.status(500).json({ error: { message: err.message } });
+  }
+});
+
+// ══════════════════════════════════════════
+// ── ANTHROPIC PROXY — ROADMAP ──
 // ══════════════════════════════════════════
 app.post('/api/roadmap', async (req, res) => {
   try {
@@ -69,8 +102,8 @@ app.post('/api/roadmap', async (req, res) => {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Content-Type':      'application/json',
-        'x-api-key':         ANTHROPIC_API_KEY,
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify(req.body)
@@ -89,7 +122,9 @@ app.post('/api/roadmap', async (req, res) => {
   }
 });
 
-//  ROUTES
+// ══════════════════════════════════════════
+// ── AUTH ROUTES ──
+// ══════════════════════════════════════════
 
 // ── REGISTER ──
 app.post('/api/register', async (req, res) => {
@@ -212,10 +247,7 @@ app.put('/api/profile', authMiddleware, async (req, res) => {
 
     if (!updated) return res.status(404).json({ error: 'User not found' });
 
-    res.json({
-      message: 'Profile updated successfully',
-      user: updated
-    });
+    res.json({ message: 'Profile updated successfully', user: updated });
   } catch (err) {
     console.error('Profile update error:', err);
     res.status(500).json({ error: 'Server error during profile update' });
@@ -264,7 +296,7 @@ app.delete('/api/account', authMiddleware, async (req, res) => {
   }
 });
 
-// ── VERIFY TOKEN (check if still logged in) ──
+// ── VERIFY TOKEN ──
 app.get('/api/verify', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
@@ -276,9 +308,71 @@ app.get('/api/verify', authMiddleware, async (req, res) => {
   }
 });
 
-// ── START SERVER ──
+// ══════════════════════════════════════════
+// ── START SERVER (always last) ──
+// ══════════════════════════════════════════
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 PathwayAI server running on http://localhost:${PORT}`));
 
-const roadmapRoute = require('./routes/roadmap');
-app.use('/api/roadmap', roadmapRoute);
+
+const admin = require('firebase-admin');
+const serviceAccount = require('./serviceAccountKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+// ── FIREBASE GOOGLE AUTH ──
+app.post('/api/auth/google', async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    if (!idToken) return res.status(400).json({ error: 'No token provided' });
+
+    // Verify Firebase token
+    const decoded = await admin.auth().verifyIdToken(idToken);
+    const { uid: googleId, email, name, picture } = decoded;
+
+    const nameParts = (name || 'User').split(' ');
+    const fname = nameParts[0];
+    const lname = nameParts.slice(1).join(' ') || '';
+
+    // Find or create user
+    let user = await User.findOne({ email: email.toLowerCase() });
+
+    if (user) {
+      if (!user.googleId) { user.googleId = googleId; await user.save(); }
+    } else {
+      user = await User.create({
+        fname, lname,
+        email: email.toLowerCase(),
+        password: '',
+        googleId
+      });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      message: 'Signed in with Google successfully',
+      token,
+      user: {
+        id: user._id,
+        fname: user.fname,
+        lname: user.lname,
+        fullName: user.lname ? `${user.fname} ${user.lname}` : user.fname,
+        email: user.email,
+        picture,
+        eduLevel: user.eduLevel,
+        eduField: user.eduField,
+        skills: user.skills
+      }
+    });
+  } catch (err) {
+    console.error('Firebase Google auth error:', err);
+    res.status(401).json({ error: 'Google authentication failed' });
+  }
+});
