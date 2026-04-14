@@ -170,7 +170,7 @@
 
 /* ── STATS ── */
 .stats-strip {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(3, 1fr);
   border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
 }
 @media (max-width: 640px) { .stats-strip { grid-template-columns: 1fr 1fr; } }

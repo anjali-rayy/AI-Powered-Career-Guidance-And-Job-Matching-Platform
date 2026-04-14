@@ -1,10 +1,10 @@
 const isSubPage = window.location.pathname.includes('/pages/');
 const base = isSubPage ? '..' : '.';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const footerEl = document.querySelector('footer.footer');
   if (!footerEl) return;
-  
+
   footerEl.innerHTML = `
     <div class="footer-top">
       <div class="footer-brand">
@@ -38,8 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="footer-col-title">Features</div>
         <ul class="footer-col-list">
           <li><a href="${base}/pages/quiz.html">Career Quiz</a></li>
-          <li><a href="#" onclick="showToast('Coming soon!')">Resume Analysis</a></li>
+          <li><a href="${base}/pages/resume-analysis.html">Resume Analysis</a></li>
           <li><a href="#" onclick="showToast('Coming soon!')">Skill Gap Detection</a></li>
+          <li><a href="#" onclick="showToast('Coming soon!')">Career Recommendation</a></li>
           <li><a href="#" onclick="showToast('Coming soon!')">Job Matching Score</a></li>
           <li><a href="${base}/pages/career-tree.html">3D Career Tree</a></li>
           <li><a href="${base}/pages/roadmap.html">AI Roadmap</a></li>
@@ -58,9 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="footer-col-title">Support</div>
         <ul class="footer-col-list">
           <li><a href="${base}/pages/helpFaq.html">Help Center</a></li>
-          <li><a href="#" onclick="showToast('Coming soon!')">Study Materials</a></li>
-          <li><a href="#" onclick="showToast('Coming soon!')">Career Guides</a></li>
-          <li><a href="#" onclick="showToast('Coming soon!')">API Docs</a></li>
           <li><a href="#" onclick="showToast('Coming soon!')">Community</a></li>
         </ul>
       </div>
@@ -69,9 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <ul class="footer-col-list">
           <li><a href="${base}/pages/privacy-policy.html">Privacy Policy</a></li>
           <li><a href="${base}/pages/terms-of-service.html">Terms of Service</a></li>
-          <li><a href="#" onclick="showToast('Coming soon!')">Cookie Policy</a></li>
-          <li><a href="#" onclick="showToast('Coming soon!')">GDPR</a></li>
-          <li><a href="#" onclick="showToast('Coming soon!')">Accessibility</a></li>
         </ul>
       </div>
     </div>

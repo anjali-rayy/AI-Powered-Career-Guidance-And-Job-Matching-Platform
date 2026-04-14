@@ -1,7 +1,3 @@
-/* =========================================================
-   ABOUT PAGE — about.css  (luxury gold theme)
-   ========================================================= */
-
 /* ── HERO ── */
 .about-hero {
   padding: 110px 48px 70px; text-align: center;
@@ -77,10 +73,10 @@
 @media (max-width: 768px) { .about-stats-wrap { padding: 0 24px 60px; } }
 
 .about-stats-strip {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(3, 1fr);
   border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
 }
-@media (max-width: 640px) { .about-stats-strip { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .about-stats-strip { grid-template-columns: 1fr; } }
 .a-stat {
   background: var(--card); padding: 38px 24px; text-align: center;
   border-right: 1px solid var(--border); transition: background 0.2s;
