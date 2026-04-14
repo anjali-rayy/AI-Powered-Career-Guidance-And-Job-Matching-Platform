@@ -1,9 +1,3 @@
-/* ============================================================
-   PATHWAYAI — settings-apply.js
-   Apply saved appearance settings on EVERY page load.
-   Include this script in every HTML page BEFORE </body>
-   ============================================================ */
-
 (function applyAllSettings() {
 
   /* ── HELPER ── */
@@ -11,22 +5,22 @@
     try {
       const v = localStorage.getItem('settings_' + key);
       return v === null ? def : JSON.parse(v);
-    } catch(e) { return def; }
+    } catch (e) { return def; }
   }
 
   /* ── 1. THEME ── */
   const theme = S('theme', 'dark');
   if (theme === 'midnight') {
-    document.documentElement.style.setProperty('--bg',    '#060B18');
-    document.documentElement.style.setProperty('--bg2',   '#080E1F');
-    document.documentElement.style.setProperty('--card',  '#0D1526');
+    document.documentElement.style.setProperty('--bg', '#060B18');
+    document.documentElement.style.setProperty('--bg2', '#080E1F');
+    document.documentElement.style.setProperty('--card', '#0D1526');
     document.documentElement.style.setProperty('--card2', '#111B30');
     document.body.classList.add('theme-midnight');
   } else {
     // Dark Gold (default) — reset to original vars in case user switched back
-    document.documentElement.style.setProperty('--bg',    '#0A0A0A');
-    document.documentElement.style.setProperty('--bg2',   '#0D0D0D');
-    document.documentElement.style.setProperty('--card',  '#111111');
+    document.documentElement.style.setProperty('--bg', '#0A0A0A');
+    document.documentElement.style.setProperty('--bg2', '#0D0D0D');
+    document.documentElement.style.setProperty('--card', '#111111');
     document.documentElement.style.setProperty('--card2', '#161616');
     document.body.classList.remove('theme-midnight');
   }
@@ -111,14 +105,22 @@
       padding: 0 !important;
     }
     body.compact-sidebar .nav-item {
-      justify-content: center !important;
-      padding: 10px !important;
-    }
-    body.compact-sidebar .nav-item svg {
-      width: 18px !important;
-      height: 18px !important;
-      margin: 0 !important;
-    }
+  justify-content: center !important;
+  padding: 10px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  font-size: 0 !important;
+}
+body.compact-sidebar .nav-item svg {
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+  font-size: 14px !important;
+}
+body.compact-sidebar .nav-item .nav-badge {
+  display: none !important;
+}
     body.compact-sidebar .sidebar-user {
       justify-content: center !important;
       padding: 12px 8px !important;
@@ -135,25 +137,25 @@
    LISTEN FOR SETTINGS CHANGES (cross-tab sync)
    If user changes settings in one tab, other tabs update too.
    ============================================================ */
-window.addEventListener('storage', function(e) {
+window.addEventListener('storage', function (e) {
   if (!e.key || !e.key.startsWith('settings_')) return;
 
   const key = e.key.replace('settings_', '');
   const val = e.newValue ? JSON.parse(e.newValue) : null;
 
-  switch(key) {
+  switch (key) {
     case 'theme':
       if (val === 'midnight') {
         document.body.classList.add('theme-midnight');
-        document.documentElement.style.setProperty('--bg',    '#060B18');
-        document.documentElement.style.setProperty('--bg2',   '#080E1F');
-        document.documentElement.style.setProperty('--card',  '#0D1526');
+        document.documentElement.style.setProperty('--bg', '#060B18');
+        document.documentElement.style.setProperty('--bg2', '#080E1F');
+        document.documentElement.style.setProperty('--card', '#0D1526');
         document.documentElement.style.setProperty('--card2', '#111B30');
       } else {
         document.body.classList.remove('theme-midnight');
-        document.documentElement.style.setProperty('--bg',    '#0A0A0A');
-        document.documentElement.style.setProperty('--bg2',   '#0D0D0D');
-        document.documentElement.style.setProperty('--card',  '#111111');
+        document.documentElement.style.setProperty('--bg', '#0A0A0A');
+        document.documentElement.style.setProperty('--bg2', '#0D0D0D');
+        document.documentElement.style.setProperty('--card', '#111111');
         document.documentElement.style.setProperty('--card2', '#161616');
       }
       break;

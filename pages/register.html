@@ -1,323 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Account | PathwayAI</title>
-  <link rel="stylesheet" href="../assets/css/styles.css"/>
-  <link rel="stylesheet" href="../assets/css/auth.css"/>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="stylesheet" href="../assets/css/auth.css" />
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <script>
     if (localStorage.getItem('authToken')) window.location.replace('dashboard.html');
   </script>
 </head>
+
 <body>
-<nav class="navbar">
-  <a href="../index.html" class="nav-logo">
-    <div class="logo-mark">
-  <img src="../assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
-</div>
-    PathwayAI
-  </a>
-  <ul class="nav-links">
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="about.html">About</a></li>
-    <li class="nav-dropdown">
-  <a href="features.html" class="nav-drop-trigger">Features ▾</a>
-  <div class="nav-drop-menu">
-    <a href="quiz.html" class="nav-drop-item">
-      <div class="nav-drop-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <nav class="navbar">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-mark">
+        <img src="../assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
       </div>
-      <div><div class="nav-drop-title">Career Quiz</div><div class="nav-drop-sub">AI-powered career assessment</div></div>
+      PathwayAI
     </a>
-    <a href="#" class="nav-drop-item" onclick="showToast('Resume Analysis coming soon!')">
-      <div class="nav-drop-icon">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      </div>
-      <div><div class="nav-drop-title">Resume Analysis</div><div class="nav-drop-sub">AI-powered resume insights</div></div>
-    </a>
-    <a href="#" class="nav-drop-item" onclick="showToast('Skill Gap Detection coming soon!')">
-      <div class="nav-drop-icon">
-        <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-      </div>
-      <div><div class="nav-drop-title">Skill Gap Detection</div><div class="nav-drop-sub">Find what skills you're missing</div></div>
-    </a>
-    <a href="#" class="nav-drop-item" onclick="showToast('Career Recommendation coming soon!')">
-      <div class="nav-drop-icon">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div><div class="nav-drop-title">Career Recommendation</div><div class="nav-drop-sub">Personalized career matches</div></div>
-    </a>
-    <a href="#" class="nav-drop-item" onclick="showToast('Job Matching Score coming soon!')">
-      <div class="nav-drop-icon">
-        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-      </div>
-      <div><div class="nav-drop-title">Job Matching Score</div><div class="nav-drop-sub">AI-powered job compatibility</div></div>
-    </a>
-    <a href="career-tree.html" class="nav-drop-item">
-      <div class="nav-drop-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 22v-7M9 22H5a2 2 0 0 1-2-2v-1a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v1a2 2 0 0 1-2 2h-4"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <div><div class="nav-drop-title">3D Career Tree</div><div class="nav-drop-sub">Interactive career exploration</div></div>
-    </a>
-    <a href="roadmap.html" class="nav-drop-item">
-      <div class="nav-drop-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-      </div>
-      <div><div class="nav-drop-title">AI Roadmap</div><div class="nav-drop-sub">Personalized career roadmaps</div></div>
-    </a>
-  </div>
-</li>
-  </ul>
-  <div class="nav-actions"></div>
-</nav>
-
-<main class="page-content">
-  <div class="auth-layout">
-
-    <!-- LEFT PANEL -->
-    <div class="auth-panel">
-      <div class="panel-content">
-        <div class="panel-logo-mark">
-  <img src="../assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
-</div>
-        <h2>Start your <em>journey</em></h2>
-        <p>Create your profile in minutes and get personalized career recommendations powered by AI — completely free.</p>
-        <div class="panel-features">
-          <div class="pf-item"><div class="pf-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div> Free to get started</div>
-          <div class="pf-item"><div class="pf-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div> Personalized career matching</div>
-          <div class="pf-item"><div class="pf-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div> Instant skill gap analysis</div>
-          <div class="pf-item"><div class="pf-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div> Your data stays private</div>
-        </div>
-        <div class="panel-stats">
-          <div class="p-stat"><span class="p-stat-num">12K+</span><span class="p-stat-lbl">Students</span></div>
-          <div class="p-stat"><span class="p-stat-num">Free</span><span class="p-stat-lbl">Always</span></div>
-          <div class="p-stat"><span class="p-stat-num">4.9★</span><span class="p-stat-lbl">Rating</span></div>
-        </div>
-      </div>
-      <div class="panel-ring panel-ring-1"></div>
-      <div class="panel-ring panel-ring-2"></div>
-    </div>
-
-    <!-- AUTH CARD -->
-    <div class="auth-wrap" style="align-items:flex-start;padding-top:28px;padding-bottom:28px">
-      <div class="auth-card" style="max-width:480px">
-        <div class="auth-logo">
-  <img src="../assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
-</div>
-        <div class="auth-title">Create account</div>
-        <div class="auth-sub">Your personalized career guide awaits</div>
-
-        <!-- API Error -->
-        <div id="reg-api-error" style="display:none;background:rgba(107,44,44,0.15);border:1px solid rgba(207,102,121,0.3);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:#CF6679;"></div>
-
-        <!-- Step indicator -->
-        <div class="step-indicator">
-          <div class="step-dot active" id="dot-1"></div>
-          <div class="step-connector"></div>
-          <div class="step-dot" id="dot-2"></div>
-          <div class="step-connector"></div>
-          <div class="step-dot" id="dot-3"></div>
-        </div>
-
-        <!-- STEP 1 -->
-        <div id="step-1">
-          <p class="step-label">Step 1 of 3 — Account details</p>
-          <div class="two-col">
-            <div class="form-group">
-              <label for="fname">First name</label>
-              <div class="input-wrap">
-                <span class="input-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-                <input type="text" id="fname" placeholder="Rahul" autocomplete="given-name"/>
-              </div>
-              <span class="field-err" id="fname-err"></span>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="features.html" class="nav-drop-trigger">Features ▾</a>
+        <div class="nav-drop-menu">
+          <a href="quiz.html" class="nav-drop-item">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
             </div>
-            <div class="form-group">
-              <label for="lname">Last name</label>
-              <div class="input-wrap">
-                <span class="input-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-                <input type="text" id="lname" placeholder="Sharma" autocomplete="family-name"/>
-              </div>
+            <div>
+              <div class="nav-drop-title">Career Quiz</div>
+              <div class="nav-drop-sub">AI-powered career assessment</div>
+            </div>
+          </a>
+          <a href="#" class="nav-drop-item" onclick="showToast('Resume Analysis coming soon!')">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Resume Analysis</div>
+              <div class="nav-drop-sub">AI-powered resume insights</div>
+            </div>
+          </a>
+          <a href="#" class="nav-drop-item" onclick="showToast('Skill Gap Detection coming soon!')">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M18 20V10M12 20V4M6 20v-6" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Skill Gap Detection</div>
+              <div class="nav-drop-sub">Find what skills you're missing</div>
+            </div>
+          </a>
+          <a href="#" class="nav-drop-item" onclick="showToast('Career Recommendation coming soon!')">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Career Recommendation</div>
+              <div class="nav-drop-sub">Personalized career matches</div>
+            </div>
+          </a>
+          <a href="#" class="nav-drop-item" onclick="showToast('Job Matching Score coming soon!')">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Job Matching Score</div>
+              <div class="nav-drop-sub">AI-powered job compatibility</div>
+            </div>
+          </a>
+          <a href="career-tree.html" class="nav-drop-item">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 22v-7M9 22H5a2 2 0 0 1-2-2v-1a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v1a2 2 0 0 1-2 2h-4" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">3D Career Tree</div>
+              <div class="nav-drop-sub">Interactive career exploration</div>
+            </div>
+          </a>
+          <a href="roadmap.html" class="nav-drop-item">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4l3 3" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">AI Roadmap</div>
+              <div class="nav-drop-sub">Personalized career roadmaps</div>
+            </div>
+          </a>
+        </div>
+      </li>
+    </ul>
+    <div class="nav-actions"></div>
+  </nav>
+
+  <main class="page-content">
+    <div class="auth-layout">
+
+      <!-- LEFT PANEL -->
+      <div class="auth-panel">
+        <div class="panel-content">
+          <div class="panel-logo-mark">
+            <img src="../assets/images/logo.png" alt="PathwayAI Logo"
+              style="width:100%;height:100%;object-fit:contain;">
+          </div>
+          <h2>Start your <em>journey</em></h2>
+          <p>Create your profile in minutes and get personalized career recommendations powered by AI — completely free.
+          </p>
+          <div class="panel-features">
+            <div class="pf-item">
+              <div class="pf-dot"><svg viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg></div> Free to get started
+            </div>
+            <div class="pf-item">
+              <div class="pf-dot"><svg viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg></div> Personalized career matching
+            </div>
+            <div class="pf-item">
+              <div class="pf-dot"><svg viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg></div> Instant skill gap analysis
+            </div>
+            <div class="pf-item">
+              <div class="pf-dot"><svg viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg></div> Your data stays private
             </div>
           </div>
-          <div class="form-group">
-            <label for="reg-email">Email address</label>
-            <div class="input-wrap">
-              <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
-              <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email"/>
-            </div>
-            <span class="field-err" id="regemail-err"></span>
+          <div class="panel-stats">
+            <div class="p-stat"><span class="p-stat-num">12K+</span><span class="p-stat-lbl">Students</span></div>
+            <div class="p-stat"><span class="p-stat-num">Free</span><span class="p-stat-lbl">Always</span></div>
+            <div class="p-stat"><span class="p-stat-num">4.9★</span><span class="p-stat-lbl">Rating</span></div>
           </div>
-          <div class="form-group">
-            <label for="reg-pass">Password</label>
-            <div class="input-wrap">
-              <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-              <input type="password" id="reg-pass" placeholder="Min. 8 characters" oninput="checkStrength(this.value)"/>
-              <button type="button" class="eye-btn" onclick="togglePwd('reg-pass',this)">
-                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="panel-ring panel-ring-1"></div>
+        <div class="panel-ring panel-ring-2"></div>
+      </div>
+
+      <!-- AUTH CARD -->
+      <div class="auth-wrap" style="align-items:flex-start;padding-top:28px;padding-bottom:28px">
+        <div class="auth-card" style="max-width:480px">
+          <div class="auth-logo">
+            <img src="../assets/images/logo.png" alt="PathwayAI Logo"
+              style="width:100%;height:100%;object-fit:contain;">
+          </div>
+          <div class="auth-title">Create account</div>
+          <div class="auth-sub">Your personalized career guide awaits</div>
+          <button class="btn-google" onclick="signInWithGoogle()">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <path fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+              <path fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+            </svg>
+            Continue with Google
+          </button>
+
+          <div class="auth-divider"><span>or</span></div>
+
+          <!-- API Error -->
+          <div id="reg-api-error"
+            style="display:none;background:rgba(107,44,44,0.15);border:1px solid rgba(207,102,121,0.3);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:#CF6679;">
+          </div>
+
+          <!-- Step indicator -->
+          <div class="step-indicator">
+            <div class="step-dot active" id="dot-1"></div>
+            <div class="step-connector"></div>
+            <div class="step-dot" id="dot-2"></div>
+            <div class="step-connector"></div>
+            <div class="step-dot" id="dot-3"></div>
+          </div>
+
+          <!-- STEP 1 -->
+          <div id="step-1">
+            <p class="step-label">Step 1 of 3 — Account details</p>
+            <div class="two-col">
+              <div class="form-group">
+                <label for="fname">First name</label>
+                <div class="input-wrap">
+                  <span class="input-icon"><svg viewBox="0 0 24 24">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg></span>
+                  <input type="text" id="fname" placeholder="Rahul" autocomplete="given-name" />
+                </div>
+                <span class="field-err" id="fname-err"></span>
+              </div>
+              <div class="form-group">
+                <label for="lname">Last name</label>
+                <div class="input-wrap">
+                  <span class="input-icon"><svg viewBox="0 0 24 24">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg></span>
+                  <input type="text" id="lname" placeholder="Sharma" autocomplete="family-name" />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-email">Email address</label>
+              <div class="input-wrap">
+                <span class="input-icon"><svg viewBox="0 0 24 24">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg></span>
+                <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+              </div>
+              <span class="field-err" id="regemail-err"></span>
+            </div>
+            <div class="form-group">
+              <label for="reg-pass">Password</label>
+              <div class="input-wrap">
+                <span class="input-icon"><svg viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg></span>
+                <input type="password" id="reg-pass" placeholder="Min. 8 characters"
+                  oninput="checkStrength(this.value)" />
+                <button type="button" class="eye-btn" onclick="togglePwd('reg-pass',this)">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <div class="strength-bar">
+                <div class="strength-seg" id="s1"></div>
+                <div class="strength-seg" id="s2"></div>
+                <div class="strength-seg" id="s3"></div>
+                <div class="strength-seg" id="s4"></div>
+              </div>
+              <div class="strength-lbl" id="slbl"></div>
+              <span class="field-err" id="regpass-err"></span>
+            </div>
+            <div class="form-group">
+              <label for="reg-pass2">Confirm password</label>
+              <div class="input-wrap">
+                <span class="input-icon"><svg viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg></span>
+                <input type="password" id="reg-pass2" placeholder="Re-enter password" />
+              </div>
+              <span class="field-err" id="regpass2-err"></span>
+            </div>
+            <button class="btn-submit" onclick="goStep(2)">Continue →</button>
+          </div>
+
+          <!-- STEP 2 -->
+          <div id="step-2" style="display:none">
+            <p class="step-label">Step 2 of 3 — Education &amp; background</p>
+            <div class="form-group">
+              <label for="edu-level">Education level</label>
+              <select id="edu-level" class="no-icon">
+                <option value="">Select your level...</option>
+                <option>High School / 12th</option>
+                <option>Diploma / Certificate</option>
+                <option>Bachelor's Degree</option>
+                <option>Master's Degree</option>
+                <option>PhD / Doctorate</option>
+              </select>
+              <span class="field-err" id="edulevel-err"></span>
+            </div>
+            <div class="form-group">
+              <label for="edu-field">Field of study</label>
+              <select id="edu-field" class="no-icon">
+                <option value="">Select your field...</option>
+                <option>Computer Science / IT</option>
+                <option>Engineering (Mech/Civil/Elec)</option>
+                <option>Business / Commerce / MBA</option>
+                <option>Arts / Humanities</option>
+                <option>Science (Physics/Chemistry/Bio)</option>
+                <option>Mathematics / Statistics</option>
+                <option>Design / Fine Arts</option>
+                <option>Law</option>
+                <option>Medicine / Healthcare</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="two-col">
+              <div class="form-group">
+                <label for="grad-year">Graduation year</label>
+                <select id="grad-year" class="no-icon">
+                  <option value="">Year...</option>
+                  <option>2027</option>
+                  <option>2026</option>
+                  <option>2025</option>
+                  <option>2024</option>
+                  <option>2023</option>
+                  <option>2022</option>
+                  <option>2021</option>
+                  <option>2020 or earlier</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="experience">Experience</label>
+                <select id="experience" class="no-icon">
+                  <option value="">Level...</option>
+                  <option>Student / Fresher</option>
+                  <option>0–1 year</option>
+                  <option>1–3 years</option>
+                  <option>3–5 years</option>
+                  <option>5+ years</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="location">City / Location</label>
+              <div class="input-wrap">
+                <span class="input-icon"><svg viewBox="0 0 24 24">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg></span>
+                <input type="text" id="location" placeholder="e.g. Patna, Mumbai, Delhi" />
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:6px">
+              <button class="btn-back" onclick="goStep(1)">← Back</button>
+              <button class="btn-submit" style="flex:1" onclick="goStep(3)">Continue →</button>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div id="step-3" style="display:none">
+            <p class="step-label">Step 3 of 3 — Skills &amp; interests</p>
+            <div class="form-group">
+              <label>Your skills <span style="color:var(--subtle);font-weight:400">(type &amp; press
+                  Enter)</span></label>
+              <div class="skills-area" id="skills-area" onclick="document.getElementById('skill-input').focus()">
+                <input type="text" id="skill-input" placeholder="e.g. HTML, Python, Excel..."
+                  onkeydown="regAddSkill(event)" autocomplete="off" />
+              </div>
+              <p style="font-size:11.5px;color:var(--subtle);margin-top:6px">Suggestions: HTML, CSS, JavaScript, Python,
+                SQL, React, Excel, Java</p>
+            </div>
+            <div class="form-group">
+              <label for="interests">Career interest</label>
+              <select id="interests" class="no-icon">
+                <option value="">Select your primary interest...</option>
+                <option>Software Development / Programming</option>
+                <option>Data Science / Analytics</option>
+                <option>UI/UX Design</option>
+                <option>Digital Marketing</option>
+                <option>Finance / Accounting</option>
+                <option>Management / Business</option>
+                <option>Healthcare / Medicine</option>
+                <option>Engineering</option>
+                <option>Education / Teaching</option>
+                <option>Content Writing / Media</option>
+                <option>Government / Civil Services</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="bio">Brief bio <span style="color:var(--subtle);font-weight:400">(optional)</span></label>
+              <textarea id="bio"
+                placeholder="Tell us about yourself, your goals and what you're looking for..."></textarea>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:6px">
+              <button class="btn-back" onclick="goStep(2)">← Back</button>
+              <button class="btn-submit" style="flex:1" id="reg-submit-btn" onclick="handleRegister()">
+                <span id="reg-btn-txt">Create Account →</span>
+                <span id="reg-loader" class="btn-loader" style="display:none">
+                  <svg viewBox="0 0 24 24" class="spin">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
+                </span>
               </button>
             </div>
-            <div class="strength-bar">
-              <div class="strength-seg" id="s1"></div>
-              <div class="strength-seg" id="s2"></div>
-              <div class="strength-seg" id="s3"></div>
-              <div class="strength-seg" id="s4"></div>
-            </div>
-            <div class="strength-lbl" id="slbl"></div>
-            <span class="field-err" id="regpass-err"></span>
           </div>
-          <div class="form-group">
-            <label for="reg-pass2">Confirm password</label>
-            <div class="input-wrap">
-              <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-              <input type="password" id="reg-pass2" placeholder="Re-enter password"/>
-            </div>
-            <span class="field-err" id="regpass2-err"></span>
-          </div>
-          <button class="btn-submit" onclick="goStep(2)">Continue →</button>
-        </div>
 
-        <!-- STEP 2 -->
-        <div id="step-2" style="display:none">
-          <p class="step-label">Step 2 of 3 — Education &amp; background</p>
-          <div class="form-group">
-            <label for="edu-level">Education level</label>
-            <select id="edu-level" class="no-icon">
-              <option value="">Select your level...</option>
-              <option>High School / 12th</option>
-              <option>Diploma / Certificate</option>
-              <option>Bachelor's Degree</option>
-              <option>Master's Degree</option>
-              <option>PhD / Doctorate</option>
-            </select>
-            <span class="field-err" id="edulevel-err"></span>
-          </div>
-          <div class="form-group">
-            <label for="edu-field">Field of study</label>
-            <select id="edu-field" class="no-icon">
-              <option value="">Select your field...</option>
-              <option>Computer Science / IT</option>
-              <option>Engineering (Mech/Civil/Elec)</option>
-              <option>Business / Commerce / MBA</option>
-              <option>Arts / Humanities</option>
-              <option>Science (Physics/Chemistry/Bio)</option>
-              <option>Mathematics / Statistics</option>
-              <option>Design / Fine Arts</option>
-              <option>Law</option>
-              <option>Medicine / Healthcare</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="two-col">
-            <div class="form-group">
-              <label for="grad-year">Graduation year</label>
-              <select id="grad-year" class="no-icon">
-                <option value="">Year...</option>
-                <option>2027</option><option>2026</option><option>2025</option>
-                <option>2024</option><option>2023</option><option>2022</option>
-                <option>2021</option><option>2020 or earlier</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="experience">Experience</label>
-              <select id="experience" class="no-icon">
-                <option value="">Level...</option>
-                <option>Student / Fresher</option>
-                <option>0–1 year</option>
-                <option>1–3 years</option>
-                <option>3–5 years</option>
-                <option>5+ years</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="location">City / Location</label>
-            <div class="input-wrap">
-              <span class="input-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-              <input type="text" id="location" placeholder="e.g. Patna, Mumbai, Delhi"/>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <button class="btn-back" onclick="goStep(1)">← Back</button>
-            <button class="btn-submit" style="flex:1" onclick="goStep(3)">Continue →</button>
-          </div>
+          <p class="auth-footer-p" style="margin-top:18px">Already have an account? <a href="login.html"
+              class="auth-link">Sign in</a></p>
         </div>
-
-        <!-- STEP 3 -->
-        <div id="step-3" style="display:none">
-          <p class="step-label">Step 3 of 3 — Skills &amp; interests</p>
-          <div class="form-group">
-            <label>Your skills <span style="color:var(--subtle);font-weight:400">(type &amp; press Enter)</span></label>
-            <div class="skills-area" id="skills-area" onclick="document.getElementById('skill-input').focus()">
-              <input type="text" id="skill-input" placeholder="e.g. HTML, Python, Excel..." onkeydown="regAddSkill(event)" autocomplete="off"/>
-            </div>
-            <p style="font-size:11.5px;color:var(--subtle);margin-top:6px">Suggestions: HTML, CSS, JavaScript, Python, SQL, React, Excel, Java</p>
-          </div>
-          <div class="form-group">
-            <label for="interests">Career interest</label>
-            <select id="interests" class="no-icon">
-              <option value="">Select your primary interest...</option>
-              <option>Software Development / Programming</option>
-              <option>Data Science / Analytics</option>
-              <option>UI/UX Design</option>
-              <option>Digital Marketing</option>
-              <option>Finance / Accounting</option>
-              <option>Management / Business</option>
-              <option>Healthcare / Medicine</option>
-              <option>Engineering</option>
-              <option>Education / Teaching</option>
-              <option>Content Writing / Media</option>
-              <option>Government / Civil Services</option>
-              <option>Not sure yet</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="bio">Brief bio <span style="color:var(--subtle);font-weight:400">(optional)</span></label>
-            <textarea id="bio" placeholder="Tell us about yourself, your goals and what you're looking for..."></textarea>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:6px">
-            <button class="btn-back" onclick="goStep(2)">← Back</button>
-            <button class="btn-submit" style="flex:1" id="reg-submit-btn" onclick="handleRegister()">
-              <span id="reg-btn-txt">Create Account →</span>
-              <span id="reg-loader" class="btn-loader" style="display:none">
-                <svg viewBox="0 0 24 24" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-              </span>
-            </button>
-          </div>
-        </div>
-
-        <p class="auth-footer-p" style="margin-top:18px">Already have an account? <a href="login.html" class="auth-link">Sign in</a></p>
       </div>
     </div>
-  </div>
-  <footer class="footer"></footer>
+    <footer class="footer"></footer>
 
-<script>
-function handleSubscribe() {
-  const input = document.getElementById("newsletter-email");
-  if (!input) return;
-  const val = input.value.trim();
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRe.test(val)) {
-    showToast("Please enter a valid email address.");
-    return;
-  }
-  // Replace the form with a success state
-  const form = document.getElementById("newsletter-form");
-  form.innerHTML = `
+    <script>
+      function handleSubscribe() {
+        const input = document.getElementById("newsletter-email");
+        if (!input) return;
+        const val = input.value.trim();
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRe.test(val)) {
+          showToast("Please enter a valid email address.");
+          return;
+        }
+        // Replace the form with a success state
+        const form = document.getElementById("newsletter-form");
+        form.innerHTML = `
     <div class="newsletter-success">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       You're subscribed!
     </div>`;
-}
-</script>
-</main>
+      }
+    </script>
+  </main>
 
-<div id="toast" class="toast"></div>
-<script src="../assets/js/api.js"></script>
-<script src="../assets/js/nav.js"></script>
-<script src="../assets/js/register.js"></script>
-<script src="../assets/js/footer.js"></script>
+  <div id="toast" class="toast"></div>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/register.js"></script>
+  <script src="../assets/js/footer.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 </body>
+
 </html>
