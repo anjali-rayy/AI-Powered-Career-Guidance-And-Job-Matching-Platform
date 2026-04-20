@@ -1,378 +1,182 @@
+// backend/server.js
 const express = require('express');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const fetch = require('node-fetch');
+const FormData = require('form-data');
+const multer = require('multer');
 require('dotenv').config();
 
-// ── node-fetch (npm install node-fetch@2) ──
-const fetch = require('node-fetch');
-
 const app = express();
-app.use(express.json({ limit: '2mb' }));
-app.use(cors({ origin: '*' }));
+app.use(cors());
+app.use(express.json({ limit: '10mb' }));
 
-// ── CONNECT TO MONGODB ──
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+const upload = multer({ storage: multer.memoryStorage() });
 
-// ── USER SCHEMA ──
-const userSchema = new mongoose.Schema({
-  fname: { type: String, required: true },
-  lname: { type: String, default: '' },
-  email: { type: String, required: true, unique: true, lowercase: true },
-  password: { type: String, default: '' },
-  googleId: { type: String, default: '' },
-  phone: { type: String, default: '' },
-  location: { type: String, default: '' },
-  bio: { type: String, default: '' },
-  college: { type: String, default: '' },
-  eduLevel: { type: String, default: '' },
-  eduField: { type: String, default: '' },
-  gradYear: { type: String, default: '' },
-  experience: { type: String, default: '' },
-  interest: { type: String, default: '' },
-  skills: { type: [String], default: [] },
-  isActive: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now }
+const PYTHON_SERVICE = 'http://localhost:5000';
+
+// ─────────────────────────────────────────────
+// Route 1: PDF Upload → Python extracts text
+// Frontend sends the file here first
+// ─────────────────────────────────────────────
+app.post('/api/resume/extract', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: { message: 'No file uploaded' } });
+
+    const role = req.body.role || '';
+
+    // Forward file to Python service
+    const form = new FormData();
+    form.append('file', req.file.buffer, {
+      filename: req.file.originalname,
+      contentType: req.file.mimetype
+    });
+    form.append('role', role);
+
+    const pyRes = await fetch(`${PYTHON_SERVICE}/extract`, {
+      method: 'POST',
+      body: form,
+      headers: form.getHeaders()
+    });
+
+    const pyData = await pyRes.json();
+    if (!pyRes.ok) return res.status(500).json({ error: pyData });
+
+    res.json(pyData);
+
+  } catch (err) {
+    res.status(500).json({ error: { message: 'Python service unavailable: ' + err.message } });
+  }
 });
 
-const User = mongoose.model('User', userSchema);
-
-// ── JWT MIDDLEWARE ──
-const JWT_SECRET = process.env.JWT_SECRET || 'pathwayai_secret_2026';
-
-function authMiddleware(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ error: 'No token provided' });
-  try {
-    req.user = jwt.verify(token, JWT_SECRET);
-    next();
-  } catch {
-    return res.status(401).json({ error: 'Invalid or expired token' });
-  }
-}
-
-// ══════════════════════════════════════════
-// ── GROQ PROXY — RESUME ANALYSIS ──
-// ══════════════════════════════════════════
+// ─────────────────────────────────────────────
+// Route 2: AI Analysis → Groq with skill context
+// ─────────────────────────────────────────────
 app.post('/api/resume/analyze', async (req, res) => {
   try {
-    const GROQ_API_KEY = process.env.GROQ_API_KEY;
+    const { messages, model, max_tokens, temperature, skillContext } = req.body;
 
-    console.log('GROQ KEY:', GROQ_API_KEY ? 'FOUND ✅' : 'MISSING ❌');
-    if (!GROQ_API_KEY) {
-      return res.status(500).json({ error: { message: 'GROQ_API_KEY is not set in .env' } });
-    }
+    // Inject Python skill analysis into the prompt if provided
+    const skillsNote = skillContext
+      ? `\n\nSKILL DATABASE ANALYSIS (pre-computed):\n` +
+        `Required skills for this role: ${skillContext.required_skills?.join(', ')}\n` +
+        `Skills found in resume: ${skillContext.matched_skills?.join(', ') || 'none detected'}\n` +
+        `Skills missing: ${skillContext.missing_skills?.join(', ') || 'none'}\n` +
+        `Database match score: ${skillContext.match_pct}%\n` +
+        `Use this as additional reference for your analysis.\n`
+      : '';
+
+    const enhancedMessages = messages.map(m => {
+      if (m.role === 'user') return { ...m, content: m.content + skillsNote };
+      return m;
+    });
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify({
+        model: model || 'llama-3.3-70b-versatile',
+        max_tokens: max_tokens || 2000,
+        temperature: temperature || 0.3,
+        messages: enhancedMessages
+      })
     });
 
     const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(response.status).json(data);
-    }
+    if (!response.ok) return res.status(response.status).json(data);
 
     res.json(data);
+
   } catch (err) {
-    console.error('Groq proxy error:', err);
     res.status(500).json({ error: { message: err.message } });
   }
 });
 
-// ══════════════════════════════════════════
-// ── ANTHROPIC PROXY — ROADMAP ──
-// ══════════════════════════════════════════
-app.post('/api/roadmap', async (req, res) => {
+// ─────────────────────────────────────────────
+// Route 3: Get all available roles from Python
+// ─────────────────────────────────────────────
+app.get('/api/roles', async (req, res) => {
   try {
-    const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+    const pyRes = await fetch(`${PYTHON_SERVICE}/roles`);
+    const data = await pyRes.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: 'Python service unavailable' });
+  }
+});
 
-    if (!ANTHROPIC_API_KEY) {
-      return res.status(500).json({ error: { message: 'ANTHROPIC_API_KEY is not set in .env' } });
+// ─────────────────────────────────────────────
+// Route 4: AI Roadmap Generator → Groq
+// ─────────────────────────────────────────────
+app.post('/api/roadmap/generate', async (req, res) => {
+  try {
+    const { goal, level, months, skills } = req.body;
+
+    const prompt = `You are a career roadmap generator. Generate a detailed, structured learning roadmap.
+
+User wants to become: ${goal}
+Experience level: ${level}
+Timeline: ${months} months
+Current skills: ${skills && skills.length > 0 ? skills.join(', ') : 'none'}
+
+Respond ONLY with a valid JSON object in this exact format (no markdown, no extra text):
+{
+  "readinessScore": <number 0-100 based on current skills vs goal>,
+  "scoreLabel": "<short encouraging label>",
+  "skillGaps": [
+    { "name": "<skill name>", "level": "high" | "med" | "low" }
+  ],
+  "phases": [
+    {
+      "title": "<phase title>",
+      "weeks": <number of weeks>,
+      "desc": "<2-3 sentence description>",
+      "topics": ["topic1", "topic2", "topic3", "topic4"],
+      "resources": ["Resource 1", "Resource 2", "Resource 3"],
+      "milestone": "<what the user can do/build by end of this phase>"
     }
+  ]
+}
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+Rules:
+- Total weeks across all phases must equal ${months * 4}
+- Create ${months <= 3 ? 3 : months <= 6 ? 4 : 5} phases
+- skillGaps should list 4-6 key skills the user needs to learn
+- topics should have 4-6 items per phase
+- resources should be real platforms (e.g. "freeCodeCamp", "Udemy", "MDN Docs")`;
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 2000,
+        temperature: 0.4,
+        messages: [{ role: 'user', content: prompt }]
+      })
     });
 
     const data = await response.json();
+    if (!response.ok) return res.status(response.status).json(data);
 
-    if (!response.ok) {
-      return res.status(response.status).json(data);
-    }
+    const raw = data.choices[0].message.content.trim();
 
-    res.json(data);
+    // Strip markdown code fences if present
+    const cleaned = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+
+    const roadmap = JSON.parse(cleaned);
+    res.json(roadmap);
+
   } catch (err) {
-    console.error('Anthropic proxy error:', err);
-    res.status(500).json({ error: { message: err.message } });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// ══════════════════════════════════════════
-// ── AUTH ROUTES ──
-// ══════════════════════════════════════════
-
-// ── REGISTER ──
-app.post('/api/register', async (req, res) => {
-  try {
-    const { fname, lname, email, password, eduLevel, eduField, gradYear, experience, location, skills, interest } = req.body;
-
-    if (!fname || !email || !password)
-      return res.status(400).json({ error: 'Name, email and password are required' });
-
-    if (password.length < 8)
-      return res.status(400).json({ error: 'Password must be at least 8 characters' });
-
-    const existing = await User.findOne({ email: email.toLowerCase() });
-    if (existing)
-      return res.status(409).json({ error: 'An account with this email already exists' });
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    const user = await User.create({
-      fname, lname: lname || '', email: email.toLowerCase(),
-      password: hashedPassword,
-      eduLevel: eduLevel || '', eduField: eduField || '',
-      gradYear: gradYear || '', experience: experience || '',
-      location: location || '', skills: skills || [],
-      interest: interest || ''
-    });
-
-    const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
-
-    res.status(201).json({
-      message: 'Account created successfully',
-      token,
-      user: {
-        id: user._id,
-        fname: user.fname,
-        lname: user.lname,
-        email: user.email,
-        fullName: user.lname ? `${user.fname} ${user.lname}` : user.fname,
-        eduLevel: user.eduLevel,
-        eduField: user.eduField,
-        skills: user.skills
-      }
-    });
-  } catch (err) {
-    console.error('Register error:', err);
-    res.status(500).json({ error: 'Server error during registration' });
-  }
-});
-
-// ── LOGIN ──
-app.post('/api/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password)
-      return res.status(400).json({ error: 'Email and password are required' });
-
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user)
-      return res.status(401).json({ error: 'No account found with this email. Please register first.' });
-
-    if (!user.isActive)
-      return res.status(403).json({ error: 'This account has been deleted.' });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(401).json({ error: 'Incorrect password. Please try again.' });
-
-    const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
-
-    res.json({
-      message: 'Signed in successfully',
-      token,
-      user: {
-        id: user._id,
-        fname: user.fname,
-        lname: user.lname,
-        fullName: user.lname ? `${user.fname} ${user.lname}` : user.fname,
-        email: user.email,
-        phone: user.phone,
-        location: user.location,
-        bio: user.bio,
-        college: user.college,
-        eduLevel: user.eduLevel,
-        eduField: user.eduField,
-        gradYear: user.gradYear,
-        experience: user.experience,
-        interest: user.interest,
-        skills: user.skills,
-        createdAt: user.createdAt
-      }
-    });
-  } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ error: 'Server error during login' });
-  }
-});
-
-// ── GET PROFILE ──
-app.get('/api/profile', authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.userId).select('-password');
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    res.json({ user });
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// ── UPDATE PROFILE ──
-app.put('/api/profile', authMiddleware, async (req, res) => {
-  try {
-    const { fname, lname, phone, location, bio, college, eduLevel, eduField, gradYear, experience, interest, skills } = req.body;
-
-    const updated = await User.findByIdAndUpdate(
-      req.user.userId,
-      { $set: { fname, lname, phone, location, bio, college, eduLevel, eduField, gradYear, experience, interest, skills } },
-      { new: true, runValidators: true }
-    ).select('-password');
-
-    if (!updated) return res.status(404).json({ error: 'User not found' });
-
-    res.json({ message: 'Profile updated successfully', user: updated });
-  } catch (err) {
-    console.error('Profile update error:', err);
-    res.status(500).json({ error: 'Server error during profile update' });
-  }
-});
-
-// ── CHANGE PASSWORD ──
-app.put('/api/change-password', authMiddleware, async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
-
-    if (!currentPassword || !newPassword)
-      return res.status(400).json({ error: 'Both current and new password are required' });
-
-    if (newPassword.length < 8)
-      return res.status(400).json({ error: 'New password must be at least 8 characters' });
-
-    const user = await User.findById(req.user.userId);
-    const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch)
-      return res.status(401).json({ error: 'Current password is incorrect' });
-
-    user.password = await bcrypt.hash(newPassword, 12);
-    await user.save();
-
-    res.json({ message: 'Password changed successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// ── DELETE ACCOUNT ──
-app.delete('/api/account', authMiddleware, async (req, res) => {
-  try {
-    const { confirmText } = req.body;
-
-    if (confirmText !== 'DELETE')
-      return res.status(400).json({ error: 'Please type DELETE to confirm' });
-
-    await User.findByIdAndDelete(req.user.userId);
-
-    res.json({ message: 'Account permanently deleted' });
-  } catch (err) {
-    console.error('Delete account error:', err);
-    res.status(500).json({ error: 'Server error during account deletion' });
-  }
-});
-
-// ── VERIFY TOKEN ──
-app.get('/api/verify', authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.userId).select('-password');
-    if (!user || !user.isActive)
-      return res.status(401).json({ error: 'Account not found or deleted' });
-    res.json({ valid: true, user });
-  } catch {
-    res.status(401).json({ valid: false });
-  }
-});
-
-// ══════════════════════════════════════════
-// ── START SERVER (always last) ──
-// ══════════════════════════════════════════
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 PathwayAI server running on http://localhost:${PORT}`));
-
-
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-// ── FIREBASE GOOGLE AUTH ──
-app.post('/api/auth/google', async (req, res) => {
-  try {
-    const { idToken } = req.body;
-    if (!idToken) return res.status(400).json({ error: 'No token provided' });
-
-    // Verify Firebase token
-    const decoded = await admin.auth().verifyIdToken(idToken);
-    const { uid: googleId, email, name, picture } = decoded;
-
-    const nameParts = (name || 'User').split(' ');
-    const fname = nameParts[0];
-    const lname = nameParts.slice(1).join(' ') || '';
-
-    // Find or create user
-    let user = await User.findOne({ email: email.toLowerCase() });
-
-    if (user) {
-      if (!user.googleId) { user.googleId = googleId; await user.save(); }
-    } else {
-      user = await User.create({
-        fname, lname,
-        email: email.toLowerCase(),
-        password: '',
-        googleId
-      });
-    }
-
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    res.json({
-      message: 'Signed in with Google successfully',
-      token,
-      user: {
-        id: user._id,
-        fname: user.fname,
-        lname: user.lname,
-        fullName: user.lname ? `${user.fname} ${user.lname}` : user.fname,
-        email: user.email,
-        picture,
-        eduLevel: user.eduLevel,
-        eduField: user.eduField,
-        skills: user.skills
-      }
-    });
-  } catch (err) {
-    console.error('Firebase Google auth error:', err);
-    res.status(401).json({ error: 'Google authentication failed' });
-  }
+app.listen(3000, () => {
+  console.log('✅ PathwayAI backend running on http://localhost:3000');
 });
