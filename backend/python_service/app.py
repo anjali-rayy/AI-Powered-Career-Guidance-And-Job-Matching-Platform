@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import PyPDF2
+import pdfplumber
 import spacy
 import io
 
@@ -59,24 +60,44 @@ JOB_ROLES = {
 # extract_text_from_pdf — adapted for uploaded bytes
 def extract_text_from_pdf(file_bytes):
     text = ""
-    reader = PyPDF2.PdfReader(io.BytesIO(file_bytes))
-    for page in reader.pages:
-        extracted = page.extract_text()
-        if extracted:
-            text += extracted
-    return text.lower()
+    # Try pdfplumber first (much better for modern PDFs)
+    try:
+        import pdfplumber
+        with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
+            for page in pdf.pages:
+                extracted = page.extract_text()
+                if extracted:
+                    text += extracted + "\n"
+        if len(text.strip().split()) > 30:
+            return text
+    except Exception:
+        pass
+
+    # Fallback to PyPDF2
+    try:
+        reader = PyPDF2.PdfReader(io.BytesIO(file_bytes))
+        for page in reader.pages:
+            extracted = page.extract_text()
+            if extracted:
+                text += extracted
+    except Exception:
+        pass
+
+    return text
 
 # extract_skills logic
 def extract_skills(text, skills_list):
     found = []
+    text_lower = text.lower()
     for skill in skills_list:
-        if skill.lower() in text:
+        if skill.lower() in text_lower:
             found.append(skill)
     return found
 
 # analyze_resume logic
 def analyze_resume(resume_text, role):
     role = role.lower().strip()
+    text_lower = resume_text.lower() if resume_text else ""
 
     # Exact match
     matched_role = role if role in JOB_ROLES else None
