@@ -1594,7 +1594,7 @@
                         </svg>
                         Generate Career Roadmap
                     </button>
-                    <button class="btn-outline" onclick="analyzeAnother()">Analyze another resume</button>                   
+                    <button class="btn-outline" onclick="analyzeAnother()">Analyze another resume</button>
                 </div>
 
             </div>
@@ -1609,7 +1609,7 @@
 
     <script>
         const _fetch = window.fetch.bind(window);
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+        function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
         const API_BASE = 'http://localhost:3000';
 
         // ── PDF.js worker setup ──
@@ -1815,7 +1815,7 @@ function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'
                     formData.append('file', selectedFile);
                     formData.append('role', role);
 
-                    const pyRes = await fetch('http://localhost:3000/api/resume/extract', {
+                    const pyRes = await fetch('http://localhost:5000/extract', {
                         method: 'POST',
                         body: formData
                     });
@@ -1853,24 +1853,63 @@ function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'
 
         // ── GROQ API CALL ──
         async function callGroqAPI(resumeText, targetRole, experienceLevel, skillContext = null) {
+            const isFresher = experienceLevel.toLowerCase().includes('fresher') || experienceLevel.toLowerCase().includes('student');
+
+            const levelBenchmark = `SCORING RULES — be brutally honest, like a real ATS system:
+
+ATS SCORE: This is purely about keyword match between the resume and "${targetRole}".
+- Count how many keywords/skills required for "${targetRole}" actually appear in the resume.
+- If less than 30% of required keywords match → ATS score 10–30
+- If 30–60% match → ATS score 30–60
+- If 60–80% match → ATS score 60–80
+- If 80%+ match → ATS score 80–95
+- A beautiful resume with wrong keywords still gets a LOW ATS score.
+
+JOB MATCH SCORE: How well does this candidate actually fit "${targetRole}"?
+- Consider skills, projects, internships, and experience relevance ONLY.
+- If the resume has almost nothing relevant to "${targetRole}" → score 5–20
+- If partially relevant → score 20–50
+- If strongly relevant → score 60–90
+
+CAREER READINESS: Overall job market readiness regardless of target role.
+- Based on resume quality, education, projects, internships, certifications.
+- Score independently from the target role.
+- Fresher with only education and no projects/internships → 20–40
+- Fresher with 1–2 projects and basic skills → 35–55
+- Fresher with strong projects, internship, or certifications → 50–70
+- Mid-level with work experience and relevant skills → 60–80
+- Senior with strong portfolio and experience → 75–92
+- A resume with NO projects, NO internships, NO certifications → score below 35, no exceptions.
+
+NEVER force any score into a range. Let the actual content decide within these guidelines.`;
+
             const wasTruncated = resumeText.length > 8000;
             const resumeSnippet = resumeText.slice(0, 8000) + (wasTruncated ? '\n[Resume truncated due to length]' : '');
 
             // FIX: prompt now strictly enforces target role for match score and jobs array
             const prompt = `You are an expert resume analyst and career coach. Analyze the following resume for a candidate targeting the role of "${targetRole}" at the "${experienceLevel}" level.
 
+${levelBenchmark}
+
 RESUME TEXT:
 ---
 ${resumeSnippet}
 ---
 
-IMPORTANT RULES:
-1. Base ALL scores strictly on the actual resume content — do NOT inflate scores.
-2. The "match" score MUST reflect how well this resume matches "${targetRole}" specifically. If the candidate's background does not align with "${targetRole}", score it LOW (under 40). Be honest.
+${skillContext ? `VERIFIED SKILL DATA (from Python backend — trust this over your own extraction):
+- Skills PRESENT in resume: ${JSON.stringify(skillContext.matched_skills)}
+- Skills MISSING for ${targetRole}: ${JSON.stringify(skillContext.missing_skills)}
+- Role match percentage (Python calculated): ${skillContext.match_pct}%
+Use this verified data for the skills section and factor it into the match score.
+
+` : ''}IMPORTANT RULES:
+1. Base ALL scores strictly on the actual resume content — do NOT inflate OR deflate scores unfairly.
+2. The "match" score MUST reflect how well this resume's SKILLS, PROJECTS, and INTERNSHIPS match "${targetRole}". For freshers, relevant projects and internships count as much as work experience.
 3. The "jobs" array MUST have "${targetRole}" as the FIRST entry, with its "pct" equal to the "match" score above.
 4. The remaining 4 jobs should be the actual best-fitting roles based on what's IN the resume.
 5. ATS items must reflect real observations about formatting, keywords, structure from the resume.
-6. Skills "present" = actually found in resume. "missing" = important for "${targetRole}" but absent. "learning" = implied or partially present.
+6. Skills "present" = actually found in resume (extract ALL of them, up to 12). "missing" = important for "${targetRole}" but absent. "learning" = implied or partially present.
+7. Do NOT penalize a fresher for lacking years of experience — that is expected and normal.
 
 Return ONLY a valid JSON object (no markdown, no explanation, no code fences) with exactly this structure:
 
@@ -1879,7 +1918,7 @@ Return ONLY a valid JSON object (no markdown, no explanation, no code fences) wi
   "ats": <integer 0-100 ATS compatibility score>,
   "match": <integer 0-100 honest match score for "${targetRole}">,
   "skills": {
-    "present": [<max 10 skills actually found in resume>],
+    "present": [<up to 12 skills actually found in resume>],
     "learning": [<max 4 skills implied or partially present>],
     "missing": [<max 5 skills important for "${targetRole}" but absent from resume>]
   },
@@ -1917,8 +1956,8 @@ Return ONLY a valid JSON object (no markdown, no explanation, no code fences) wi
 Return raw JSON only — no backticks, no preamble, no explanation.`;
 
             const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 30000);
-const response = await _fetch(`${API_BASE}/api/resume/analyze`, {
+            const timeout = setTimeout(() => controller.abort(), 30000);
+            const response = await _fetch(`${API_BASE}/api/resume/analyze`, {
                 signal: controller.signal,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1929,7 +1968,7 @@ const response = await _fetch(`${API_BASE}/api/resume/analyze`, {
                     messages: [
                         {
                             role: 'system',
-                            content: 'You are an expert resume analyst. Always respond with valid raw JSON only — no markdown, no code fences, no explanation. Be strict and honest with scores — base everything on the actual resume text provided.'
+                            content: 'You are a strict, accurate resume analyst and ATS system. Always respond with valid raw JSON only — no markdown, no code fences, no explanation. Score honestly based purely on keyword match and skill overlap with the target role — do not inflate scores to be encouraging.'
                         },
                         {
                             role: 'user',
@@ -1941,7 +1980,7 @@ const response = await _fetch(`${API_BASE}/api/resume/analyze`, {
             });
 
             clearTimeout(timeout);
-if (!response.ok) {
+            if (!response.ok) {
                 const err = await response.json().catch(() => ({}));
                 const msg = err.error?.message || `HTTP ${response.status}`;
                 if (response.status === 401) throw new Error('Invalid API key. Check your Groq key at console.groq.com/keys');
@@ -1955,7 +1994,8 @@ if (!response.ok) {
             const rawText = data.choices?.[0]?.message?.content || '';
 
             // Strip any accidental markdown fences
-            const cleaned = rawText
+            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+            const cleaned = jsonMatch ? jsonMatch[0].trim() : rawText
                 .replace(/^```json\s*/i, '')
                 .replace(/^```\s*/i, '')
                 .replace(/```\s*$/, '')
