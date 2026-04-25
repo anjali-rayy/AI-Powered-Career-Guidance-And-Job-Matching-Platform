@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Career Match | PathwayAI</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../../assets/css/quiz-results.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../public/index.html" class="nav-logo">
+    <div class="logo-mark">
+      <img src="../../assets/images/logo.png" alt="PathwayAI Logo">
+    </div>
+    PathwayAI
+  </a>
+  <ul class="nav-links">
+    <li><a href="../public/index.html">Home</a></li>
+    <li><a href="../public/about.html">About</a></li>
+    <li class="nav-dropdown">
+  <a href="../public/features.html" class="nav-drop-trigger">Features ▾</a>
+  <div class="nav-drop-menu">
+    <a href="../app/quiz.html" class="nav-drop-item">
+      <div class="nav-drop-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div><div class="nav-drop-title">Career Quiz</div><div class="nav-drop-sub">AI-powered career assessment</div></div>
+    </a>
+    <a href="../app/resume-analysis.html" class="nav-drop-item">
+      <div class="nav-drop-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <div><div class="nav-drop-title">Resume Analysis</div><div class="nav-drop-sub">AI-powered resume insights</div></div>
+    </a>
+    <a href="#" class="nav-drop-item" onclick="showToast('Skill Gap Detection coming soon!')">
+      <div class="nav-drop-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      </div>
+      <div><div class="nav-drop-title">Skill Gap Detection</div><div class="nav-drop-sub">Find what skills you're missing</div></div>
+    </a>
+    <a href="#" class="nav-drop-item" onclick="showToast('Career Recommendation coming soon!')">
+      <div class="nav-drop-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div><div class="nav-drop-title">Career Recommendation</div><div class="nav-drop-sub">Personalized career matches</div></div>
+    </a>
+    <a href="#" class="nav-drop-item" onclick="showToast('Job Matching Score coming soon!')">
+      <div class="nav-drop-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      </div>
+      <div><div class="nav-drop-title">Job Matching Score</div><div class="nav-drop-sub">AI-powered job compatibility</div></div>
+    </a>
+    <a href="../app/career-tree.html" class="nav-drop-item">
+      <div class="nav-drop-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22v-7M9 22H5a2 2 0 0 1-2-2v-1a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v1a2 2 0 0 1-2 2h-4"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div><div class="nav-drop-title">3D Career Tree</div><div class="nav-drop-sub">Interactive career exploration</div></div>
+    </a>
+    <a href="../app/roadmap.html" class="nav-drop-item">
+      <div class="nav-drop-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div><div class="nav-drop-title">AI Roadmap</div><div class="nav-drop-sub">Personalized career roadmaps</div></div>
+    </a>
+  </div>
+</li>
+  </ul>
+  <div class="nav-actions">
+    <a href="../auth/login.html"><button class="btn-gold">Sign in</button></a>
+  </div>
+</nav>
+
+<!-- Particle canvas background -->
+<canvas id="particles-canvas"></canvas>
+
+<main class="results-page">
+
+  <!-- ── HERO SECTION ── -->
+  <section class="results-hero" id="results-hero">
+    <div class="hero-glow-ring"></div>
+    <div class="hero-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Results Ready
+    </div>
+    <h1 class="hero-title">Your Perfect <em>Career Match</em></h1>
+    <p class="hero-sub" id="hero-sub">Based on your answers, our AI has mapped your strengths to the careers where you'll thrive most.</p>
+
+    <!-- Match score ring -->
+    <div class="match-ring-wrap">
+      <svg class="match-ring-svg" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(212,175,55,0.08)" stroke-width="12"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="url(#ring-grad)"
+          stroke-width="12" stroke-linecap="round"
+          stroke-dasharray="502" stroke-dashoffset="502"
+          id="ring-progress" transform="rotate(-90 100 100)"/>
+        <defs>
+          <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#D4AF37"/>
+            <stop offset="100%" stop-color="#F5D060"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="match-ring-inner">
+        <span class="match-pct" id="match-pct">0%</span>
+        <span class="match-label">Top Match</span>
+      </div>
+    </div>
+
+    <!-- Top career pill -->
+    <div class="top-career-pill" id="top-career-pill">
+      <span class="pill-icon" id="pill-icon">💻</span>
+      <span class="pill-name" id="pill-name">Loading...</span>
+      <span class="pill-tag">Primary Match</span>
+    </div>
+  </section>
+
+  <!-- ── CAREER CARDS GRID ── -->
+  <section class="careers-section">
+    <div class="section-label">All Career Matches</div>
+    <h2 class="section-title">Your Career <em>Ecosystem</em></h2>
+    <p class="section-sub">Every path ranked by compatibility with your skills, interests, and work style</p>
+
+    <div class="careers-grid" id="careers-grid">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- ── 3D CAREER ECOSYSTEM ── -->
+  <section class="ecosystem-section">
+    <div class="section-label">Interactive Visualization</div>
+    <h2 class="section-title">Your Career <em>Network</em></h2>
+    <p class="section-sub">Explore how your top career connects to related roles and required skills</p>
+
+    <div class="ecosystem-wrap">
+      <canvas id="ecosystem-canvas"></canvas>
+      <div class="ecosystem-legend">
+        <div class="legend-item">
+          <span class="legend-dot dot-career"></span> Career paths
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot dot-skill"></span> Key skills
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot dot-center"></span> Your match
+        </div>
+      </div>
+      <div class="ecosystem-hint">Drag to rotate · Scroll to zoom</div>
+    </div>
+  </section>
+
+  <!-- ── STATS ROW ── -->
+  <section class="stats-section">
+    <div class="stat-card" id="stat-salary">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div class="stat-value" id="stat-salary-val">$68k – $120k</div>
+      <div class="stat-name">Salary Range</div>
+    </div>
+    <div class="stat-card" id="stat-growth">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      </div>
+      <div class="stat-value" id="stat-growth-val">22% Growth</div>
+      <div class="stat-name">Job Market Growth</div>
+    </div>
+    <div class="stat-card" id="stat-demand">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="stat-value" id="stat-demand-val">High</div>
+      <div class="stat-name">Hiring Demand</div>
+    </div>
+    <div class="stat-card" id="stat-score">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="stat-value" id="stat-score-val">91%</div>
+      <div class="stat-name">Compatibility Score</div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS TO DEVELOP ── -->
+  <section class="skills-section">
+    <div class="skills-inner">
+      <div class="skills-left">
+        <div class="section-label">Skill Gap Analysis</div>
+        <h2 class="section-title" style="font-size:clamp(22px,3vw,32px)">Skills to <em>Develop</em></h2>
+        <p class="section-sub" style="margin-bottom:0">Focus on these areas to accelerate your path to your top career match.</p>
+      </div>
+      <div class="skills-right">
+        <div class="skill-bars" id="skill-bars">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-section">
+    <div class="cta-card">
+      <div class="cta-glow"></div>
+      <div class="cta-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h2 class="cta-title">Ready to Start Your Journey?</h2>
+      <p class="cta-sub">Save your results, explore colleges, and build your personalised career roadmap.</p>
+      <div class="cta-btns" id="cta-btns">
+        <!-- Injected by JS based on auth state -->
+      </div>
+    </div>
+  </section>
+  <footer class="footer"></footer>
+
+
+
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script src="../../assets/js/shared/nav.js"></script>
+<script src="../../assets/js/shared/footer.js"></script>
+<script src="../../assets/js/pages/quiz-results.js"></script>
+</body>
+</html>

@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.5.0",
     "node-fetch": "^3.3.2"
   }
 }

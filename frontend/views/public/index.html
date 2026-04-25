@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PathwayAI | AI-Powered Career Guidance</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css" />
+  
+
+  <!-- ── INLINE FIXES (stats strip + features grid) ── -->
+  <style>
+    .stats-strip {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      border: 0.5px solid rgba(212, 175, 55, 0.20) !important;
+      border-radius: 16px !important;
+      overflow: hidden !important;
+      background: var(--bg2, #111) !important;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .stat-cell {
+      padding: 32px 24px !important;
+      text-align: center !important;
+      position: relative;
+      transition: background 0.2s ease;
+      cursor: default;
+    }
+
+    .stat-cell:hover {
+      background: rgba(212, 175, 55, 0.04);
+    }
+
+    /* vertical divider between cells */
+    .stat-cell:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 0.5px;
+      background: rgba(212, 175, 55, 0.18);
+    }
+
+    .stat-num {
+      font-size: 40px !important;
+      font-weight: 600 !important;
+      line-height: 1 !important;
+      margin-bottom: 8px !important;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-lbl {
+      font-size: 13px !important;
+      line-height: 1.4 !important;
+      opacity: 0.6;
+    }
+
+    /* section wrapper to anchor the strip */
+    .section-sm {
+      border-top: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+      padding: 48px 0 !important;
+    }
+
+
+    /* Override the old feat-grid to only hold 3 cards */
+    .feat-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 14px !important;
+      margin-bottom: 14px !important;
+    }
+
+    /* new bottom row: 2 centred cards */
+    .feat-grid-bottom {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: calc(66.66% + 7px); /* same width as 2 of 3 cols + gap */
+      margin: 0 auto;
+    }
+
+    /* card base */
+    .feat-card {
+      background: var(--bg, #0d0d0d) !important;
+      border: 0.5px solid rgba(255,255,255,0.08) !important;
+      border-radius: 14px !important;
+      padding: 22px 20px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      cursor: pointer;
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease !important;
+      /* remove the old card-shine pseudo-element behaviour conflict */
+      box-shadow: none !important;
+    }
+
+    .feat-card:hover {
+      border-color: rgba(212, 175, 55, 0.35) !important;
+      background: rgba(212, 175, 55, 0.03) !important;
+      transform: translateY(-3px) !important;
+    }
+
+    /* icon container — amber tinted pill */
+    .feat-icon {
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px;
+      border-radius: 10px !important;
+      background: rgba(212, 175, 55, 0.10) !important;
+      border: 0.5px solid rgba(212, 175, 55, 0.22) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .feat-icon svg {
+      width: 20px !important;
+      height: 20px !important;
+      stroke: #D4AF37 !important;
+      stroke-width: 1.8 !important;
+      fill: none !important;
+    }
+
+    /* title — strong weight */
+    .feat-card h3 {
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      line-height: 1.3 !important;
+      margin: 0 !important;
+      color: var(--text1, #f0f0f0);
+    }
+
+    /* description — clearly secondary */
+    .feat-card p {
+      font-size: 13px !important;
+      line-height: 1.6 !important;
+      margin: 0 !important;
+      opacity: 0.55 !important;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">
+        <img src="../../assets/images/logo.png" alt="PathwayAI Logo">
+      </div>
+      PathwayAI
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="features.html" class="nav-drop-trigger">Features ▾</a>
+        <div class="nav-drop-menu">
+          <a href="../app/quiz.html" class="nav-drop-item">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Career Quiz</div>
+              <div class="nav-drop-sub">AI-powered career assessment</div>
+            </div>
+          </a>
+          <a href="../app/resume-analysis.html" class="nav-drop-item">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Resume Analysis</div>
+              <div class="nav-drop-sub">AI-powered resume insights</div>
+            </div>
+          </a>
+          <a href="#" class="nav-drop-item" onclick="showToast('Skill Gap Detection coming soon!')">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M18 20V10M12 20V4M6 20v-6" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Skill Gap Detection</div>
+              <div class="nav-drop-sub">Find what skills you're missing</div>
+            </div>
+          </a>
+          <a href="#" class="nav-drop-item" onclick="showToast('Career Recommendation coming soon!')">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Career Recommendation</div>
+              <div class="nav-drop-sub">Personalized career matches</div>
+            </div>
+          </a>
+          <a href="#" class="nav-drop-item" onclick="showToast('Job Matching Score coming soon!')">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">Job Matching Score</div>
+              <div class="nav-drop-sub">AI-powered job compatibility</div>
+            </div>
+          </a>
+          <a href="../app/career-tree.html" class="nav-drop-item">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">3D Career Tree</div>
+              <div class="nav-drop-sub">Interactive career exploration</div>
+            </div>
+          </a>
+          <a href="../app/roadmap.html" class="nav-drop-item">
+            <div class="nav-drop-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4l3 3" />
+              </svg>
+            </div>
+            <div>
+              <div class="nav-drop-title">AI Roadmap</div>
+              <div class="nav-drop-sub">Personalized career roadmaps</div>
+            </div>
+          </a>
+        </div>
+      </li>
+    </ul>
+    <div class="nav-actions">
+      <a href="../auth/login.html"><button class="btn-ghost">Sign in</button></a>
+      <a href="../auth/register.html"><button class="btn-gold">Get started</button></a>
+    </div>
+  </nav>
+
+  <main class="page-content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-left">
+        <div class="eyebrow reveal">
+          <div class="eyebrow-dot"></div> AI Career Intelligence
+        </div>
+        <h1 class="reveal" style="--delay:0.08s">Build Your <em>Career Path</em><br>with Confidence</h1>
+        <p class="hero-sub reveal" style="--delay:0.16s">An intelligent platform that matches your skills to the right
+          careers, closes your gaps, and connects you with real opportunities — all in one place.</p>
+        <div class="hero-btns reveal" style="--delay:0.22s">
+          <a href="../app/quiz.html"><button class="btn-primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+              Start for free
+            </button></a>
+          <a href="about.html"><button class="btn-outline">Learn more</button></a>
+        </div>
+        <div class="hero-proof reveal" style="--delay:0.30s">
+          <div class="proof-avatars">
+            <div class="proof-av">AR</div>
+            <div class="proof-av">PS</div>
+            <div class="proof-av">MK</div>
+            <div class="proof-av">RJ</div>
+          </div>
+          <span class="proof-text"><strong>12,000+</strong> students guided</span>
+          <div class="proof-divider"></div>
+          <span class="proof-text">⭐ <strong>4.9</strong> avg. rating</span>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" style="--delay:0.12s">
+        <div class="hero-card">
+          <div class="hc-header">
+            <span class="hc-title">Career Analysis</span>
+            <span class="hc-badge">Live Report</span>
+          </div>
+          <div class="score-row">
+            <div class="score-num">91</div>
+            <div>
+              <div class="score-info-label">Overall career readiness</div>
+              <div class="score-info-sub">Top 8% of all profiles this month</div>
+            </div>
+          </div>
+          <div class="match-list">
+            <div class="match-row">
+              <span class="match-name">Frontend Engineer</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:91%"></div></div>
+              <span class="bar-pct">91%</span>
+            </div>
+            <div class="match-row">
+              <span class="match-name">Product Designer</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:78%"></div></div>
+              <span class="bar-pct">78%</span>
+            </div>
+            <div class="match-row">
+              <span class="match-name">Data Analyst</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:63%"></div></div>
+              <span class="bar-pct">63%</span>
+            </div>
+            <div class="match-row">
+              <span class="match-name">Backend Developer</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:54%"></div></div>
+              <span class="bar-pct">54%</span>
+            </div>
+          </div>
+          <div class="hc-divider"></div>
+          <div class="skills-label">Skill snapshot</div>
+          <div class="skills-row">
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag gap">TypeScript ↗</span>
+            <span class="skill-tag gap">Node.js ↗</span>
+          </div>
+          <div class="skills-legend">Highlighted = skills to develop next</div>
+        </div>
+        <div class="float-widget">
+          <div class="float-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <div>
+            <div class="float-title">New match found</div>
+            <div class="float-sub">Senior UI Role · 87% fit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <section class="section features-section">
+      <div class="max-w">
+        <div class="section-kicker reveal">What we offer</div>
+        <div class="section-h2 reveal" style="--delay:0.06s">Every tool you need to<br><em>own your career</em></div>
+        <p class="section-p reveal" style="--delay:0.1s">From discovery to application, our platform guides you through
+          the full journey with intelligent, personalized tools.</p>
+
+        <!-- Top row: 3 cards -->
+        <div class="feat-grid">
+          <div class="card card-shine feat-card reveal" style="--delay:0s">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+            </div>
+            <h3>AI Career Matching</h3>
+            <p>Transparent recommendations tied to your exact skills and interests. Every suggestion comes with clear reasoning.</p>
+          </div>
+          <div class="card card-shine feat-card reveal" style="--delay:0.06s">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            </div>
+            <h3>Skill Gap Analysis</h3>
+            <p>See precisely which skills are missing for your target role and get a prioritized roadmap to close those gaps.</p>
+          </div>
+          <div class="card card-shine feat-card reveal" style="--delay:0.12s">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <h3>Smart Job Matching</h3>
+            <p>Browse opportunities ranked by your personal fit score. Know your compatibility before you apply.</p>
+          </div>
+        </div>
+
+        <!-- Bottom row: 2 cards centred (FIX for orphan card) -->
+        <div class="feat-grid-bottom">
+          <div class="card card-shine feat-card reveal" style="--delay:0.18s">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <h3>Resume Intelligence</h3>
+            <p>Upload your resume to extract skills automatically, surface improvements, and tailor it for specific roles.</p>
+          </div>
+          <div class="card card-shine feat-card reveal" style="--delay:0.24s">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <h3>Progress Dashboard</h3>
+            <p>Track readiness scores, skill growth, and applications in one focused, distraction-free view.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+      <div class="max-w">
+        <div class="section-kicker reveal">Process</div>
+        <div class="section-h2 reveal" style="--delay:0.06s">Three steps to<br><em>career clarity</em></div>
+        <div class="steps-grid reveal" style="--delay:0.14s">
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <h3>Build your profile</h3>
+            <p>Add your education, skills, and interests. Upload your resume for instant skill extraction and profile enrichment.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <h3>Receive your analysis</h3>
+            <p>Our AI surfaces your best-fit careers and live job matches with transparent scores and skill gap insights.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <h3>Apply with confidence</h3>
+            <p>Close your gaps, refine your resume, and apply to matched roles — all tracked from your personal dashboard.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-sm">
+      <div class="max-w">
+        <div class="stats-strip reveal">
+          <div class="stat-cell">
+            <div class="stat-num">12K+</div>
+            <div class="stat-lbl">Students guided across India</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">600+</div>
+            <div class="stat-lbl">Career paths mapped</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">4.9★</div>
+            <div class="stat-lbl">Average user rating</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section" style="background:var(--bg2);border-top:1px solid var(--border);">
+      <div class="max-w">
+        <div class="section-kicker reveal">Testimonials</div>
+        <div class="section-h2 reveal" style="--delay:0.06s">What students are<br><em>saying about us</em></div>
+        <div class="testi-grid">
+          <div class="card card-shine testi-card reveal" style="--delay:0s">
+            <div class="testi-quote">"</div>
+            <blockquote>PathwayAI showed me exactly what was missing from my profile. Within two weeks I landed an internship at a company I actually wanted to join.</blockquote>
+            <div class="testi-author">
+              <div class="testi-av">AR</div>
+              <div><div class="testi-name">Aryan Raj</div><div class="testi-role">CS Final Year · Delhi</div></div>
+            </div>
+          </div>
+          <div class="card card-shine testi-card reveal" style="--delay:0.08s">
+            <div class="testi-quote">"</div>
+            <blockquote>I could see my fit score for each career path and exactly why it was recommended. That transparency was everything for me.</blockquote>
+            <div class="testi-author">
+              <div class="testi-av">PS</div>
+              <div><div class="testi-name">Priya Sharma</div><div class="testi-role">Commerce Graduate · Mumbai</div></div>
+            </div>
+          </div>
+          <div class="card card-shine testi-card reveal" style="--delay:0.16s">
+            <div class="testi-quote">"</div>
+            <blockquote>The skill gap analysis alone saved me weeks of confusion. It filtered what I needed to learn and gave me a clear direction.</blockquote>
+            <div class="testi-author">
+              <div class="testi-av">MK</div>
+              <div><div class="testi-name">Meera Kapoor</div><div class="testi-role">12th Grade · Bangalore</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="section">
+      <div class="max-w">
+        <div class="cta-banner reveal">
+          <h2>Your future career starts<br><em>with one decision</em></h2>
+          <p>Join thousands of students who chose clarity over confusion. Free to start — no credit card needed.</p>
+          <div class="cta-btns">
+            <a href="../auth/register.html"><button class="btn-primary" style="padding:15px 32px;font-size:15px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Create your free profile
+              </button></a>
+            <a href="features.html"><button class="btn-outline" style="padding:14px 28px">Explore features</button></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+    
+  </main>
+
+  <div id="toast" class="toast"></div>
+ <script src="../../assets/js/shared/nav.js"></script>
+<script src="../../assets/js/shared/footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Career Quiz Hub | PathwayAI</title>
+  <link rel="stylesheet" href="../../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../../assets/css/quiz.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="../public/index.html" class="nav-logo">
+    <div class="logo-mark">
+      <img src="../../assets/images/logo.png" alt="PathwayAI Logo" style="width:100%;height:100%;object-fit:contain;">
+    </div>
+    PathwayAI
+  </a>
+  <ul class="nav-links">
+    <li><a href="../public/index.html">Home</a></li>
+    <li><a href="../public/about.html">About</a></li>
+    <li class="nav-dropdown">
+      <a href="../public/features.html" class="nav-drop-trigger">Features ▾</a>
+      <div class="nav-drop-menu">
+        <a href="../app/quiz.html" class="nav-drop-item">
+          <div class="nav-drop-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div><div class="nav-drop-title">Career Quiz</div><div class="nav-drop-sub">AI-powered career assessment</div></div>
+        </a>
+        <a href="../app/resume-analysis.html" class="nav-drop-item">
+          <div class="nav-drop-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div><div class="nav-drop-title">Resume Analysis</div><div class="nav-drop-sub">AI-powered resume insights</div></div>
+        </a>
+        <a href="#" class="nav-drop-item" onclick="showToast('Skill Gap Detection coming soon!')">
+          <div class="nav-drop-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          </div>
+          <div><div class="nav-drop-title">Skill Gap Detection</div><div class="nav-drop-sub">Find what skills you're missing</div></div>
+        </a>
+        <a href="#" class="nav-drop-item" onclick="showToast('Career Recommendation coming soon!')">
+          <div class="nav-drop-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div><div class="nav-drop-title">Career Recommendation</div><div class="nav-drop-sub">Personalized career matches</div></div>
+        </a>
+        <a href="#" class="nav-drop-item" onclick="showToast('Job Matching Score coming soon!')">
+          <div class="nav-drop-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div><div class="nav-drop-title">Job Matching Score</div><div class="nav-drop-sub">AI-powered job compatibility</div></div>
+        </a>
+        <a href="../app/career-tree.html" class="nav-drop-item">
+          <div class="nav-drop-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22v-7M9 22H5a2 2 0 0 1-2-2v-1a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v1a2 2 0 0 1-2 2h-4"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div><div class="nav-drop-title">3D Career Tree</div><div class="nav-drop-sub">Interactive career exploration</div></div>
+        </a>
+        <a href="../app/roadmap.html" class="nav-drop-item">
+          <div class="nav-drop-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div><div class="nav-drop-title">AI Roadmap</div><div class="nav-drop-sub">Personalized career roadmaps</div></div>
+        </a>
+      </div>
+    </li>
+  </ul>
+  <div class="nav-actions">
+    <a href="../auth/login.html"><button class="btn-ghost">Sign in</button></a>
+    <a href="../auth/register.html"><button class="btn-gold">Get started</button></a>
+  </div>
+</nav>
+
+<main class="page-content">
+  <div class="quiz-hub-wrap">
+
+    <div class="hub-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+
+    <h1 class="hub-title">Career <em>Quiz Hub</em></h1>
+    <p class="hub-sub">Discover your perfect career path with AI-powered assessments and track your journey over time.</p>
+
+    <div class="hub-cards">
+
+      <!-- Start New Assessment -->
+      <a href="quiz-assessment.html" class="hub-card">
+        <div class="hub-card-arrow">→</div>
+        <div class="hub-card-icon gold">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div class="hub-card-title">Start New Assessment</div>
+        <div class="hub-card-desc">Take our comprehensive AI-powered career assessment to discover your ideal career path with personalized insights and recommendations.</div>
+        <div class="hub-card-badge gold">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          Powered by Advanced AI
+        </div>
+      </a>
+
+      <!-- View Quiz History -->
+      <a href="quiz-history.html" class="hub-card">
+        <div class="hub-card-arrow">→</div>
+        <div class="hub-card-icon muted">
+          <svg viewBox="0 0 24 24"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+        </div>
+        <div class="hub-card-title">View Quiz History</div>
+        <div class="hub-card-desc">Track your career assessment progress over time and see how your interests and career matches have evolved.</div>
+        <div class="hub-card-badge muted">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          0 Quizzes Completed
+        </div>
+      </a>
+
+    </div>
+
+    <p class="hub-back">← <a href="../public/index.html">Back to Home</a></p>
+  </div>
+</main>
+
+<footer class="footer"></footer>
+
+<div id="toast" class="toast"></div>
+<script>
+function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+</script>
+<script src="../../assets/js/shared/nav.js"></script>
+<script src="../../assets/js/shared/footer.js"></script>
+</body>
+</html>
