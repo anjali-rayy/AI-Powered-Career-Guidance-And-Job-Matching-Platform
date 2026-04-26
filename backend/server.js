@@ -344,7 +344,6 @@ Rules:
   }
 });
 
-// ─────────────────────────────────────────────
 app.listen(process.env.PORT || 3000, () => {
   console.log('✅ PathwayAI backend running on http://localhost:3000');
 });

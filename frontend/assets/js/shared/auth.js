@@ -235,7 +235,7 @@ async function signInWithGoogle() {
     const fbUser   = result.user;
 
     // Send to our backend to create/link account
-    const res = await fetch(`${API_URL}/auth/google`, {
+    const res = await fetch('http://localhost:3000/api/auth/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
