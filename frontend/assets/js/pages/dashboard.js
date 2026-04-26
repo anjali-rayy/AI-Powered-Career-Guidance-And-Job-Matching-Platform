@@ -1,3 +1,22 @@
+/* ── RESTORE UI INSTANTLY FROM CACHE (prevents flash on refresh) ── */
+(function restoreFromCache() {
+  const ini   = localStorage.getItem('displayIni')   || '';
+  const first = localStorage.getItem('displayFirst') || '';
+  const full  = localStorage.getItem('displayFull')  || '';
+  const role  = localStorage.getItem('userRole')     || 'PathwayAI Member';
+  if (ini) {
+    document.getElementById('sidebar-av').textContent   = ini;
+    document.getElementById('topbar-av').textContent    = ini;
+  }
+  if (full) document.getElementById('sidebar-name').textContent = full;
+  if (role) document.getElementById('sidebar-role').textContent = role;
+  if (first) {
+    const hour  = new Date().getHours();
+    const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    document.getElementById('dash-greeting').innerHTML = greet + ', <em>' + first + '</em> 👋';
+  }
+})();
+
 /* ── LOAD FRESH DATA FROM MONGODB ── */
 requireAuth().then(function() {
 
@@ -24,9 +43,28 @@ requireAuth().then(function() {
   document.getElementById('sidebar-role').textContent = userRole;
   document.getElementById('topbar-av').textContent    = displayIni;
 
+  // Save display state so it survives refresh
+  localStorage.setItem('displayIni',   displayIni);
+  localStorage.setItem('displayFirst', displayFirst);
+  localStorage.setItem('displayFull',  displayFull);
+
   const hour  = new Date().getHours();
   const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
   document.getElementById('dash-greeting').innerHTML  = greet + ', <em>' + displayFirst + '</em> 👋';
+
+  /* ── SAVE & RESTORE STAT CARDS ── */
+  (function syncStats() {
+    const saved = JSON.parse(localStorage.getItem('dashStats') || '{}');
+    const defaults = { readiness: 91, matches: 4, jobs: 12, skills: 2 };
+    const stats = Object.assign(defaults, saved);
+    const el = (id) => document.getElementById(id);
+    if (el('stat-readiness')) el('stat-readiness').textContent = stats.readiness;
+    if (el('stat-matches'))   el('stat-matches').textContent   = stats.matches;
+    if (el('stat-jobs'))      el('stat-jobs').textContent      = stats.jobs;
+    if (el('stat-skills'))    el('stat-skills').textContent    = stats.skills;
+    // Save back so next refresh has latest values
+    localStorage.setItem('dashStats', JSON.stringify(stats));
+  })();
 
   /* ── PROFILE COMPLETION ── */
   (function updateCompletion() {

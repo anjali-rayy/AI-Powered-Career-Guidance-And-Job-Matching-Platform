@@ -180,5 +180,5 @@ def get_roles():
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
     print("✅ Python microservice running on http://localhost:5000")
+    app.run(port=5000, debug=True)

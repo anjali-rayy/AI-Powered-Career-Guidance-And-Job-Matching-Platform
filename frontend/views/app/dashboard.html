@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
+  
   <title>Dashboard | PathwayAI</title>
   <link rel="stylesheet" href="../../assets/css/shared.css" />
   <link rel="stylesheet" href="../../assets/css/dashboard.css" />
@@ -28,9 +27,9 @@
       </div>
 
       <div class="sidebar-user">
-        <div class="user-av" id="sidebar-av">AR</div>
+        <div class="user-av" id="sidebar-av"></div>
         <div>
-          <div class="user-name" id="sidebar-name">User</div>
+          <div class="user-name" id="sidebar-name"></div>
           <div class="user-role" id="sidebar-role">PathwayAI Member</div>
         </div>
       </div>
@@ -119,7 +118,7 @@
 
       <header class="dash-topbar">
         <div class="topbar-left">
-          <h1 id="dash-greeting">Good morning, <em>User</em> 👋</h1>
+          <h1 id="dash-greeting">Good morning 👋</h1>
         </div>
         <div class="topbar-right">
           <div class="topbar-search">
@@ -137,12 +136,12 @@
             <span class="notif-dot"></span>
           </button>
           <div style="position:relative">
-            <div class="topbar-av" id="topbar-av" onclick="toggleAvatarMenu()" style="cursor:pointer">AR</div>
+            <div class="topbar-av" id="topbar-av" onclick="toggleAvatarMenu()" style="cursor:pointer"></div>
             <div id="avatar-menu"
               style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#111111;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:8px;min-width:220px;box-shadow:0 20px 60px rgba(0,0,0,0.7);z-index:999;">
               <div style="padding:10px 12px 14px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:6px">
-                <div style="font-size:14px;font-weight:600;color:#F5F5F5" id="menu-name">User</div>
-                <div style="font-size:12px;color:#A1A1AA;margin-top:2px" id="menu-email">—</div>
+                <div style="font-size:14px;font-weight:600;color:#F5F5F5" id="menu-name"></div>
+                <div style="font-size:12px;color:#A1A1AA;margin-top:2px" id="menu-email"></div>
               </div>
               <a href="profile.html"
                 style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:#F5F5F5;text-decoration:none;font-size:13px;"
@@ -210,7 +209,7 @@
                   <path d="M18 20V10M12 20V4M6 20v-6" />
                 </svg></div><span class="stat-trend up">↑ +4</span>
             </div>
-            <div class="stat-num">91</div>
+            <div class="stat-num" id="stat-readiness">91</div>
             <div class="stat-lbl">Career readiness score</div>
           </div>
           <div class="stat-card">
@@ -220,7 +219,7 @@
                   <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
                 </svg></div><span class="stat-trend up">↑ 2 new</span>
             </div>
-            <div class="stat-num">4</div>
+            <div class="stat-num" id="stat-matches">4</div>
             <div class="stat-lbl">Career path matches</div>
           </div>
           <div class="stat-card">
@@ -230,7 +229,7 @@
                   <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                 </svg></div><span class="stat-trend up">↑ 5 new</span>
             </div>
-            <div class="stat-num">12</div>
+            <div class="stat-num" id="stat-jobs">12</div>
             <div class="stat-lbl">Matched job listings</div>
           </div>
           <div class="stat-card">
@@ -240,7 +239,7 @@
                   <polyline points="14 2 14 8 20 8" />
                 </svg></div><span class="stat-trend neu">—</span>
             </div>
-            <div class="stat-num">2</div>
+            <div class="stat-num" id="stat-skills">2</div>
             <div class="stat-lbl">Skills left to close</div>
           </div>
         </div>

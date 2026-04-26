@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  
   <title>Settings | PathwayAI</title>
   <link rel="stylesheet" href="../../assets/css/shared.css" />
   <link rel="stylesheet" href="../../assets/css/dashboard.css" />
@@ -708,7 +708,9 @@
       background: rgba(6, 11, 24, .93)
     }
 
-    body.no-animations *,
+    
+
+body.no-animations *,
     body.no-animations *::before,
     body.no-animations *::after {
       transition: none !important;
@@ -994,9 +996,9 @@
         <span>PathwayAI</span>
       </div>
       <div class="sidebar-user">
-        <div class="user-av" id="sidebar-av">SA</div>
+        <div class="user-av" id="sidebar-av"></div>
         <div>
-          <div class="user-name" id="sidebar-name">User</div>
+          <div class="user-name" id="sidebar-name"></div>
           <div class="user-role" id="sidebar-role">PathwayAI Member</div>
         </div>
         <div class="user-badge">Free</div>
@@ -1038,13 +1040,9 @@
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
           </svg>Learning Path</a>
-        <a href="#" class="nav-item" onclick="showToast('Achievements coming soon!')"><svg viewBox="0 0 24 24">
-            <polygon
-              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>Achievements</a>
       </nav>
       <div class="sidebar-bottom">
-        <a href="settings.html" class="nav-item active"><svg viewBox="0 0 24 24">
+        <a href="../auth/settings.html" class="nav-item active"><svg viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="3" />
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
           </svg>Settings</a>
@@ -1077,12 +1075,12 @@
             <span class="notif-dot"></span>
           </button>
           <div style="position:relative">
-            <div class="topbar-av" id="topbar-av" onclick="toggleAvatarMenu()" style="cursor:pointer">SA</div>
+            <div class="topbar-av" id="topbar-av" onclick="toggleAvatarMenu()" style="cursor:pointer"></div>
             <div id="avatar-menu"
               style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#111;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:8px;min-width:220px;box-shadow:0 20px 60px rgba(0,0,0,.7);z-index:999">
               <div style="padding:10px 12px 14px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px">
-                <div style="font-size:14px;font-weight:600;color:#F5F5F5" id="menu-name">User</div>
-                <div style="font-size:12px;color:#A1A1AA;margin-top:2px" id="menu-email">—</div>
+                <div style="font-size:14px;font-weight:600;color:#F5F5F5" id="menu-name"></div>
+                <div style="font-size:12px;color:#A1A1AA;margin-top:2px" id="menu-email"></div>
               </div>
               <a href="../app/profile.html"
                 style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:#F5F5F5;text-decoration:none;font-size:13px"
@@ -1092,7 +1090,7 @@
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>My Profile</a>
-              <a href="settings.html"
+              <a href="../auth/settings.html"
                 style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:#D4AF37;text-decoration:none;font-size:13px;background:rgba(212,175,55,.06)"><svg
                   width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.8"
                   stroke-linecap="round">
@@ -1170,11 +1168,11 @@
                     style="display:flex;align-items:center;gap:18px;padding:4px 0 22px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:20px">
                     <div id="settings-av"
                       style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,rgba(212,175,55,.2),rgba(212,175,55,.08));border:2px solid rgba(212,175,55,.3);display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--gold);flex-shrink:0">
-                      SA</div>
+                      </div>
                     <div style="flex:1">
                       <div id="settings-av-name"
-                        style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px">User</div>
-                      <div id="settings-av-email" style="font-size:12.5px;color:var(--muted);margin-bottom:10px">—</div>
+                        style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px"></div>
+                      <div id="settings-av-email" style="font-size:12.5px;color:var(--muted);margin-bottom:10px"></div>
                       <button onclick="showToast('Photo upload coming soon!')"
                         style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;font-family:Inter,sans-serif"
                         onmouseover="this.style.borderColor='rgba(212,175,55,.3)';this.style.color='var(--gold)'"
@@ -1818,7 +1816,7 @@
       btn.disabled = true; btn.style.opacity = '0.7';
       document.getElementById('cm-oauth-label').textContent = 'Connecting...';
       setTimeout(() => {
-        const handle = name === 'google' ? (localStorage.getItem('userEmail') || 'google.com/account') : name + '.com/user';
+        const handle = localStorage.getItem('userEmail') || 'connected';
         setConnected(name, handle);
         closeModal('modal-connect');
         showToast(name.charAt(0).toUpperCase() + name.slice(1) + ' connected!');
@@ -1846,6 +1844,29 @@
     /* ════════════════════════════════════════
        INIT
        ════════════════════════════════════════ */
+    // ── INSTANT CACHE RESTORE (prevents blank UI on refresh) ──
+    (function restoreFromCache() {
+      const userName  = localStorage.getItem('userName')  || '';
+      const userEmail = localStorage.getItem('userEmail') || '';
+      const userRole  = localStorage.getItem('userRole')  || 'PathwayAI Member';
+      const parts     = userName.trim().split(' ');
+      const initials  = parts.length >= 2 ? (parts[0][0] + parts[1][0]).toUpperCase() : (userName.slice(0,2).toUpperCase() || 'SA');
+      if (document.getElementById('sidebar-av'))      document.getElementById('sidebar-av').textContent      = initials;
+      if (document.getElementById('sidebar-name'))    document.getElementById('sidebar-name').textContent    = userName || 'User';
+      if (document.getElementById('sidebar-role'))    document.getElementById('sidebar-role').textContent    = userRole;
+      if (document.getElementById('topbar-av'))       document.getElementById('topbar-av').textContent       = initials;
+      if (document.getElementById('settings-av'))     document.getElementById('settings-av').textContent     = initials;
+      if (document.getElementById('settings-av-name'))document.getElementById('settings-av-name').textContent= userName || 'User';
+      if (document.getElementById('settings-av-email'))document.getElementById('settings-av-email').textContent= userEmail || '—';
+      const p = JSON.parse(localStorage.getItem('profileData') || '{}');
+      const n = userName.split(' ');
+      if (document.getElementById('acc-fname')) document.getElementById('acc-fname').value = p.fname || n[0] || '';
+      if (document.getElementById('acc-lname')) document.getElementById('acc-lname').value = p.lname || n.slice(1).join(' ') || '';
+      if (document.getElementById('acc-email')) document.getElementById('acc-email').value = p.email || userEmail || '';
+      if (document.getElementById('acc-phone')) document.getElementById('acc-phone').value = p.phone || '';
+      document.body.classList.add('data-ready');
+    })();
+
     requireAuth().then(function () {
 
       (function initUser() {
@@ -1861,7 +1882,7 @@
         const sAv = document.getElementById('settings-av');
         const sNm = document.getElementById('settings-av-name');
         const sEm = document.getElementById('settings-av-email');
-        if (sAv) sAv.textContent = initials || 'SA';
+        if (sAv) sAv.textContent = initials || '';
         if (sNm) sNm.textContent = userName || 'User';
         if (sEm) sEm.textContent = userEmail || '—';
         const p = JSON.parse(localStorage.getItem('profileData') || '{}');
@@ -1870,6 +1891,7 @@
         document.getElementById('acc-lname').value = p.lname || n.slice(1).join(' ') || '';
         document.getElementById('acc-email').value = p.email || userEmail || '';
         document.getElementById('acc-phone').value = p.phone || '';
+document.body.classList.add('data-ready');
       })();
 
       (function loadAllSettings() {

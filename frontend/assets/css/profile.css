@@ -65,6 +65,18 @@
 .p-social-icon { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.07); display: grid; place-items: center; }
 .p-social-icon svg { width: 14px; height: 14px; fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; }
 .p-social-add { margin-left: auto; font-size: 18px; color: var(--subtle); }
+.p-social-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.p-social-row:last-child { margin-bottom: 0; }
+.p-social-input-row { display: flex; gap: 8px; align-items: center; padding: 0 4px; }
+.p-social-input-row .p-input { flex: 1; }
+.p-social-action-row { display: flex; gap: 8px; padding: 4px; flex-wrap: wrap; }
+.p-social-action-btn { padding: 7px 14px; border-radius: 7px; font-size: 12px; font-family: 'Inter', sans-serif; cursor: pointer; font-weight: 500; border: 1px solid; transition: background 0.2s; }
+.p-social-action-btn.open   { background: rgba(76,175,112,0.08); border-color: rgba(76,175,112,0.25); color: #4CAF70; }
+.p-social-action-btn.open:hover { background: rgba(76,175,112,0.18); }
+.p-social-action-btn.edit   { background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.25); color: #C9A227; }
+.p-social-action-btn.edit:hover { background: rgba(212,175,55,0.18); }
+.p-social-action-btn.remove { background: rgba(107,44,44,0.08); border-color: rgba(107,44,44,0.25); color: #CF6679; }
+.p-social-action-btn.remove:hover { background: rgba(107,44,44,0.2); }
 
 /* ── DANGER ZONE ── */
 .danger-zone { background: rgba(107, 44, 44, 0.06); border: 1px solid rgba(107, 44, 44, 0.2); border-radius: 12px; padding: 18px 20px; }
